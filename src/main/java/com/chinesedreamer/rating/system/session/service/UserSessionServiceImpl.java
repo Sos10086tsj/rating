@@ -5,7 +5,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.system.session.logic.UserSessionLogic;
-import com.chinesedreamer.rating.system.session.model.UserSession;
 
 /** 
  * Description: 
@@ -15,14 +14,13 @@ import com.chinesedreamer.rating.system.session.model.UserSession;
  * Copyright:   Copyright (c)2015
  */
 @Service
-public class UserSessionServiceImpl implements UserSessionService{
+public class UserSessionServiceImpl  implements UserSessionService{
+
 	@Resource
-	private UserSessionLogic logic;
+	private UserSessionLogic userSessionLogic;
 
 	@Override
-	public boolean userLogged(String sessionId) {
-		UserSession userSession = this.logic.findBySessionId(sessionId);
-		return (null == userSession ? false : true );
+	public void saveUserSessionCache() {
+		this.userSessionLogic.saveUserSessionCache();
 	}
-
 }

@@ -1,6 +1,5 @@
 package com.chinesedreamer.rating.system.session.logic;
 
-import com.chinesedreamer.rating.base.jpa.logic.BaseLogic;
 import com.chinesedreamer.rating.system.session.model.UserSession;
 
 /** 
@@ -10,11 +9,17 @@ import com.chinesedreamer.rating.system.session.model.UserSession;
  * @date 2015年6月18日 下午8:13:18 
  * Copyright:   Copyright (c)2015
  */
-public interface UserSessionLogic extends BaseLogic<UserSession, Long>{
+public interface UserSessionLogic {
 	/**
 	 * 根据session id查找当前用户
 	 * @param sessionId
 	 * @return
 	 */
 	public UserSession findBySessionId(String sessionId);
+	
+	public void saveUserSessionCache();
+	
+	public UserSession getUserSession(String user);
+	
+	public String getCurrentUser();
 }

@@ -7,10 +7,5 @@ package com.chinesedreamer.rating.system.session.service;
  * Copyright:   Copyright (c)2015
  */
 public interface UserSessionService {
-	/**
-	 * 查看用户是否已经登录
-	 * @param sessionId
-	 * @return true 已经登录	false 未登录
-	 */
-	public boolean userLogged(String sessionId);
+	public void saveUserSessionCache();
 }
