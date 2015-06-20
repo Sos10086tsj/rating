@@ -1,25 +1,36 @@
 package com.chinesedreamer.rating.system.session.logic;
 
+<<<<<<< HEAD
+import com.chinesedreamer.rating.base.jpa.logic.BaseLogic;
+=======
+>>>>>>> 94279f0e81c9045a8fc51c46e9e4c0d4808d74e3
 import com.chinesedreamer.rating.system.session.model.UserSession;
 
 /** 
  * Description: 
  * @author Paris Tao
  * @version 1.0beta
- * @date 2015��8�下午8:13:18 
+ * @date 2015年6月18日 下午8:13:18 
  * Copyright:   Copyright (c)2015
  */
+<<<<<<< HEAD
+public interface UserSessionLogic extends BaseLogic<UserSession, Long>{
+=======
 public interface UserSessionLogic {
+>>>>>>> 94279f0e81c9045a8fc51c46e9e4c0d4808d74e3
 	/**
 	 * 根据session id查找当前用户
 	 * @param sessionId
 	 * @return
 	 */
 	public UserSession findBySessionId(String sessionId);
+<<<<<<< HEAD
+=======
 	
 	public void saveUserSessionCache();
 	
 	public UserSession getUserSession(String user);
 	
 	public String getCurrentUser();
+>>>>>>> 94279f0e81c9045a8fc51c46e9e4c0d4808d74e3
 }

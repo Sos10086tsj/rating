@@ -5,15 +5,31 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.system.session.logic.UserSessionLogic;
+<<<<<<< HEAD
+import com.chinesedreamer.rating.system.session.model.UserSession;
+=======
+>>>>>>> 94279f0e81c9045a8fc51c46e9e4c0d4808d74e3
 
 /** 
  * Description: 
  * @author Paris Tao
  * @version 1.0beta
- * @date 2015��8�下午8:17:08 
+ * @date 2015年6月18日 下午8:17:08 
  * Copyright:   Copyright (c)2015
  */
 @Service
+<<<<<<< HEAD
+public class UserSessionServiceImpl implements UserSessionService{
+	@Resource
+	private UserSessionLogic logic;
+
+	@Override
+	public boolean userLogged(String sessionId) {
+		UserSession userSession = this.logic.findBySessionId(sessionId);
+		return (null == userSession ? false : true );
+	}
+
+=======
 public class UserSessionServiceImpl  implements UserSessionService{
 
 	@Resource
@@ -23,4 +39,5 @@ public class UserSessionServiceImpl  implements UserSessionService{
 	public void saveUserSessionCache() {
 		this.userSessionLogic.saveUserSessionCache();
 	}
+>>>>>>> 94279f0e81c9045a8fc51c46e9e4c0d4808d74e3
 }
