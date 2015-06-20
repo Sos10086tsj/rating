@@ -1,7 +1,6 @@
 package com.chinesedreamer.rating.system.session.logic;
 
-import java.util.Date;
-
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
@@ -12,13 +11,14 @@ import org.springframework.stereotype.Service;
 import com.chinesedreamer.rating.base.cache.BaseCacheAspect;
 import com.chinesedreamer.rating.base.exception.SessionOverdueException;
 import com.chinesedreamer.rating.system.session.model.UserSession;
+import com.chinesedreamer.rating.system.session.repository.UserSessionRepository;
 import com.chinesedreamer.rating.web.filter.SessionFilter;
 
 /** 
  * Description: 
  * @author Paris Tao
  * @version 1.0beta
- * @date 2015��8�下午8:13:34 
+ * @date 2015��8�下午8:13:34 
  * Copyright:   Copyright (c)2015
  */
 @Service
@@ -26,7 +26,9 @@ public class UserSessionLogicImpl extends BaseCacheAspect implements UserSession
 
 	private final Logger logger = LoggerFactory
 			.getLogger(UserSessionLogicImpl.class);
-	
+
+	@Resource
+	private UserSessionRepository repository;
 
 	private final String userSessionCacheName = "sessionCache";
 	private final String userSessionPrefix = "user-session-";
@@ -35,15 +37,17 @@ public class UserSessionLogicImpl extends BaseCacheAspect implements UserSession
 	public void saveUserSessionCache() {
 		UserSession userSession = this.convertUserSession();
 		this.logger.info("save user session cache:" + userSession);
+		if (null == userSession) {
+			return;
+		}
 		setCacheName(userSessionCacheName);
 		this.put(userSessionPrefix + userSession.getSessionId(), userSession);
-		//TODO user id
-		this.put(userSessionPrefix + this.findBySessionId(userSession.getSessionId()), userSession.getSessionId());
+		this.put(userSessionPrefix + userSession.getUsername(), userSession.getSessionId());
 	}
 
 	private UserSession convertUserSession() {
 		HttpServletRequest request = SessionFilter.SessionContext.getContext();
-		return new UserSession(request.getSession().getId(), new Date());
+		return this.repository.findBySessionId(request.getSession().getId());
 	}
 
 	public UserSessionLogicImpl() {
@@ -51,13 +55,12 @@ public class UserSessionLogicImpl extends BaseCacheAspect implements UserSession
 	}
 
 	@Override
-	public UserSession getUserSession(String user) {
-		String sessionId = this.get(userSessionPrefix + user);
+	public UserSession getUserSession(String username) {
+		String sessionId = this.get(userSessionPrefix + username);
 		if (StringUtils.isEmpty(sessionId)) {
-			logger.info("user {} is not online, no need to update.", user);
+			logger.info("user {} is not online.", username);
 		}
 		UserSession userSession = this.get(userSessionPrefix + sessionId);
-		//同步接口，不阻止
 		if (null == userSession) {
 			logger.info("user hasn't login, sessionId:{}", sessionId);
 		}
@@ -72,13 +75,7 @@ public class UserSessionLogicImpl extends BaseCacheAspect implements UserSession
 		if (null == userSession) {
 			throw new SessionOverdueException("链接已过期，请重新登录！");
 		}
-		return null;
+		return userSession.getUsername();
 	}
 
-	@Override
-	public UserSession findBySessionId(String sessionId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }

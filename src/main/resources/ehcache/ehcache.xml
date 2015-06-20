@@ -11,21 +11,21 @@
             overflowToDisk="false">
     </defaultCache>
 
-    <!-- 登录记录缓存 锁定15分钟 -->
+    <!-- 登录记录缓存 锁定1h -->
     <cache name="sessionCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
-           timeToIdleSeconds="900"
+           timeToIdleSeconds="6000"
            timeToLiveSeconds="0"
            overflowToDisk="false"
            statistics="true">
     </cache>
 
-	<!-- 登录记录缓存 锁定15分钟 -->
+	<!-- 登录记录缓存 锁定1h -->
     <cache name="userPermission"
            maxEntriesLocalHeap="2000"
            eternal="false"
-           timeToIdleSeconds="900"
+           timeToIdleSeconds="6000"
            timeToLiveSeconds="0"
            overflowToDisk="false"
            statistics="true">

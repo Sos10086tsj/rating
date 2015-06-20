@@ -11,6 +11,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.chinesedreamer.rating.base.exception.AccessInvalidException;
@@ -36,14 +37,14 @@ public class SessionFilter implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		//HttpServletRequest httpServletRequest = (HttpServletRequest)request;
-		//String uri = httpServletRequest.getServletPath();
+		HttpServletRequest httpServletRequest = (HttpServletRequest)request;
+		String uri = httpServletRequest.getServletPath();
 		SessionContext.setContext(request);
 		
-		
-		//2 保存session
-		this.userSessionService.saveUserSessionCache();
-		
+		if (StringUtils.isNotEmpty(uri) && !uri.startsWith("login")) {
+			//保存session
+			this.userSessionService.saveUserSessionCache();
+		}
 		chain.doFilter(request, response);
 	}
 
