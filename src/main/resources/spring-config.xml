@@ -27,7 +27,7 @@
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 	<context:annotation-config />
-
+	
 	<!-- data source 
 	<bean class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" id="dataSource">
@@ -40,6 +40,7 @@
 		<property name="maxIdle" value="${datasource.maxIdle}" />
 		<property name="minIdle" value="${datasource.minIdle}" />
 	</bean>-->
+	
 	<!-- data source -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
 		<!-- 基本属性 url、user、password -->

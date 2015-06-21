@@ -34,9 +34,9 @@ public class UserLogicImpl extends BaseLogicImpl<User, Long> implements UserLogi
 	}
 
 	@Override
-	public List<User> findByGroupIdAndPositionAndStatus(Long groupId,
-			Long position, UserStatus status) {
-		return this.repository.findByGroupIdAndPositionAndStatus(groupId, position, status);
+	public List<User> findByGroupIdAndPositionIdAndStatus(Long groupId,
+			Long positionId, UserStatus status) {
+		return this.repository.findByGroupIdAndPositionIdAndStatus(groupId, positionId, status);
 	}
 
 }

@@ -8,11 +8,7 @@
 </head>
 <body>
 	<div>
-		<form name="js_login_form" action="${ctx }/login" method="post">
-			<input name="username" placeholder="用户名"/>
-			<input name="password" placeholder="密码"/>
-			<button type="submit">登录</button>
-		</form>
+		您已登录
 	</div>
 </body>
 </html>

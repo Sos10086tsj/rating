@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ehcache name="contact">
+<ehcache name="rating">
 
     <diskStore path="java.io.tmpdir"/>
 
@@ -21,7 +21,7 @@
            statistics="true">
     </cache>
 
-	<!-- 登录记录缓存 锁定1h -->
+	<!-- 登录记录缓存 锁定1h 
     <cache name="userPermission"
            maxEntriesLocalHeap="2000"
            eternal="false"
@@ -29,7 +29,7 @@
            timeToLiveSeconds="0"
            overflowToDisk="false"
            statistics="true">
-    </cache>
+    </cache>-->
    
 
 </ehcache>

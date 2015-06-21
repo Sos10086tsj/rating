@@ -2,7 +2,6 @@ package com.chinesedreamer.rating.web.filter;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -12,8 +11,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.chinesedreamer.rating.system.session.service.UserSessionService;
-
 /**
  * Description: 
  * @author Paris
@@ -21,9 +18,6 @@ import com.chinesedreamer.rating.system.session.service.UserSessionService;
  * @version beta
  */
 public class RatingFilter implements Filter{
-
-	@Resource
-	private UserSessionService userSessionService;
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {

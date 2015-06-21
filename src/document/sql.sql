@@ -32,3 +32,6 @@ CREATE TABLE `rating`.`sys_user` (
   PRIMARY KEY (`id`));
 ALTER TABLE `rating`.`sys_user_session` 
 ADD INDEX `INDEX_SYS_USER_SESSION` (`session_id` ASC);
+
+--初始化管理员账号
+INSERT INTO `rating`.`sys_user` (`username`, `salt`, `name`, `status`) VALUES ('admin', '123456', '管理员', '1');

@@ -3,7 +3,6 @@ package com.chinesedreamer.rating.system.session.logic;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -42,7 +41,6 @@ public class UserSessionLogicImpl extends BaseCacheAspect implements UserSession
 		}
 		setCacheName(userSessionCacheName);
 		this.put(userSessionPrefix + userSession.getSessionId(), userSession);
-		this.put(userSessionPrefix + userSession.getUsername(), userSession.getSessionId());
 	}
 
 	private UserSession convertUserSession() {
@@ -55,27 +53,39 @@ public class UserSessionLogicImpl extends BaseCacheAspect implements UserSession
 	}
 
 	@Override
-	public UserSession getUserSession(String username) {
-		String sessionId = this.get(userSessionPrefix + username);
-		if (StringUtils.isEmpty(sessionId)) {
-			logger.info("user {} is not online.", username);
-		}
-		UserSession userSession = this.get(userSessionPrefix + sessionId);
-		if (null == userSession) {
-			logger.info("user hasn't login, sessionId:{}", sessionId);
-		}
-		return userSession;
-	}
-
-	@Override
-	public String getCurrentUser() {
+	public UserSession getCurrentUserSession() {
 		HttpServletRequest request = SessionFilter.SessionContext.getContext();
 		String sessionId = request.getSession().getId();
 		UserSession userSession = this.get(userSessionPrefix + sessionId);
 		if (null == userSession) {
 			throw new SessionOverdueException("链接已过期，请重新登录！");
 		}
-		return userSession.getUsername();
+		return userSession;
+	}
+
+	@Override
+	public UserSession findByUsername(String username) {
+		return this.repository.findByUsername(username);
+	}
+
+	@Override
+	public UserSession findBySessionId(String sessionId) {
+		return this.repository.findBySessionId(sessionId);
+	}
+
+	@Override
+	public UserSession save(UserSession userSession) {
+		return this.repository.saveAndFlush(userSession);
+	}
+
+	@Override
+	public void validateSession() {
+		HttpServletRequest request = SessionFilter.SessionContext.getContext();
+		String sessionId = request.getSession().getId();
+		UserSession userSession = this.get(userSessionPrefix + sessionId);
+		if (null == userSession) {
+			throw new SessionOverdueException("链接已过期，请重新登录！");
+		}
 	}
 
 }

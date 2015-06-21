@@ -46,6 +46,7 @@
 		<org.apache.poi.version>3.11</org.apache.poi.version>
 		<druid.version>1.0.7</druid.version>
 		<servlet-api.vrsion>2.5</servlet-api.vrsion>
+		<ehcache-core.version>2.6.10</ehcache-core.version>
 	</properties>
 
 	<dependencies>
@@ -350,6 +351,13 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 			<version>${druid.version}</version>
+		</dependency>
+		
+		<!-- ehcache -->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>${ehcache-core.version}</version>
 		</dependency>
 	</dependencies>
 

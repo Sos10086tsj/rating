@@ -41,9 +41,9 @@ public class SessionFilter implements Filter{
 		String uri = httpServletRequest.getServletPath();
 		SessionContext.setContext(request);
 		
-		if (StringUtils.isNotEmpty(uri) && !uri.startsWith("login")) {
+		if (StringUtils.isNotEmpty(uri) && !uri.equals("/index")) {
 			//保存session
-			this.userSessionService.saveUserSessionCache();
+			this.userSessionService.validateSession();
 		}
 		chain.doFilter(request, response);
 	}

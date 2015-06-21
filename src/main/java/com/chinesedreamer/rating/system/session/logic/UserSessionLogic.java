@@ -11,9 +11,39 @@ import com.chinesedreamer.rating.system.session.model.UserSession;
  */
 public interface UserSessionLogic {
 	
+	/**
+	 * 保存用户session
+	 */
 	public void saveUserSessionCache();
 	
-	public UserSession getUserSession(String username);
+	/**
+	 * 检查session是否存在
+	 */
+	public void validateSession();
 	
-	public String getCurrentUser();
+	/**
+	 * 获取当前用户
+	 * @return
+	 */
+	public UserSession getCurrentUserSession();
+	
+	/**
+	 * 根据用户名查找 UserSession
+	 * @param username
+	 * @return
+	 */
+	public UserSession findByUsername(String username);
+	/**
+	 * 根据session id查找 UserSession
+	 * @param sessionId
+	 * @return
+	 */
+	public UserSession findBySessionId(String sessionId);
+	
+	/**
+	 * 保存user session表
+	 * @param userSession
+	 * @return
+	 */
+	public UserSession save(UserSession userSession);
 }
