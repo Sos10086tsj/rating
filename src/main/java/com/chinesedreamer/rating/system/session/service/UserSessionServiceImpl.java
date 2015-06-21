@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.chinesedreamer.rating.system.session.exception.SessionOverdueException;
 import com.chinesedreamer.rating.system.session.logic.UserSessionLogic;
 import com.chinesedreamer.rating.system.session.model.UserSession;
 
@@ -31,7 +32,7 @@ public class UserSessionServiceImpl  implements UserSessionService{
 	}
 
 	@Override
-	public void validateSession() {
+	public void validateSession() throws SessionOverdueException{
 		this.logic.validateSession();
 	}
 }

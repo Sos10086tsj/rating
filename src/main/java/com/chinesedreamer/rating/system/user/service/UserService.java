@@ -1,6 +1,9 @@
 package com.chinesedreamer.rating.system.user.service;
 
 import com.chinesedreamer.rating.common.vo.ResponseVo;
+import com.chinesedreamer.rating.system.user.exception.PasswordIncorrectException;
+import com.chinesedreamer.rating.system.user.exception.UserFrozenException;
+import com.chinesedreamer.rating.system.user.exception.UserNotExistException;
 
 /** 
  * Description: 
@@ -16,5 +19,5 @@ public interface UserService {
 	 * @param password
 	 * @return
 	 */
-	public ResponseVo login(String username, String password);
+	public ResponseVo login(String username, String password) throws UserFrozenException,UserNotExistException,PasswordIncorrectException;
 }

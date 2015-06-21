@@ -1,9 +1,17 @@
 package com.chinesedreamer.rating.web.controller;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.chinesedreamer.rating.system.user.exception.PasswordIncorrectException;
+import com.chinesedreamer.rating.system.user.exception.UserFrozenException;
+import com.chinesedreamer.rating.system.user.exception.UserNotExistException;
+import com.chinesedreamer.rating.system.user.service.UserService;
 
 /** 
  * Description: 
@@ -14,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class IndexController {
+	@Resource
+	private UserService userService;
 	/**
 	 * 用户登录
 	 * @param model
@@ -25,7 +35,10 @@ public class IndexController {
 	}
 	
 	@RequestMapping(value = "login",method = RequestMethod.POST)
-	public String login(Model model){
+	public String login(Model model,HttpServletRequest request) throws UserFrozenException,UserNotExistException,PasswordIncorrectException{
+		String username = request.getParameter("username").trim();
+		String password = request.getParameter("password").trim();
+		this.userService.login(username, password);
 		return "index";
 	}
 }

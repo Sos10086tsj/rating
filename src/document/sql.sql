@@ -35,3 +35,4 @@ ADD INDEX `INDEX_SYS_USER_SESSION` (`session_id` ASC);
 
 --初始化管理员账号
 INSERT INTO `rating`.`sys_user` (`username`, `salt`, `name`, `status`) VALUES ('admin', '123456', '管理员', '1');
+UPDATE `rating`.`sys_user` SET `password`='ea48576f30be1669971699c09ad05c94' WHERE `id`='1';

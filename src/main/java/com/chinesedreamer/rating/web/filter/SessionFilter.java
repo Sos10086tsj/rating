@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.chinesedreamer.rating.base.exception.AccessInvalidException;
+import com.chinesedreamer.rating.system.session.exception.SessionOverdueException;
 import com.chinesedreamer.rating.system.session.service.UserSessionService;
 
 /**
@@ -41,7 +41,7 @@ public class SessionFilter implements Filter{
 		String uri = httpServletRequest.getServletPath();
 		SessionContext.setContext(request);
 		
-		if (StringUtils.isNotEmpty(uri) && !uri.equals("/index")) {
+		if (StringUtils.isNotEmpty(uri) && !(uri.equals("/index") || uri.equals("/login"))) {
 			//保存session
 			this.userSessionService.validateSession();
 		}
@@ -64,7 +64,7 @@ public class SessionFilter implements Filter{
 		
 		public static HttpServletRequest getContext(){  
 			if (null == threadLocal.get()) {
-				throw new AccessInvalidException("session失效，请重新登录！");
+				throw new SessionOverdueException("session失效，请重新登录！");
 			}
 			return (HttpServletRequest)threadLocal.get();
 		}

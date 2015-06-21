@@ -1,5 +1,6 @@
 package com.chinesedreamer.rating.system.session.logic;
 
+import com.chinesedreamer.rating.system.session.exception.SessionOverdueException;
 import com.chinesedreamer.rating.system.session.model.UserSession;
 
 /** 
@@ -19,7 +20,7 @@ public interface UserSessionLogic {
 	/**
 	 * 检查session是否存在
 	 */
-	public void validateSession();
+	public void validateSession() throws SessionOverdueException;
 	
 	/**
 	 * 获取当前用户

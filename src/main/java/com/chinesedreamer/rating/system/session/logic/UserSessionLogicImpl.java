@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.base.cache.BaseCacheAspect;
-import com.chinesedreamer.rating.base.exception.SessionOverdueException;
+import com.chinesedreamer.rating.system.session.exception.SessionOverdueException;
 import com.chinesedreamer.rating.system.session.model.UserSession;
 import com.chinesedreamer.rating.system.session.repository.UserSessionRepository;
 import com.chinesedreamer.rating.web.filter.SessionFilter;
@@ -79,7 +79,7 @@ public class UserSessionLogicImpl extends BaseCacheAspect implements UserSession
 	}
 
 	@Override
-	public void validateSession() {
+	public void validateSession() throws SessionOverdueException{
 		HttpServletRequest request = SessionFilter.SessionContext.getContext();
 		String sessionId = request.getSession().getId();
 		UserSession userSession = this.get(userSessionPrefix + sessionId);
