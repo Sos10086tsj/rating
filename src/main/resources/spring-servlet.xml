@@ -40,4 +40,5 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 			<ref bean="entityManagerFactory" />
 		</property>
 	</bean>
+	
 </beans>

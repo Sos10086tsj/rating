@@ -8,6 +8,14 @@
 <title>评分考核系统</title>
 </head>
 <body>
-	<iframe src="${ctx }/getMenu" width="200" height="500"> </iframe>
+	<div>
+		您已登录
+		<c:forEach items="${menus }" var="menu">
+			${menu.name }|${menu.url }
+			<c:forEach items="${menu.subMenu }" var="subMenu">
+				${subMenu.name }|${subMenu.url }
+			</c:forEach>
+		</c:forEach>
+	</div>
 </body>
 </html>

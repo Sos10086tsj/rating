@@ -87,6 +87,7 @@ public class UserServiceImpl implements UserService{
 		}
 		userSession.setSessionId(SessionFilter.SessionContext.getContext().getSession().getId());
 		userSession.setCreateDate(new Date());
+		userSession.setUsername(username);
 		this.userSessionLogic.saveUserSessionCache(userSession);
 		this.userSessionLogic.save(userSession);
 		return new ResponseVo(user);

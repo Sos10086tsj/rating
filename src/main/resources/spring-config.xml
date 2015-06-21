@@ -140,6 +140,8 @@
     </bean>
 	
 	<import resource="ehcache-config.xml" />
+	
+	
 	<!--
 	<import resource="spring-datasource.xml" />
 	<import resource="spring-common.xml" />

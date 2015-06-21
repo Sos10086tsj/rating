@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.chinesedreamer.rating.system.session.service.UserSessionService;
 import com.chinesedreamer.rating.system.user.exception.PasswordIncorrectException;
 import com.chinesedreamer.rating.system.user.exception.UserFrozenException;
 import com.chinesedreamer.rating.system.user.exception.UserNotExistException;
@@ -27,6 +28,8 @@ import com.chinesedreamer.rating.system.user.vo.Menu;
 public class IndexController {
 	@Resource
 	private UserService userService;
+	@Resource
+	private UserSessionService userSessionService;
 	/**
 	 * 用户登录
 	 * @param model
@@ -37,14 +40,28 @@ public class IndexController {
 		return "login";
 	}
 	
+	@RequestMapping(value = "login",method = RequestMethod.GET)
+	public String loginIndex(Model model){
+		// TODO this.userSessionService.validateSession();
+		return "index";
+	}
+	
 	@RequestMapping(value = "login",method = RequestMethod.POST)
 	public String login(Model model,HttpServletRequest request) throws UserFrozenException,UserNotExistException,PasswordIncorrectException{
 		String username = request.getParameter("username").trim();
 		String password = request.getParameter("password").trim();
 		this.userService.login(username, password);
 		
-		List<Menu> menus = this.userService.getUserMenus(username);
-		model.addAttribute("menus", menus);
+//		List<Menu> menus = this.userService.getUserMenus(username);
+//		model.addAttribute("menus", menus);
 		return "index";
+	}
+	
+	@RequestMapping(value = "getMenu",method = RequestMethod.GET)
+	public String getMenu(Model model){
+		// TODO List<Menu> menus = this.userService.getUserMenus(this.userSessionService.getCurrentUserSession().getUsername());
+		List<Menu> menus = this.userService.getUserMenus("admin");
+		model.addAttribute("menus", menus);
+		return "menu";
 	}
 }

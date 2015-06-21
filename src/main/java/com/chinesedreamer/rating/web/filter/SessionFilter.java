@@ -40,11 +40,11 @@ public class SessionFilter implements Filter{
 		HttpServletRequest httpServletRequest = (HttpServletRequest)request;
 		String uri = httpServletRequest.getServletPath();
 		SessionContext.setContext(request);
-		
-		if (StringUtils.isNotEmpty(uri) && !(uri.equals("/index") || uri.equals("/login"))) {
+		//TODO
+		//if (StringUtils.isNotEmpty(uri) && !(uri.equals("/index") || uri.equals("/login"))) {
 			//保存session
-			this.userSessionService.validateSession();
-		}
+		//	this.userSessionService.validateSession();
+		//}
 		chain.doFilter(request, response);
 	}
 
