@@ -37,4 +37,6 @@ public interface UserRepository extends BaseRepository<User, Long>{
 	 * @return
 	 */
 	public List<User> findByGroupIdAndPositionIdAndStatus(Long groupId,Long positionId, UserStatus status);
+	
+	public List<User> findByStatusOrderByIdAsc(UserStatus status);
 }

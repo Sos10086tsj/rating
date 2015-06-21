@@ -30,6 +30,7 @@ import com.chinesedreamer.rating.system.session.logic.UserSessionLogic;
 import com.chinesedreamer.rating.system.session.model.UserSession;
 import com.chinesedreamer.rating.system.user.MenuComparator;
 import com.chinesedreamer.rating.system.user.SysResourceComparator;
+import com.chinesedreamer.rating.system.user.UserPositionType;
 import com.chinesedreamer.rating.system.user.UserStatus;
 import com.chinesedreamer.rating.system.user.exception.PasswordIncorrectException;
 import com.chinesedreamer.rating.system.user.exception.UserFrozenException;
@@ -37,6 +38,7 @@ import com.chinesedreamer.rating.system.user.exception.UserNotExistException;
 import com.chinesedreamer.rating.system.user.logic.UserLogic;
 import com.chinesedreamer.rating.system.user.model.User;
 import com.chinesedreamer.rating.system.user.vo.Menu;
+import com.chinesedreamer.rating.system.user.vo.UserVo;
 import com.chinesedreamer.rating.web.filter.SessionFilter;
 
 /** 
@@ -148,5 +150,25 @@ public class UserServiceImpl implements UserService{
 		}
 		Collections.sort(menus, new MenuComparator());
 		return menus;
+	}
+
+	@Override
+	public List<UserVo> getAllUsers() {
+		List<UserVo> vos = new ArrayList<UserVo>();
+		List<User> users = this.logic.findAll();
+		for (User user : users) {
+			vos.add(this.conver2Vo(user));
+		}
+		return vos;
+	}
+	private UserVo conver2Vo(User user) {
+		UserVo vo = new UserVo();
+		vo.setGroupName(user.getUserGroup().getName());
+		vo.setId(user.getId());
+		vo.setName(user.getName());
+		vo.setPhone(user.getPhone());
+		vo.setPositionName(UserPositionType.get(user.getPositionId()).getLabel());
+		vo.setStatus(user.getStatus().toString());
+		return vo;
 	}
 }

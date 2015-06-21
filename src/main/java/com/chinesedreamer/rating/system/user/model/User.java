@@ -4,12 +4,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import com.chinesedreamer.rating.base.jpa.model.BaseVersionEntity;
+import com.chinesedreamer.rating.system.group.model.UserGroup;
 import com.chinesedreamer.rating.system.user.UserStatus;
 
 /** 
@@ -50,6 +54,10 @@ public @Getter @Setter class User extends BaseVersionEntity<Long>{
 	@Column(name = "group_id")
 	private Long groupId;//用户组别。如总体组、普通组
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "group_id", referencedColumnName = "id", insertable = false, updatable = false)
+	private UserGroup userGroup;
+	
 	@Column(name = "position_id")
-	private Long positionId;//职位。如组长、组员
+	private Integer positionId;//职位。如组长、组员
 }

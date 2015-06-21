@@ -37,4 +37,6 @@ public interface UserLogic extends BaseLogic<User, Long>{
 	 * @return
 	 */
 	public List<User> findByGroupIdAndPositionIdAndStatus(Long groupId,Long positionId, UserStatus status);
+	
+	public List<User> findAll();
 }

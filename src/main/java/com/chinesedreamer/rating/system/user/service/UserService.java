@@ -7,6 +7,7 @@ import com.chinesedreamer.rating.system.user.exception.PasswordIncorrectExceptio
 import com.chinesedreamer.rating.system.user.exception.UserFrozenException;
 import com.chinesedreamer.rating.system.user.exception.UserNotExistException;
 import com.chinesedreamer.rating.system.user.vo.Menu;
+import com.chinesedreamer.rating.system.user.vo.UserVo;
 
 /** 
  * Description: 
@@ -30,4 +31,10 @@ public interface UserService {
 	 * @return
 	 */
 	public List<Menu> getUserMenus(String username);
+	
+	/**
+	 * 找到所有已知用户
+	 * @return
+	 */
+	public List<UserVo> getAllUsers();
 }

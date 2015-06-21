@@ -1,4 +1,6 @@
 package com.chinesedreamer.rating.system.group;
+
+
 /** 
  * Description: 
  * @author Paris Tao
