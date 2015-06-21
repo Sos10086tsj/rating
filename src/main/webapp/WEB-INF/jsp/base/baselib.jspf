@@ -1,4 +1,4 @@
-<!-- jQuery -->
-<script type="text/javascript" src="${ctx}/resources/components/jQuery/jquery-1.9.1.min.js"></script>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!-- jQuery -->
+<script type="text/javascript" src="${ctx}/resources/js/rating.js"></script>
+<script type="text/javascript" src="${ctx}/resources/components/jQuery/jquery-1.9.1.min.js"></script>

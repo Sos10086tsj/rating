@@ -8,14 +8,22 @@
 <title>评分考核系统</title>
 </head>
 <body>
-	<div>
-		您已登录
-		<c:forEach items="${menus }" var="menu">
-			${menu.name }|${menu.url }
-			<c:forEach items="${menu.subMenu }" var="subMenu">
-				${subMenu.name }|${subMenu.url }
+	<div id='cssmenu'>
+		<ul>
+			<li class="active"><a href='#'>首页</a></li>
+			<c:forEach items="${menus }" var="menu">
+				<li <c:if test="${not empty menu.subMenu}" >class='has-sub'</c:if>>
+					<a href='#'>${menu.name } ></a>
+					<c:forEach items="${menu.subMenu }" var="subMenu">
+						<ul>
+							<li><a href='${ctx }/${subMenu.url }'>${subMenu.name }</a></li>
+						</ul>
+					</c:forEach>
+				</li>
 			</c:forEach>
-		</c:forEach>
+		</ul>
 	</div>
 </body>
+<script type="text/javascript" src="${ctx}/resources/js/menu/menu.js"></script>
+<link rel="stylesheet" type="text/css" href="${ctx}/resources/css/menu.css" />
 </html>
