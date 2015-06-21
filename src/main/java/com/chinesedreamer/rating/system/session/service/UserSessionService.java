@@ -11,7 +11,6 @@ import com.chinesedreamer.rating.system.session.model.UserSession;
  * Copyright:   Copyright (c)2015
  */
 public interface UserSessionService {
-	public void saveUserSessionCache();
 	/**
 	 * 检查session是否存在
 	 */

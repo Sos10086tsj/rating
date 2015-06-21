@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.web.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +14,7 @@ import com.chinesedreamer.rating.system.user.exception.PasswordIncorrectExceptio
 import com.chinesedreamer.rating.system.user.exception.UserFrozenException;
 import com.chinesedreamer.rating.system.user.exception.UserNotExistException;
 import com.chinesedreamer.rating.system.user.service.UserService;
+import com.chinesedreamer.rating.system.user.vo.Menu;
 
 /** 
  * Description: 
@@ -39,6 +42,9 @@ public class IndexController {
 		String username = request.getParameter("username").trim();
 		String password = request.getParameter("password").trim();
 		this.userService.login(username, password);
+		
+		List<Menu> menus = this.userService.getUserMenus(username);
+		model.addAttribute("menus", menus);
 		return "index";
 	}
 }

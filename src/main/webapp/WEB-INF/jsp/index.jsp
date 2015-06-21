@@ -11,4 +11,6 @@
 		您已登录
 	</div>
 </body>
+
+<%@include file="/WEB-INF/jsp/base/baselib.jspf" %>
 </html>

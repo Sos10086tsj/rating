@@ -22,11 +22,6 @@ public class UserSessionServiceImpl  implements UserSessionService{
 	private UserSessionLogic logic;
 
 	@Override
-	public void saveUserSessionCache() {
-		this.logic.saveUserSessionCache();
-	}
-
-	@Override
 	public UserSession getCurrentUserSession() {
 		return this.logic.getCurrentUserSession();
 	}

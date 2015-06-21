@@ -33,19 +33,13 @@ public class UserSessionLogicImpl extends BaseCacheAspect implements UserSession
 	private final String userSessionPrefix = "user-session-";
 
 	@Override
-	public void saveUserSessionCache() {
-		UserSession userSession = this.convertUserSession();
+	public void saveUserSessionCache(UserSession userSession) {
 		this.logger.info("save user session cache:" + userSession);
 		if (null == userSession) {
 			return;
 		}
 		setCacheName(userSessionCacheName);
 		this.put(userSessionPrefix + userSession.getSessionId(), userSession);
-	}
-
-	private UserSession convertUserSession() {
-		HttpServletRequest request = SessionFilter.SessionContext.getContext();
-		return this.repository.findBySessionId(request.getSession().getId());
 	}
 
 	public UserSessionLogicImpl() {
