@@ -25,6 +25,11 @@ import com.chinesedreamer.rating.template.OptionCategory;
 @Table(name = "rating_supp_options")
 public @Getter @Setter class RatingSuppOption extends BaseVersionEntity<Long>{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8054279250993946961L;
+
 	@Column
 	private String code = UUID.randomUUID().toString();//随机生成，唯一值
 	

@@ -139,6 +139,8 @@
         </property>
     </bean>
 	
+	<bean id="userSessionService" class="com.chinesedreamer.rating.web.filter.SessionFilter" />
+	
 	<import resource="ehcache-config.xml" />
 	
 	

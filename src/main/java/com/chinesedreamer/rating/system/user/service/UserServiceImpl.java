@@ -45,7 +45,7 @@ import com.chinesedreamer.rating.web.filter.SessionFilter;
  * Description: 
  * @author Paris Tao
  * @version 1.0beta
- * @date 2015��1�上午7:15:59 
+ * @date 2015��1�上午7:15:59 
  * Copyright:   Copyright (c)2015
  */
 @Service
@@ -70,9 +70,9 @@ public class UserServiceImpl implements UserService{
 		if(null == user){
 			BizException ex = null;
 			if (null == this.logic.findByUsernameAndStatus(username, UserStatus.INACTIVE)) {
-				ex = new UserFrozenException("用户� + username + " 已被禁用，请联系管理�);
+				ex = new UserFrozenException("用户:" + username + "已被禁用，请联系管理员");
 			}else {
-				ex = new UserNotExistException("用户� + username + " 不存�);
+				ex = new UserNotExistException("用户:" + username + " 不存在");
 			}
 			logger.error("{}",ex);
 			throw ex;
@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<Menu> getUserMenus(String username) {
 		User user = this.logic.findByUsernameAndStatus(username, UserStatus.ACTIVE);
-		//1. 找到用户拥有的角�
+		//1. 找到用户拥有的角�
 		List<UserRoleMapping> userRoleMappings = this.userRoleMappingLogic.findByUserId(user.getId());
 		//2. 根据role找到所有的权限
 		Set<Long> roleIds = new HashSet<Long>();
@@ -127,15 +127,15 @@ public class UserServiceImpl implements UserService{
 		List<SysResource> resources = new ArrayList<SysResource>(originResources);
 		Collections.sort(resources, new SysResourceComparator());
 		Map<String, Menu> root = new HashMap<String, Menu>();
-		//仅仅两级菜单，对于当前系统足�
+		//仅仅两级菜单，对于当前系统足�
 		for (SysResource resource : resources) {
-			if (StringUtils.isEmpty(resource.getParentCode())) {//父节�
+			if (StringUtils.isEmpty(resource.getParentCode())) {//父节�
 				Menu menu = new Menu();
 				menu.setName(resource.getName());
 				menu.setUrl(resource.getUrl());
 				menu.setSeq(resource.getSeq());
 				root.put(resource.getCode(), menu);
-			}else {//处理子菜�
+			}else {//处理子菜�
 				Menu menu = root.get(resource.getParentCode());
 				Menu subMenu = new Menu();
 				subMenu.setName(resource.getName());

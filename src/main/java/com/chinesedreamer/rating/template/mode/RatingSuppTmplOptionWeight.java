@@ -20,6 +20,11 @@ import com.chinesedreamer.rating.base.jpa.model.BaseVersionEntity;
 @Entity
 @Table(name = "rating_supp_tmpl_option_weight")
 public @Getter @Setter class RatingSuppTmplOptionWeight extends BaseVersionEntity<Long>{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4262459170876448746L;
+
 	@Column(name = "supp_tmpl_id")
 	private Long suppTmplId;
 	

@@ -23,11 +23,16 @@ import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 @Entity
 @Table(name = "rating_supp_tmpl_option")
 public @Getter @Setter class RatingSuppTempalteOptionMapping extends BaseEntity<Long>{
-	@Column(name = "supp_mpl_id")
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1037652902932046004L;
+
+	@Column(name = "supp_tmpl_id")
 	private Long suppTmplId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "supp_mpl_id", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "supp_tmpl_id", referencedColumnName = "id", insertable = false, updatable = false)
 	private RatingSuppTemplate suppTemplate;
 	
 	@Column(name = "option_id")

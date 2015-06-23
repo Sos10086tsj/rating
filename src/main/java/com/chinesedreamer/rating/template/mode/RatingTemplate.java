@@ -19,6 +19,11 @@ import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 @Table(name = "rating_template")
 public @Getter @Setter class RatingTemplate extends BaseEntity<Long>{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8320258747685521287L;
+
 	@Column
 	private String name;//卷名
 	

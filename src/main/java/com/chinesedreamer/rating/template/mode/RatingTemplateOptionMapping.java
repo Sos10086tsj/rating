@@ -23,6 +23,11 @@ import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 @Entity
 @Table(name = "rating_tmpl_option")
 public @Getter @Setter class RatingTemplateOptionMapping extends BaseEntity<Long>{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6170783186682269121L;
+
 	@Column(name = "tmpl_id")
 	private Long tmplId;
 	

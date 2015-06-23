@@ -99,3 +99,87 @@ CREATE TABLE `rating`.`sys_role_auth_mapping` (
   `role_id` BIGINT NULL,
   `auth_id` BIGINT NULL,
   PRIMARY KEY (`id`));
+  
+CREATE TABLE `rating`.`rating` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `eff_from` TIMESTAMP NULL,
+  `eff_to` TIMESTAMP NULL,
+  `status` VARCHAR(45) NULL,
+  `version` BIGINT NULL DEFAULT 0,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE `rating`.`rating_supp_options` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `category` VARCHAR(45) NULL,
+  `seq` DECIMAL(10,2) NULL,
+  `version` BIGINT NULL DEFAULT 0,
+  PRIMARY KEY (`id`));
+
+
+CREATE TABLE `rating`.`rating_supp_tmpl_option` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `supp_tmpl_id` BIGINT NULL,
+  `option_id` BIGINT NULL,
+  `seq` DECIMAL(10,2) NULL,
+  PRIMARY KEY (`id`));
+
+  
+CREATE TABLE `rating`.`rating_supp_template` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `version` BIGINT NULL DEFAULT 0,
+  PRIMARY KEY (`id`));
+
+  
+CREATE TABLE `rating`.`rating_supp_template_voter` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `supp_tmpl_id` BIGINT NULL,
+  `group_id` BIGINT NULL,
+  `position` BIGINT NULL,
+  PRIMARY KEY (`id`));
+
+  
+CREATE TABLE `rating`.`rating_supp_tmpl_option_weight` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `supp_tmpl_id` BIGINT NULL,
+  `supp_option_id` BIGINT NULL,
+  `weight` DECIMAL(10,2) NULL,
+  `version` BIGINT NULL DEFAULT 0,
+  PRIMARY KEY (`id`));
+
+  
+CREATE TABLE `rating`.`rating_template` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `rating_id` BIGINT NULL,
+  PRIMARY KEY (`id`));
+
+  
+CREATE TABLE `rating`.`rating_tmpl_option` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `tmpl_id` BIGINT NULL,
+  `option_id` BIGINT NULL,
+  `seq` DECIMAL(10,2) NULL,
+  PRIMARY KEY (`id`));
+
+  
+CREATE TABLE `rating`.`rating_template_voter` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `tmpl_id` BIGINT NULL,
+  `group_id` BIGINT NULL,
+  `position_id` INT NULL,
+  PRIMARY KEY (`id`));
+
+  
+ALTER TABLE `rating`.`rating_supp_template_voter` 
+CHANGE COLUMN `position` `position` INT NULL DEFAULT NULL ;
+
+
+CREATE TABLE `rating`.`rating_tmpl_option_weight` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `tmpl_id` BIGINT NULL,
+  `option_id` BIGINT NULL,
+  `weight` DECIMAL(10,2) NULL,
+  PRIMARY KEY (`id`));

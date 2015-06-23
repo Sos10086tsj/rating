@@ -69,7 +69,7 @@ public class RatingTemplateLogicImpl extends BaseLogicImpl<RatingTemplate, Long>
 			for (RatingSuppTemplateVoter suppVoter : voters) {
 				RatingTemplateVoter voter = new RatingTemplateVoter();
 				voter.setGroupId(suppVoter.getGroupId());
-				voter.setPositionId(suppVoter.getGroupId());
+				voter.setPosition(suppVoter.getPosition());
 				voter.setTmplId(rt.getId());
 				this.templateVoterRepository.save(voter);
 			}

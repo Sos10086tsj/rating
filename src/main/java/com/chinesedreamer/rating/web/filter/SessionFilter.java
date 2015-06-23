@@ -64,7 +64,7 @@ public class SessionFilter implements Filter{
 		
 		public static HttpServletRequest getContext(){  
 			if (null == threadLocal.get()) {
-				throw new SessionOverdueException("session失效，请重新登录�);
+				throw new SessionOverdueException("session失效，请重新登录");
 			}
 			return (HttpServletRequest)threadLocal.get();
 		}
