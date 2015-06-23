@@ -1,6 +1,4 @@
-package com.chinesedreamer.rating.template.mode;
-
-import java.math.BigDecimal;
+package com.chinesedreamer.rating.template.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,19 +19,19 @@ import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
  * @version beta
  */
 @Entity
-@Table(name = "rating_tmpl_option")
-public @Getter @Setter class RatingTemplateOptionMapping extends BaseEntity<Long>{
+@Table(name = "rating_supp_tmpl_option")
+public @Getter @Setter class RatingSuppTempalteOptionMapping extends BaseEntity<Long>{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6170783186682269121L;
+	private static final long serialVersionUID = -1037652902932046004L;
 
-	@Column(name = "tmpl_id")
-	private Long tmplId;
+	@Column(name = "supp_tmpl_id")
+	private Long suppTmplId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "tmpl_id", referencedColumnName = "id", insertable = false, updatable = false)
-	private RatingTemplate template;
+	@JoinColumn(name = "supp_tmpl_id", referencedColumnName = "id", insertable = false, updatable = false)
+	private RatingSuppTemplate suppTemplate;
 	
 	@Column(name = "option_id")
 	private Long optionId;
@@ -43,5 +41,5 @@ public @Getter @Setter class RatingTemplateOptionMapping extends BaseEntity<Long
 	private RatingSuppOption option;
 	
 	@Column
-	private BigDecimal seq;
+	private Float seq;
 }

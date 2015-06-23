@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.chinesedreamer.rating.base.jpa.repository.BaseRepository;
 import com.chinesedreamer.rating.template.OptionCategory;
-import com.chinesedreamer.rating.template.mode.RatingSuppOption;
+import com.chinesedreamer.rating.template.model.RatingSuppOption;
 
 /**
  * Description: 
@@ -13,7 +13,7 @@ import com.chinesedreamer.rating.template.mode.RatingSuppOption;
  * @version beta
  */
 public interface RatingSuppOptionRepository extends BaseRepository<RatingSuppOption, Long>{
-	public List<RatingSuppOption> findByCategoryOrderBySeqAsc(OptionCategory category);
+	public List<RatingSuppOption> findByCategory(OptionCategory category);
 	public RatingSuppOption findByCode(String code);
-	public List<RatingSuppOption> findAllOrderBySeqAsc();
+	public List<RatingSuppOption> findAll();
 }

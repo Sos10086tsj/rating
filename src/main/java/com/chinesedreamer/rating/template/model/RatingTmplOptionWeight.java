@@ -1,4 +1,4 @@
-package com.chinesedreamer.rating.template.mode;
+package com.chinesedreamer.rating.template.model;
 
 import java.math.BigDecimal;
 

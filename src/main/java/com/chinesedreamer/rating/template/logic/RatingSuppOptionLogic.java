@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogic;
 import com.chinesedreamer.rating.template.OptionCategory;
-import com.chinesedreamer.rating.template.mode.RatingSuppOption;
+import com.chinesedreamer.rating.template.model.RatingSuppOption;
 
 /**
  * Description: 

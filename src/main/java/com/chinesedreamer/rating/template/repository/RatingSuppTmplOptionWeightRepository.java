@@ -1,7 +1,7 @@
 package com.chinesedreamer.rating.template.repository;
 
 import com.chinesedreamer.rating.base.jpa.repository.BaseRepository;
-import com.chinesedreamer.rating.template.mode.RatingSuppTmplOptionWeight;
+import com.chinesedreamer.rating.template.model.RatingSuppTmplOptionWeight;
 
 /**
  * Description: 

@@ -15,7 +15,7 @@ import com.chinesedreamer.rating.system.user.repository.UserRepository;
  * Description: 
  * @author Paris Tao
  * @version 1.0beta
- * @date 2015ÂπÊú8Êó‰∏ãÂçà7:57:26 
+ * @date 
  * Copyright:   Copyright (c)2015
  */
 @Service

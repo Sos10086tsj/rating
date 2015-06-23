@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogicImpl;
 import com.chinesedreamer.rating.template.OptionCategory;
 import com.chinesedreamer.rating.template.logic.RatingSuppOptionLogic;
-import com.chinesedreamer.rating.template.mode.RatingSuppOption;
+import com.chinesedreamer.rating.template.model.RatingSuppOption;
 import com.chinesedreamer.rating.template.repository.RatingSuppOptionRepository;
 
 /**
@@ -25,7 +25,7 @@ public class RatingSuppOptionLogicImpl extends BaseLogicImpl<RatingSuppOption, L
 	@Override
 	public List<RatingSuppOption> findByCategoryOrderBySeqAsc(
 			OptionCategory category) {
-		return this.repository.findByCategoryOrderBySeqAsc(category);
+		return this.repository.findByCategory(category);
 	}
 
 	@Override

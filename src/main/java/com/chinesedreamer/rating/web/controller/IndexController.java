@@ -21,7 +21,7 @@ import com.chinesedreamer.rating.system.user.vo.Menu;
  * Description: 
  * @author Paris Tao
  * @version 1.0beta
- * @date 2015å¹æœ1æ—ä¸Šåˆ6:55:37 
+ * @date 
  * Copyright:   Copyright (c)2015
  */
 @Controller

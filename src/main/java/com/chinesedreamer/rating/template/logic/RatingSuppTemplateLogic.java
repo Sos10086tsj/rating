@@ -1,7 +1,7 @@
 package com.chinesedreamer.rating.template.logic;
 
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogic;
-import com.chinesedreamer.rating.template.mode.RatingSuppTemplate;
+import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
 
 /**
  * Description: 

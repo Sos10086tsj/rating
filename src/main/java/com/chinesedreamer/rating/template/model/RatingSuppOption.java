@@ -1,6 +1,5 @@
-package com.chinesedreamer.rating.template.mode;
+package com.chinesedreamer.rating.template.model;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -41,5 +40,5 @@ public @Getter @Setter class RatingSuppOption extends BaseVersionEntity<Long>{
 	private OptionCategory category;
 	
 	@Column
-	private BigDecimal seq;
+	private Float seq;
 }

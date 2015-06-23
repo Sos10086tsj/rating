@@ -1,4 +1,4 @@
-package com.chinesedreamer.rating.template.mode;
+package com.chinesedreamer.rating.template.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

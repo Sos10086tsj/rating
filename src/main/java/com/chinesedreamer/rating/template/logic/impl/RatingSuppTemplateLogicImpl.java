@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogicImpl;
 import com.chinesedreamer.rating.template.logic.RatingSuppTemplateLogic;
-import com.chinesedreamer.rating.template.mode.RatingSuppTemplate;
+import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
 
 /**
  * Description: 

@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogicImpl;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.template.logic.RatingTemplateLogic;
-import com.chinesedreamer.rating.template.mode.RatingSuppTempalteOptionMapping;
-import com.chinesedreamer.rating.template.mode.RatingSuppTemplate;
-import com.chinesedreamer.rating.template.mode.RatingSuppTemplateVoter;
-import com.chinesedreamer.rating.template.mode.RatingSuppTmplOptionWeight;
-import com.chinesedreamer.rating.template.mode.RatingTemplate;
-import com.chinesedreamer.rating.template.mode.RatingTemplateOptionMapping;
-import com.chinesedreamer.rating.template.mode.RatingTemplateVoter;
-import com.chinesedreamer.rating.template.mode.RatingTmplOptionWeight;
+import com.chinesedreamer.rating.template.model.RatingSuppTempalteOptionMapping;
+import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
+import com.chinesedreamer.rating.template.model.RatingSuppTemplateVoter;
+import com.chinesedreamer.rating.template.model.RatingSuppTmplOptionWeight;
+import com.chinesedreamer.rating.template.model.RatingTemplate;
+import com.chinesedreamer.rating.template.model.RatingTemplateOptionMapping;
+import com.chinesedreamer.rating.template.model.RatingTemplateVoter;
+import com.chinesedreamer.rating.template.model.RatingTmplOptionWeight;
 import com.chinesedreamer.rating.template.repository.RatingSuppTempalteOptionMappingRepository;
 import com.chinesedreamer.rating.template.repository.RatingSuppTemplateRepository;
 import com.chinesedreamer.rating.template.repository.RatingSuppTemplateVoterRepository;
@@ -74,7 +74,7 @@ public class RatingTemplateLogicImpl extends BaseLogicImpl<RatingTemplate, Long>
 				this.templateVoterRepository.save(voter);
 			}
 			//3. option保存
-			List<RatingSuppTempalteOptionMapping> suppTemplateOptionMappings = this.suppTempalteOptionMappingRepository.findBySuppTmplIdOrderBySqlAsc(suppTemplateId);
+			List<RatingSuppTempalteOptionMapping> suppTemplateOptionMappings = this.suppTempalteOptionMappingRepository.findBySuppTmplId(suppTemplateId);
 			for (RatingSuppTempalteOptionMapping suppTemplateOptionMapping : suppTemplateOptionMappings) {
 				RatingTemplateOptionMapping templateOptionMapping = new RatingTemplateOptionMapping();
 				templateOptionMapping.setOptionId(suppTemplateOptionMapping.getOptionId());
