@@ -12,15 +12,19 @@ import com.chinesedreamer.rating.template.logic.RatingTemplateLogic;
 import com.chinesedreamer.rating.template.mode.RatingSuppTempalteOptionMapping;
 import com.chinesedreamer.rating.template.mode.RatingSuppTemplate;
 import com.chinesedreamer.rating.template.mode.RatingSuppTemplateVoter;
+import com.chinesedreamer.rating.template.mode.RatingSuppTmplOptionWeight;
 import com.chinesedreamer.rating.template.mode.RatingTemplate;
 import com.chinesedreamer.rating.template.mode.RatingTemplateOptionMapping;
 import com.chinesedreamer.rating.template.mode.RatingTemplateVoter;
+import com.chinesedreamer.rating.template.mode.RatingTmplOptionWeight;
 import com.chinesedreamer.rating.template.repository.RatingSuppTempalteOptionMappingRepository;
 import com.chinesedreamer.rating.template.repository.RatingSuppTemplateRepository;
 import com.chinesedreamer.rating.template.repository.RatingSuppTemplateVoterRepository;
+import com.chinesedreamer.rating.template.repository.RatingSuppTmplOptionWeightRepository;
 import com.chinesedreamer.rating.template.repository.RatingTempalteOptionMappingRepository;
 import com.chinesedreamer.rating.template.repository.RatingTemplateRepository;
 import com.chinesedreamer.rating.template.repository.RatingTemplateVoterRepository;
+import com.chinesedreamer.rating.template.repository.RatingTmplOptionWeightRepository;
 
 /**
  * Description: 
@@ -42,6 +46,10 @@ public class RatingTemplateLogicImpl extends BaseLogicImpl<RatingTemplate, Long>
 	private RatingTempalteOptionMappingRepository tempalteOptionMappingRepository;
 	@Resource
 	private RatingSuppTempalteOptionMappingRepository suppTempalteOptionMappingRepository;
+	@Resource
+	private RatingTmplOptionWeightRepository tmplOptionWeightRepository;
+	@Resource
+	private RatingSuppTmplOptionWeightRepository suppTmplOptionWeightRepository;
 	
 	@Override
 	public List<RatingTemplate> findByRatingId(Long ratingId) {
@@ -73,6 +81,13 @@ public class RatingTemplateLogicImpl extends BaseLogicImpl<RatingTemplate, Long>
 				templateOptionMapping.setSeq(suppTemplateOptionMapping.getSeq());
 				templateOptionMapping.setTmplId(rt.getId());
 				this.tempalteOptionMappingRepository.save(templateOptionMapping);
+				//4. 保存权重计算
+				RatingSuppTmplOptionWeight suppWeight = this.suppTmplOptionWeightRepository.findBySuppTmplIdAndSuppOptionId(suppTemplateId, suppTemplateOptionMapping.getOptionId());
+				RatingTmplOptionWeight weight = new RatingTmplOptionWeight();
+				weight.setOptionId(suppTemplateOptionMapping.getOptionId());
+				weight.setTmplId(rt.getId());
+				weight.setWeight(suppWeight.getWeight());
+				this.tmplOptionWeightRepository.save(weight);
 			}
 		}
 	}
