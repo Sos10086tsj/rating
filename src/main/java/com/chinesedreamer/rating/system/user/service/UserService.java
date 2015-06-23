@@ -13,7 +13,7 @@ import com.chinesedreamer.rating.system.user.vo.UserVo;
  * Description: 
  * @author Paris Tao
  * @version 1.0beta
- * @date 2015年6月21日 上午7:15:27 
+ * @date 2015��1�上午7:15:27 
  * Copyright:   Copyright (c)2015
  */
 public interface UserService {
@@ -33,7 +33,7 @@ public interface UserService {
 	public List<Menu> getUserMenus(String username);
 	
 	/**
-	 * 找到所有已知用户
+	 * 找到所有已知用�
 	 * @return
 	 */
 	public List<UserVo> getAllUsers();
