@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.template.repository;
 
+import java.util.List;
+
 import com.chinesedreamer.rating.base.jpa.repository.BaseRepository;
 import com.chinesedreamer.rating.template.mode.RatingSuppTempalteOptionMapping;
 
@@ -10,5 +12,5 @@ import com.chinesedreamer.rating.template.mode.RatingSuppTempalteOptionMapping;
  * @version beta
  */
 public interface RatingSuppTempalteOptionMappingRepository extends BaseRepository<RatingSuppTempalteOptionMapping, Long>{
-
+	public List<RatingSuppTempalteOptionMapping> findBySuppTmplIdOrderBySqlAsc(Long suppTmplId);
 }

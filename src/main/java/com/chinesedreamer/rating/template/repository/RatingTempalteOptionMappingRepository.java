@@ -1,7 +1,7 @@
 package com.chinesedreamer.rating.template.repository;
 
 import com.chinesedreamer.rating.base.jpa.repository.BaseRepository;
-import com.chinesedreamer.rating.template.mode.RatingTempalteOptionMapping;
+import com.chinesedreamer.rating.template.mode.RatingTemplateOptionMapping;
 
 /**
  * Description: 
@@ -9,6 +9,6 @@ import com.chinesedreamer.rating.template.mode.RatingTempalteOptionMapping;
  * @date Jun 23, 201511:16:52 AM
  * @version beta
  */
-public interface RatingTempalteOptionMappingRepository extends BaseRepository<RatingTempalteOptionMapping, Long>{
+public interface RatingTempalteOptionMappingRepository extends BaseRepository<RatingTemplateOptionMapping, Long>{
 
 }

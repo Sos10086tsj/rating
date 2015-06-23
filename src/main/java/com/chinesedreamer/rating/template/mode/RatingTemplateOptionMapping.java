@@ -22,7 +22,7 @@ import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
  */
 @Entity
 @Table(name = "rating_tmpl_option")
-public @Getter @Setter class RatingTempalteOptionMapping extends BaseEntity<Long>{
+public @Getter @Setter class RatingTemplateOptionMapping extends BaseEntity<Long>{
 	@Column(name = "tmpl_id")
 	private Long tmplId;
 	

@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.template.repository;
 
+import java.util.List;
+
 import com.chinesedreamer.rating.base.jpa.repository.BaseRepository;
 import com.chinesedreamer.rating.template.mode.RatingSuppTemplateVoter;
 
@@ -10,5 +12,5 @@ import com.chinesedreamer.rating.template.mode.RatingSuppTemplateVoter;
  * @version beta
  */
 public interface RatingSuppTemplateVoterRepository extends BaseRepository<RatingSuppTemplateVoter, Long>{
-
+	public List<RatingSuppTemplateVoter> findBySuppTmplId(Long suppTmplId);
 }

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogicImpl;
 import com.chinesedreamer.rating.template.logic.RatingTempalteOptionMappingLogic;
-import com.chinesedreamer.rating.template.mode.RatingTempalteOptionMapping;
+import com.chinesedreamer.rating.template.mode.RatingTemplateOptionMapping;
 
 /**
  * Description: 
@@ -13,6 +13,6 @@ import com.chinesedreamer.rating.template.mode.RatingTempalteOptionMapping;
  * @version beta
  */
 @Service
-public class RatingTempalteOptionMappingLogicIml extends BaseLogicImpl<RatingTempalteOptionMapping, Long> implements RatingTempalteOptionMappingLogic{
+public class RatingTempalteOptionMappingLogicIml extends BaseLogicImpl<RatingTemplateOptionMapping, Long> implements RatingTempalteOptionMappingLogic{
 
 }

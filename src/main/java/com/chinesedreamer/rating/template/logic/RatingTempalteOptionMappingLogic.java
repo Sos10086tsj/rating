@@ -1,7 +1,7 @@
 package com.chinesedreamer.rating.template.logic;
 
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogic;
-import com.chinesedreamer.rating.template.mode.RatingTempalteOptionMapping;
+import com.chinesedreamer.rating.template.mode.RatingTemplateOptionMapping;
 
 /**
  * Description: 
@@ -9,6 +9,6 @@ import com.chinesedreamer.rating.template.mode.RatingTempalteOptionMapping;
  * @date Jun 23, 201511:17:15 AM
  * @version beta
  */
-public interface RatingTempalteOptionMappingLogic extends BaseLogic<RatingTempalteOptionMapping, Long>{
+public interface RatingTempalteOptionMappingLogic extends BaseLogic<RatingTemplateOptionMapping, Long>{
 
 }
