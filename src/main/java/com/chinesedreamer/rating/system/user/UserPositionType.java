@@ -6,7 +6,7 @@ import lombok.Getter;
  * Description: 
  * @author Paris Tao
  * @version 1.0beta
- * @date 2015年6月21日 下午3:29:11 
+ * @date 2015骞�鏈�1鏃�涓嬪崍3:29:11 
  * Copyright:   Copyright (c)2015
  */
 public enum UserPositionType {

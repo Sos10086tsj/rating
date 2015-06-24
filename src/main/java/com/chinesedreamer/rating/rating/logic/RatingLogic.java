@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.rating.logic;
 
+import java.util.List;
+
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogic;
 import com.chinesedreamer.rating.rating.model.Rating;
 
@@ -10,5 +12,5 @@ import com.chinesedreamer.rating.rating.model.Rating;
  * @version beta
  */
 public interface RatingLogic extends BaseLogic<Rating, Long>{
-
+	public List<Rating> findAll();
 }

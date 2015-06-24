@@ -8,7 +8,7 @@
 					<a href='#'>${menu.name } ></a>
 					<c:forEach items="${menu.subMenu }" var="subMenu">
 						<ul>
-							<li><a href='${ctx }/${subMenu.url }' target="rating_iframe">${subMenu.name }</a></li>
+							<li><a href='${ctx }/${subMenu.url }'>${subMenu.name }</a></li>
 						</ul>
 					</c:forEach>
 				</li>

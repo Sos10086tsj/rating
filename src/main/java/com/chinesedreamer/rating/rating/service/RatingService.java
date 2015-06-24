@@ -1,5 +1,8 @@
 package com.chinesedreamer.rating.rating.service;
 
+import java.util.List;
+
+import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 
 /**
@@ -10,8 +13,10 @@ import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
  */
 public interface RatingService {
 	/**
-	 * 创建一次投票事件
+	 * 鍒涘缓涓�鎶曠エ浜嬩欢
 	 * @param vo
 	 */
 	public void saveRating(RatingCreateVo vo);
+	
+	public List<Rating> findAll();
 }

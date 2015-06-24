@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.rating.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -34,6 +36,10 @@ public class RatingServiceImpl implements RatingService{
 		
 		//2. 保存模板
 		this.templateLogic.copySuppTemplateToRating(rating, vo.getTemplateIds());
+	}
+	@Override
+	public List<Rating> findAll() {
+		return this.logic.findAll();
 	}
 
 }
