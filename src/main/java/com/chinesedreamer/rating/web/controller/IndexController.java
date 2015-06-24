@@ -42,7 +42,7 @@ public class IndexController {
 	
 	@RequestMapping(value = "login",method = RequestMethod.GET)
 	public String loginIndex(Model model){
-		// TODO this.userSessionService.validateSession();
+		this.userSessionService.validateSession();
 		return "index";
 	}
 	

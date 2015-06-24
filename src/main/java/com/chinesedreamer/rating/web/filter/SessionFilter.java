@@ -11,6 +11,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,7 +29,7 @@ import com.chinesedreamer.rating.system.session.service.UserSessionService;
 public class SessionFilter implements Filter{
 	
 	@Autowired
-	private UserSessionService userSessionService;
+	private @Getter @Setter UserSessionService userSessionService;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -40,11 +43,9 @@ public class SessionFilter implements Filter{
 		HttpServletRequest httpServletRequest = (HttpServletRequest)request;
 		String uri = httpServletRequest.getServletPath();
 		SessionContext.setContext(request);
-		//TODO
-		//if (StringUtils.isNotEmpty(uri) && !(uri.equals("/index") || uri.equals("/login"))) {
-			//保存session
-		//	this.userSessionService.validateSession();
-		//}
+		if (StringUtils.isNotEmpty(uri) && !(uri.equals("/index") || uri.equals("/login"))) {
+			this.userSessionService.validateSession();
+		}
 		chain.doFilter(request, response);
 	}
 
