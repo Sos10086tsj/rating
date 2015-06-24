@@ -45,7 +45,7 @@ import com.chinesedreamer.rating.web.filter.SessionFilter;
  * Description: 
  * @author Paris Tao
  * @version 1.0beta
- * @date 2015��1�上�:15:59 
+ * @date 2015锟斤拷1锟戒笂鍗:15:59 
  * Copyright:   Copyright (c)2015
  */
 @Service
@@ -70,19 +70,19 @@ public class UserServiceImpl implements UserService{
 		if(null == user){
 			BizException ex = null;
 			if (null == this.logic.findByUsernameAndStatus(username, UserStatus.INACTIVE)) {
-				ex = new UserFrozenException("用户:" + username + "已被禁用，请联系管理�);
+				ex = new UserFrozenException("用户：" + username + " 用户不存在");
 			}else {
-				ex = new UserNotExistException("用户:" + username + " 不存�);
+				ex = new UserNotExistException("用户：" + username + " 已被禁用");
 			}
 			logger.error("{}",ex);
 			throw ex;
 		}
 		if (!EncryptionUtil.md5L32(password + user.getSalt()).equals(user.getPassword())) {
-			PasswordIncorrectException ex = new PasswordIncorrectException("用户名或密码错误");
+			PasswordIncorrectException ex = new PasswordIncorrectException("鐢ㄦ埛鍚嶆垨瀵嗙爜閿欒");
 			logger.error("{}",ex);
 			throw ex;
 		}
-		//保存缓存session 信息
+		//淇濆瓨缂撳瓨session 淇℃伅
 		UserSession userSession = this.userSessionLogic.findByUsername(username);
 		if (null == userSession) {
 			userSession = new UserSession();
@@ -98,15 +98,15 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<Menu> getUserMenus(String username) {
 		User user = this.logic.findByUsernameAndStatus(username, UserStatus.ACTIVE);
-		//1. 找到用户拥有的角�
+		//1. 鎵惧埌鐢ㄦ埛鎷ユ湁鐨勮锟
 		List<UserRoleMapping> userRoleMappings = this.userRoleMappingLogic.findByUserId(user.getId());
-		//2. 根据role找到所有的权限
+		//2. 鏍规嵁role鎵惧埌鎵�湁鐨勬潈闄�
 		Set<Long> roleIds = new HashSet<Long>();
 		for (UserRoleMapping userRoleMapping : userRoleMappings) {
 			roleIds.add(userRoleMapping.getRoleId());
 		}
 		List<RoleAuthMapping> roleAuthMappings = this.roleAuthMappingLogic.findByRoleIds(roleIds);
-		//3. 根据auth找到所有的资源
+		//3. 鏍规嵁auth鎵惧埌鎵�湁鐨勮祫婧�
 		Set<String> authCodes = new HashSet<String>();
 		for (RoleAuthMapping roleAuthMapping : roleAuthMappings) {
 			authCodes.add(roleAuthMapping.getAuthority().getCode());
@@ -127,15 +127,15 @@ public class UserServiceImpl implements UserService{
 		List<SysResource> resources = new ArrayList<SysResource>(originResources);
 		Collections.sort(resources, new SysResourceComparator());
 		Map<String, Menu> root = new HashMap<String, Menu>();
-		//仅仅两级菜单，对于当前系统足�
+		//浠呬粎涓ょ骇鑿滃崟锛屽浜庡綋鍓嶇郴缁熻冻锟
 		for (SysResource resource : resources) {
-			if (StringUtils.isEmpty(resource.getParentCode())) {//父节�
+			if (StringUtils.isEmpty(resource.getParentCode())) {//鐖惰妭锟
 				Menu menu = new Menu();
 				menu.setName(resource.getName());
 				menu.setUrl(resource.getUrl());
 				menu.setSeq(resource.getSeq());
 				root.put(resource.getCode(), menu);
-			}else {//处理子菜�
+			}else {//澶勭悊瀛愯彍锟
 				Menu menu = root.get(resource.getParentCode());
 				Menu subMenu = new Menu();
 				subMenu.setName(resource.getName());

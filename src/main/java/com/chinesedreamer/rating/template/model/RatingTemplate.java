@@ -10,8 +10,7 @@ import lombok.Setter;
 import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 
 /**
- * Description: 从supp 模板中copy出来的确定使用的模板，一旦生成后，不可变动
- * @author Paris
+ * Description: 浠巗upp 妯℃澘涓璫opy鍑烘潵鐨勭‘瀹氫娇鐢ㄧ殑妯℃澘锛屼竴鏃︾敓鎴愬悗锛屼笉鍙彉鍔� * @author Paris
  * @date Jun 23, 201510:47:44 AM
  * @version beta
  */
@@ -25,8 +24,8 @@ public @Getter @Setter class RatingTemplate extends BaseEntity<Long>{
 	private static final long serialVersionUID = 8320258747685521287L;
 
 	@Column
-	private String name;//卷名
+	private String name;//鍗峰悕
 	
-	@Column(name = "rating_id")//关联的投票事项
+	@Column(name = "rating_id")//鍏宠仈鐨勬姇绁ㄤ簨椤�	
 	private Long ratingId;
 }

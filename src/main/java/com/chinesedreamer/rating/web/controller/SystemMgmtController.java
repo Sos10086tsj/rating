@@ -23,7 +23,7 @@ import com.chinesedreamer.rating.system.user.vo.UserVo;
  * Description: 
  * @author Paris Tao
  * @version 1.0beta
- * @date 2015年6月21日 下午3:22:33 
+ * @date 2015骞�鏈�1鏃�涓嬪崍3:22:33 
  * Copyright:   Copyright (c)2015
  */
 @Controller
@@ -35,23 +35,23 @@ public class SystemMgmtController {
 	private UserGroupServcie userGroupServcie;
 	
 	/**
-	 * 用户管理
+	 * 鐢ㄦ埛绠＄悊
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "user",method = RequestMethod.GET)
 	public String mgmtUser(Model model){
 		model.addAttribute("users", this.userService.getAllUsers()) ;
-		//部门列表
+		//閮ㄩ棬鍒楄〃
 		model.addAttribute("groups", this.userGroupServcie.getAllGroups()) ;
-		//职位列表
+		//鑱屼綅鍒楄〃
 		model.addAttribute("positions", UserPositionType.values());
 		
 		return "systemMgmt/userMgmt/userMgmt";
 	}
 	
 	/**
-	 * 获取所有用户列表
+	 * 鑾峰彇鎵�湁鐢ㄦ埛鍒楄〃
 	 * @param model
 	 * @return
 	 */
@@ -67,7 +67,7 @@ public class SystemMgmtController {
 	}
 	
 	/**
-	 * 创建用户
+	 * 鍒涘缓鐢ㄦ埛
 	 * @param request
 	 */
 	@ResponseBody
@@ -80,7 +80,7 @@ public class SystemMgmtController {
 		Integer positionId = Integer.parseInt(request.getParameter("positionId").trim());
 		String phone = request.getParameter("phone").trim();
 		if (null != this.userService.getUser(username)) {
-			vo.setErrorMessage("用户已经存在！");
+			vo.setErrorMessage("用户已经存在");
 		}else {
 			this.userService.saveUser(username,name, groupId, positionId, phone);
 		}
@@ -88,7 +88,7 @@ public class SystemMgmtController {
 	}
 	
 	/**
-	 * 修改用户
+	 * 淇敼鐢ㄦ埛
 	 * @param request
 	 */
 	@ResponseBody
@@ -101,7 +101,7 @@ public class SystemMgmtController {
 		Integer positionId = Integer.parseInt(request.getParameter("positionId").trim());
 		String phone = request.getParameter("phone").trim();
 		if (null == this.userService.getUser(username)) {
-			vo.setErrorMessage("用户不存在！");
+			vo.setErrorMessage("鐢ㄦ埛涓嶅瓨鍦紒");
 		}else {
 			this.userService.updateUser(username,name, groupId, positionId, phone);
 		}
