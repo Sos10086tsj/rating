@@ -171,4 +171,25 @@ public class UserServiceImpl implements UserService{
 		vo.setStatus(user.getStatus().toString());
 		return vo;
 	}
+
+	@Override
+	public void saveUser(String username,String name, Long groupId, Integer positionId,
+			String phone) {
+		User user = new User();
+		user.setUsername(username);
+		user.setName(name);
+		user.setGroupId(groupId);
+		user.setPositionId(positionId);
+		String salt = EncryptionUtil.generateSalt(6);
+		user.setSalt(salt);
+		user.setStatus(UserStatus.ACTIVE);
+		user.setPhone(phone);
+		user.setPassword(EncryptionUtil.md5L32("123456" + salt));
+		this.logic.save(user);
+	}
+
+	@Override
+	public User getUser(String username) {
+		return this.logic.findByUsername(username);
+	}
 }

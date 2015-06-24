@@ -14,6 +14,13 @@ import com.chinesedreamer.rating.system.user.model.User;
  * Copyright:   Copyright (c)2015
  */
 public interface UserLogic extends BaseLogic<User, Long>{
+	
+	/**
+	 * 根据用户名查找用户
+	 * @param username
+	 * @return
+	 */
+	public User findByUsername(String username);
 	/**
 	 * 根据用户名查找用�
 	 * @param username

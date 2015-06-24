@@ -8,6 +8,6 @@
 <title>评分考核系统</title>
 </head>
 <body>
-	<iframe id="rating_iframe" src="${ctx }/getMenu" width="1200" height="600"> </iframe>
+	<iframe id="rating_iframe" name="rating_iframe" src="${ctx }/getMenu" width="1200" height="600"> </iframe>
 </body>
 </html>

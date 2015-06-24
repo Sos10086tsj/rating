@@ -1,9 +1,7 @@
 package com.chinesedreamer.rating.system.group.repository;
 
-import com.chinesedreamer.rating.system.group.model.UserGroup;
-
-
 import com.chinesedreamer.rating.base.jpa.repository.BaseRepository;
+import com.chinesedreamer.rating.system.group.model.UserGroup;
 
 /** 
  * Description: 
@@ -13,5 +11,5 @@ import com.chinesedreamer.rating.base.jpa.repository.BaseRepository;
  * Copyright:   Copyright (c)2015
  */
 public interface UserGroupRepository extends BaseRepository<UserGroup, Long>{
-
+	
 }

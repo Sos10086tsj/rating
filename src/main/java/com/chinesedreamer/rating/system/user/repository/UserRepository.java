@@ -14,6 +14,14 @@ import com.chinesedreamer.rating.system.user.model.User;
  * Copyright:   Copyright (c)2015
  */
 public interface UserRepository extends BaseRepository<User, Long>{
+	
+	/**
+	 * 根据用户名查找
+	 * @param username
+	 * @return
+	 */
+	public User findByUsername(String username);
+	
 	/**
 	 * 根据用户名查找
 	 * @param username

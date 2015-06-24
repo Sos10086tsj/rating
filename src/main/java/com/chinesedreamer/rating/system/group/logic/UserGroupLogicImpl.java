@@ -1,9 +1,14 @@
 package com.chinesedreamer.rating.system.group.logic;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogicImpl;
 import com.chinesedreamer.rating.system.group.model.UserGroup;
+import com.chinesedreamer.rating.system.group.repository.UserGroupRepository;
 
 /** 
  * Description: 
@@ -14,5 +19,11 @@ import com.chinesedreamer.rating.system.group.model.UserGroup;
  */
 @Service
 public class UserGroupLogicImpl extends BaseLogicImpl<UserGroup, Long> implements UserGroupLogic{
+	@Resource
+	private UserGroupRepository repository;
+	@Override
+	public List<UserGroup> findAll() {
+		return this.repository.findAll();
+	}
 
 }

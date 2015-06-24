@@ -1,8 +1,11 @@
 package com.chinesedreamer.rating.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.chinesedreamer.rating.common.vo.ResponseVo;
+import com.chinesedreamer.rating.system.group.service.UserGroupServcie;
+import com.chinesedreamer.rating.system.user.UserPositionType;
 import com.chinesedreamer.rating.system.user.service.UserService;
 import com.chinesedreamer.rating.system.user.vo.UserVo;
 
@@ -25,6 +31,9 @@ import com.chinesedreamer.rating.system.user.vo.UserVo;
 public class SystemMgmtController {
 	@Resource
 	private UserService userService;
+	@Resource
+	private UserGroupServcie userGroupServcie;
+	
 	/**
 	 * 用户管理
 	 * @param model
@@ -33,6 +42,11 @@ public class SystemMgmtController {
 	@RequestMapping(value = "user",method = RequestMethod.GET)
 	public String mgmtUser(Model model){
 		model.addAttribute("users", this.userService.getAllUsers()) ;
+		//部门列表
+		model.addAttribute("groups", this.userGroupServcie.getAllGroups()) ;
+		//职位列表
+		model.addAttribute("positions", UserPositionType.values());
+		
 		return "systemMgmt/userMgmt/userMgmt";
 	}
 	
@@ -43,8 +57,33 @@ public class SystemMgmtController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "user/list")
-	public List<UserVo> getUserList(Model model){
+	public Map<String, Object> getUserList(Model model){
 		//JSON.toJSONString(this.userService.getAllUsers());
-		return this.userService.getAllUsers();
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		List<UserVo> vos = this.userService.getAllUsers();
+		rstMap.put("total", vos.size());
+		rstMap.put("rows", vos);
+		return rstMap;
+	}
+	
+	/**
+	 * 创建用户
+	 * @param request
+	 */
+	@ResponseBody
+	@RequestMapping(value = "user/create",method = RequestMethod.POST)
+	public ResponseVo createUser(HttpServletRequest request){
+		ResponseVo vo = new ResponseVo();
+		String username = request.getParameter("username").trim();
+		String name = request.getParameter("name").trim();
+		Long groupId = Long.parseLong(request.getParameter("groupId").trim());
+		Integer positionId = Integer.parseInt(request.getParameter("positionId").trim());
+		String phone = request.getParameter("phone").trim();
+		if (null != this.userService.getUser(username)) {
+			vo.setErrorMessage("用户已经存在！");
+		}else {
+			this.userService.saveUser(username,name, groupId, positionId, phone);
+		}
+		return vo;
 	}
 }

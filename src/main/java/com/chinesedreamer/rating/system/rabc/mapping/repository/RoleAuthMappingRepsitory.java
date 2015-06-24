@@ -3,10 +3,8 @@ package com.chinesedreamer.rating.system.rabc.mapping.repository;
 import java.util.Collection;
 import java.util.List;
 
-import com.chinesedreamer.rating.system.rabc.mapping.model.RoleAuthMapping;
-
-
 import com.chinesedreamer.rating.base.jpa.repository.BaseRepository;
+import com.chinesedreamer.rating.system.rabc.mapping.model.RoleAuthMapping;
 
 /** 
  * Description: 
