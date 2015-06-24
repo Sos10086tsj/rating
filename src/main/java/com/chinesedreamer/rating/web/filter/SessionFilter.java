@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.chinesedreamer.rating.system.session.exception.SessionOverdueException;
 import com.chinesedreamer.rating.system.session.service.UserSessionService;
+import com.chinesedreamer.rating.system.user.service.UserService;
 
 /**
  * Description: 
@@ -30,6 +31,8 @@ public class SessionFilter implements Filter{
 	
 	@Autowired
 	private @Getter @Setter UserSessionService userSessionService;
+	@Autowired
+	private @Getter @Setter UserService userService;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -45,6 +48,8 @@ public class SessionFilter implements Filter{
 		SessionContext.setContext(request);
 		if (StringUtils.isNotEmpty(uri) && !(uri.equals("/index") || uri.equals("/login"))) {
 			this.userSessionService.validateSession();
+			String username = this.userSessionService.getCurrentUserSession().getUsername();
+			httpServletRequest.getSession().setAttribute("menus", this.userService.getUserMenus(username));
 		}
 		chain.doFilter(request, response);
 	}

@@ -86,4 +86,25 @@ public class SystemMgmtController {
 		}
 		return vo;
 	}
+	
+	/**
+	 * 修改用户
+	 * @param request
+	 */
+	@ResponseBody
+	@RequestMapping(value = "user/update",method = RequestMethod.POST)
+	public ResponseVo updateUser(HttpServletRequest request){
+		ResponseVo vo = new ResponseVo();
+		String username = request.getParameter("username").trim();
+		String name = request.getParameter("name").trim();
+		Long groupId = Long.parseLong(request.getParameter("groupId").trim());
+		Integer positionId = Integer.parseInt(request.getParameter("positionId").trim());
+		String phone = request.getParameter("phone").trim();
+		if (null == this.userService.getUser(username)) {
+			vo.setErrorMessage("用户不存在！");
+		}else {
+			this.userService.updateUser(username,name, groupId, positionId, phone);
+		}
+		return vo;
+	}
 }

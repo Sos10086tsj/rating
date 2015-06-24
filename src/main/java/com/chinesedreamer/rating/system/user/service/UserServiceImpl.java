@@ -192,4 +192,15 @@ public class UserServiceImpl implements UserService{
 	public User getUser(String username) {
 		return this.logic.findByUsername(username);
 	}
+
+	@Override
+	public void updateUser(String username, String name, Long groupId,
+			Integer positionId, String phone) {
+		User user = this.logic.findByUsername(username);
+		user.setName(name);
+		user.setGroupId(groupId);
+		user.setPositionId(positionId);
+		user.setPhone(phone);
+		this.logic.save(user);
+	}
 }

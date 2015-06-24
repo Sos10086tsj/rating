@@ -50,6 +50,16 @@ public interface UserService {
 	public void saveUser(String username, String name, Long groupId, Integer positionId, String phone);
 	
 	/**
+	 * 更新用户
+	 * @param username
+	 * @param name
+	 * @param groupId
+	 * @param positionId
+	 * @param phone
+	 */
+	public void updateUser(String username, String name, Long groupId, Integer positionId, String phone);
+	
+	/**
 	 * 查找用户
 	 * @param username
 	 * @return

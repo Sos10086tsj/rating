@@ -1,7 +1,5 @@
 package com.chinesedreamer.rating.web.controller;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,7 +13,6 @@ import com.chinesedreamer.rating.system.user.exception.PasswordIncorrectExceptio
 import com.chinesedreamer.rating.system.user.exception.UserFrozenException;
 import com.chinesedreamer.rating.system.user.exception.UserNotExistException;
 import com.chinesedreamer.rating.system.user.service.UserService;
-import com.chinesedreamer.rating.system.user.vo.Menu;
 
 /** 
  * Description: 
@@ -41,27 +38,15 @@ public class IndexController {
 	}
 	
 	@RequestMapping(value = "login",method = RequestMethod.GET)
-	public String loginIndex(Model model){
-		this.userSessionService.validateSession();
-		return "index";
+	public String login(Model model,HttpServletRequest request) throws UserFrozenException,UserNotExistException,PasswordIncorrectException{
+		return "login";
 	}
 	
 	@RequestMapping(value = "login",method = RequestMethod.POST)
-	public String login(Model model,HttpServletRequest request) throws UserFrozenException,UserNotExistException,PasswordIncorrectException{
-		String username = request.getParameter("username").trim();
-		String password = request.getParameter("password").trim();
+	public String userLogin(Model model,HttpServletRequest request) throws UserFrozenException,UserNotExistException,PasswordIncorrectException{
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
 		this.userService.login(username, password);
-		
-//		List<Menu> menus = this.userService.getUserMenus(username);
-//		model.addAttribute("menus", menus);
 		return "index";
-	}
-	
-	@RequestMapping(value = "getMenu",method = RequestMethod.GET)
-	public String getMenu(Model model){
-		// TODO List<Menu> menus = this.userService.getUserMenus(this.userSessionService.getCurrentUserSession().getUsername());
-		List<Menu> menus = this.userService.getUserMenus("admin");
-		model.addAttribute("menus", menus);
-		return "menu";
 	}
 }
