@@ -6,6 +6,7 @@ import com.chinesedreamer.rating.common.vo.ResponseVo;
 import com.chinesedreamer.rating.system.user.exception.PasswordIncorrectException;
 import com.chinesedreamer.rating.system.user.exception.UserFrozenException;
 import com.chinesedreamer.rating.system.user.exception.UserNotExistException;
+import com.chinesedreamer.rating.system.user.model.User;
 import com.chinesedreamer.rating.system.user.vo.Menu;
 import com.chinesedreamer.rating.system.user.vo.UserVo;
 
@@ -37,4 +38,31 @@ public interface UserService {
 	 * @return
 	 */
 	public List<UserVo> getAllUsers();
+	
+	/**
+	 * 创建用户
+	 * @param username
+	 * @param name
+	 * @param groupId
+	 * @param positionId
+	 * @param phone
+	 */
+	public void saveUser(String username, String name, Long groupId, Integer positionId, String phone);
+	
+	/**
+	 * 更新用户
+	 * @param username
+	 * @param name
+	 * @param groupId
+	 * @param positionId
+	 * @param phone
+	 */
+	public void updateUser(String username, String name, Long groupId, Integer positionId, String phone);
+	
+	/**
+	 * 查找用户
+	 * @param username
+	 * @return
+	 */
+	public User getUser(String username);
 }

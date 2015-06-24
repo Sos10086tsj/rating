@@ -47,6 +47,7 @@
 		<druid.version>1.0.7</druid.version>
 		<servlet-api.vrsion>2.5</servlet-api.vrsion>
 		<ehcache-core.version>2.6.10</ehcache-core.version>
+		<ehcache.version>2.9.0</ehcache.version>
 	</properties>
 
 	<dependencies>
@@ -353,11 +354,17 @@
 			<version>${druid.version}</version>
 		</dependency>
 		
-		<!-- ehcache -->
+		<!-- ehcache 
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache-core</artifactId>
 			<version>${ehcache-core.version}</version>
+		</dependency>-->
+		<!-- ehcache -->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>${ehcache.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -369,10 +376,10 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>${tomcat.plugin.version}</version>
 				<configuration>
-					<port>8080</port>
+					<port>8090</port>
 					<path>/rating</path>
 					<uriEncoding>UTF-8</uriEncoding>
-					<url>http://localhost:8080/manager/html</url>
+					<url>http://localhost:8090/manager/html</url>
 					<server>tomcat7</server>
 				</configuration>
 			</plugin>

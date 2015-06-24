@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.system.group.logic;
 
+import java.util.List;
+
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogic;
 import com.chinesedreamer.rating.system.group.model.UserGroup;
 
@@ -11,5 +13,5 @@ import com.chinesedreamer.rating.system.group.model.UserGroup;
  * Copyright:   Copyright (c)2015
  */
 public interface UserGroupLogic extends BaseLogic<UserGroup, Long>{
-
+	public List<UserGroup> findAll();
 }

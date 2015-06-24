@@ -14,15 +14,23 @@ import com.chinesedreamer.rating.system.user.model.User;
  * Copyright:   Copyright (c)2015
  */
 public interface UserRepository extends BaseRepository<User, Long>{
+	
 	/**
-	 * 根据用户名查找
+	 * 根据用户名查�
+	 * @param username
+	 * @return
+	 */
+	public User findByUsername(String username);
+	
+	/**
+	 * 根据用户名查�
 	 * @param username
 	 * @return
 	 */
 	public User findByUsernameAndStatus(String username,UserStatus status);
 	
 	/**
-	 * 查找某个组别的
+	 * 查找某个组别�
 	 * @param groupId
 	 * @param status
 	 * @return
@@ -30,7 +38,7 @@ public interface UserRepository extends BaseRepository<User, Long>{
 	public List<User> findByGroupIdAndStatus(Long groupId,UserStatus status);
 	
 	/**
-	 * 查找某个组别内，某个职位的
+	 * 查找某个组别内，某个职位�
 	 * @param groupId
 	 * @param position
 	 * @param status

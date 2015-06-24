@@ -8,12 +8,13 @@
 <title>评分考核系统</title>
 </head>
 <body>
-	<div>
-		<button>新建用户</button>
-	</div>
+	<rating:menu/>
 	<!-- table 维护用户 -->
 	<%@include file="userList.jsp"%>
 
+	<!-- 编辑弹窗 -->
+	<%@include file="userEdit.jsp"%>
+	
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
 <script type="text/javascript" src="${ctx}/resources/js/systemMgmt/userMgmt.js"></script>

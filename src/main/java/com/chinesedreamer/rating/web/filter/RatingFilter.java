@@ -33,6 +33,7 @@ public class RatingFilter implements Filter{
 		HttpSession session = req.getSession();
 		String ctx = req.getContextPath();
 		session.setAttribute("ctx", (null == ctx  ? "" : ctx) );
+		
 		chain.doFilter(request, response);
 	}
 

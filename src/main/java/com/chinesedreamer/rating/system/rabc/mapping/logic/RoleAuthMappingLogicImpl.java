@@ -1,5 +1,6 @@
 package com.chinesedreamer.rating.system.rabc.mapping.logic;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,7 +25,10 @@ public class RoleAuthMappingLogicImpl extends BaseLogicImpl<RoleAuthMapping, Lon
 	private RoleAuthMappingRepsitory repository;
 	@Override
 	public List<RoleAuthMapping> findByRoleIds(Collection<Long> roleIds) {
-		return this.repository.findByRoleIdIn(roleIds);
+		if (null == roleIds || roleIds.isEmpty()) {
+			return new ArrayList<RoleAuthMapping>();
+		}
+		return this.repository.findByRoleIdIn(new ArrayList<Long>(roleIds));
 	}
 
 }

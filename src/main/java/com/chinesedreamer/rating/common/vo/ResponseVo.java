@@ -15,6 +15,10 @@ public @Getter @Setter class ResponseVo {
 	private String errorMessage;//错误提示信息
 	private Object obj;//传递的对象
 	
+	public ResponseVo(){
+		
+	}
+	
 	public ResponseVo(Object obj){
 		this.obj = obj;
 	}

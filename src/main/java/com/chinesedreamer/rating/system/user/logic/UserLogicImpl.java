@@ -22,6 +22,11 @@ import com.chinesedreamer.rating.system.user.repository.UserRepository;
 public class UserLogicImpl extends BaseLogicImpl<User, Long> implements UserLogic{
 	@Resource
 	private UserRepository repository;
+	
+	@Override
+	public User findByUsername(String username) {
+		return this.repository.findByUsername(username);
+	}
 
 	@Override
 	public User findByUsernameAndStatus(String username, UserStatus status) {

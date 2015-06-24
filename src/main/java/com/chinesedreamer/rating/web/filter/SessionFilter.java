@@ -11,11 +11,15 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.chinesedreamer.rating.system.session.exception.SessionOverdueException;
 import com.chinesedreamer.rating.system.session.service.UserSessionService;
+import com.chinesedreamer.rating.system.user.service.UserService;
 
 /**
  * Description: 
@@ -26,7 +30,9 @@ import com.chinesedreamer.rating.system.session.service.UserSessionService;
 public class SessionFilter implements Filter{
 	
 	@Autowired
-	private UserSessionService userSessionService;
+	private @Getter @Setter UserSessionService userSessionService;
+	@Autowired
+	private @Getter @Setter UserService userService;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -40,11 +46,11 @@ public class SessionFilter implements Filter{
 		HttpServletRequest httpServletRequest = (HttpServletRequest)request;
 		String uri = httpServletRequest.getServletPath();
 		SessionContext.setContext(request);
-		//TODO
-		//if (StringUtils.isNotEmpty(uri) && !(uri.equals("/index") || uri.equals("/login"))) {
-			//保存session
-		//	this.userSessionService.validateSession();
-		//}
+		if (StringUtils.isNotEmpty(uri) && !(uri.equals("/index") || uri.equals("/login"))) {
+			this.userSessionService.validateSession();
+			String username = this.userSessionService.getCurrentUserSession().getUsername();
+			httpServletRequest.getSession().setAttribute("menus", this.userService.getUserMenus(username));
+		}
 		chain.doFilter(request, response);
 	}
 
