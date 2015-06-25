@@ -49,4 +49,9 @@ public class UserLogicImpl extends BaseLogicImpl<User, Long> implements UserLogi
 		return this.repository.findAll();
 	}
 
+	@Override
+	public List<User> findByStatusAndNameLike(UserStatus status, String name) {
+		return this.repository.findByStatusAndNameLike(status, "%"+name+"%");
+	}
+
 }

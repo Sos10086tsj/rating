@@ -21,7 +21,7 @@ import com.chinesedreamer.rating.template.repository.RatingSuppTempalteOptionMap
 import com.chinesedreamer.rating.template.repository.RatingSuppTemplateRepository;
 import com.chinesedreamer.rating.template.repository.RatingSuppTemplateVoterRepository;
 import com.chinesedreamer.rating.template.repository.RatingSuppTmplOptionWeightRepository;
-import com.chinesedreamer.rating.template.repository.RatingTempalteOptionMappingRepository;
+import com.chinesedreamer.rating.template.repository.RatingTemplateOptionMappingRepository;
 import com.chinesedreamer.rating.template.repository.RatingTemplateRepository;
 import com.chinesedreamer.rating.template.repository.RatingTemplateVoterRepository;
 import com.chinesedreamer.rating.template.repository.RatingTmplOptionWeightRepository;
@@ -43,7 +43,7 @@ public class RatingTemplateLogicImpl extends BaseLogicImpl<RatingTemplate, Long>
 	@Resource
 	private RatingSuppTemplateVoterRepository suppTemplateVoterRepository;
 	@Resource
-	private RatingTempalteOptionMappingRepository tempalteOptionMappingRepository;
+	private RatingTemplateOptionMappingRepository tempalteOptionMappingRepository;
 	@Resource
 	private RatingSuppTempalteOptionMappingRepository suppTempalteOptionMappingRepository;
 	@Resource

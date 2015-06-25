@@ -5,6 +5,7 @@ import java.util.List;
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
+import com.chinesedreamer.rating.rating.vo.RatingPageVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
 import com.chinesedreamer.rating.system.user.model.User;
 
@@ -35,4 +36,18 @@ public interface RatingService {
 	 * @return
 	 */
 	public List<RatingUserVo> getRatingUserVos(User user);
+	
+	/**
+	 * 获取投票页
+	 * @param tmplId
+	 * @return
+	 */
+	public RatingPageVo getRatingVotePage(Long tmplId);
+	
+	/**
+	 * 获取模板得分项
+	 * @param tmplId
+	 * @return
+	 */
+	public List<SelectVo> getTmplOptions(Long tmplId);
 }

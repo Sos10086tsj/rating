@@ -3,6 +3,7 @@ package com.chinesedreamer.rating.system.user.service;
 import java.util.List;
 
 import com.chinesedreamer.rating.common.vo.ResponseVo;
+import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.system.user.exception.PasswordIncorrectException;
 import com.chinesedreamer.rating.system.user.exception.UserFrozenException;
 import com.chinesedreamer.rating.system.user.exception.UserNotExistException;
@@ -65,4 +66,11 @@ public interface UserService {
 	 * @return
 	 */
 	public User getUser(String username);
+	
+	/**
+	 * 模糊匹配用户
+	 * @param name
+	 * @return
+	 */
+	public List<SelectVo> lookupUser(String name);
 }

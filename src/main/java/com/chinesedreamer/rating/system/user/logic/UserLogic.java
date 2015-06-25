@@ -16,20 +16,20 @@ import com.chinesedreamer.rating.system.user.model.User;
 public interface UserLogic extends BaseLogic<User, Long>{
 	
 	/**
-	 * 根据用户名查找用�
+	 * 根据用户名查找用�
 	 * @param username
 	 * @return
 	 */
 	public User findByUsername(String username);
 	/**
-	 * 根据用户名查找用�
+	 * 根据用户名查找用�
 	 * @param username
 	 * @return
 	 */
 	public User findByUsernameAndStatus(String username,UserStatus status);
 	
 	/**
-	 * 查找某个组别的用�
+	 * 查找某个组别的用�
 	 * @param groupId
 	 * @param status
 	 * @return
@@ -37,7 +37,7 @@ public interface UserLogic extends BaseLogic<User, Long>{
 	public List<User> findByGroupIdAndStatus(Long groupId,UserStatus status);
 	
 	/**
-	 * 查找某个组别内，某个职位的用�
+	 * 查找某个组别内，某个职位的用�
 	 * @param groupId
 	 * @param position
 	 * @param status
@@ -46,4 +46,12 @@ public interface UserLogic extends BaseLogic<User, Long>{
 	public List<User> findByGroupIdAndPositionIdAndStatus(Long groupId,Long positionId, UserStatus status);
 	
 	public List<User> findAll();
+	
+	/**
+	 * 模糊查询有效用户
+	 * @param status
+	 * @param name
+	 * @return
+	 */
+	public List<User> findByStatusAndNameLike(UserStatus status, String name);
 }

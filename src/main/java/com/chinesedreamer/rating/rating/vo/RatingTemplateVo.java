@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Description: 
+ * Description: 用户对是否参与某个投票
  * @author Paris
  * @date Jun 25, 201510:51:23 AM
  * @version beta

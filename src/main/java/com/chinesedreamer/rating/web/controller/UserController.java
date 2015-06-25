@@ -1,5 +1,6 @@
 package com.chinesedreamer.rating.web.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinesedreamer.rating.common.vo.ResponseVo;
+import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.system.user.service.UserService;
 import com.chinesedreamer.rating.system.user.vo.UserVo;
 
@@ -85,5 +88,16 @@ public class UserController {
 			this.userService.updateUser(username,name, groupId, positionId, phone);
 		}
 		return vo;
+	}
+	
+	/*********** user 部分 *************/
+	@ResponseBody
+	@RequestMapping(value = "user/query",method = RequestMethod.POST)
+	public List<SelectVo> queryUser(Model model, HttpServletRequest request){
+		String name = request.getParameter("name");
+		if (StringUtils.isEmpty(name)) {
+			return new ArrayList<SelectVo>();
+		}
+		return this.userService.lookupUser(name.trim());
 	}
 }

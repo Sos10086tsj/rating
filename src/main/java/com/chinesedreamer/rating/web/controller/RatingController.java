@@ -8,10 +8,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.service.RatingService;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
@@ -99,5 +101,29 @@ public class RatingController {
 		rstMap.put("total", vos.size());
 		rstMap.put("rows", vos);
 		return rstMap;
+	}
+	
+	/**
+	 * 用户投票编辑页
+	 * @param model
+	 * @param tmplId
+	 * @return
+	 */
+	@RequestMapping(value = "rating/vote/{tmplId}",method = RequestMethod.GET)
+	public String showRaringVote(Model model,@PathVariable("tmplId")Long tmplId){
+		model.addAttribute("votePage", this.ratingService.getRatingVotePage(tmplId));
+		return "rating/ratingVote";
+	}
+	
+	/**
+	 * 获取模板相应的得分项
+	 * @param model
+	 * @param tmplId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "rating/vote/options/{tmplId}",method = RequestMethod.GET)
+	public List<SelectVo> getRatingOptions(Model model,@PathVariable("tmplId")Long tmplId){
+		return this.ratingService.getTmplOptions(tmplId);
 	}
 }

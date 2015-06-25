@@ -1,7 +1,8 @@
 rating.ratingmgmt = {
 	//跳转新建页
 	newRating : function(){
-		window.open(ctx + '/system/rating/create' , '_blank');
+		window.location.href = ctx + '/system/rating/create';
+//		window.open(ctx + '/system/rating/create' , '_blank');
 	},
 	//修改用户
 	editRating : function(){

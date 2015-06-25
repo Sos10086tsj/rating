@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import com.chinesedreamer.rating.base.exception.category.BizException;
 import com.chinesedreamer.rating.common.utils.EncryptionUtil;
 import com.chinesedreamer.rating.common.vo.ResponseVo;
+import com.chinesedreamer.rating.common.vo.SelectVo;
+import com.chinesedreamer.rating.system.group.logic.UserGroupLogic;
 import com.chinesedreamer.rating.system.rabc.mapping.logic.ResAuOprMappingLogic;
 import com.chinesedreamer.rating.system.rabc.mapping.logic.RoleAuthMappingLogic;
 import com.chinesedreamer.rating.system.rabc.mapping.logic.UserRoleMappingLogic;
@@ -65,6 +67,8 @@ public class UserServiceImpl implements UserService{
 	private ResAuOprMappingLogic resAuOprMappingLogic;
 	@Resource
 	private SysResourceLogic sysResourceLogic;
+	@Resource
+	private UserGroupLogic userGroupLogic;
 	
 	@Override
 	public ResponseVo login(String username, String password) throws UserFrozenException,UserNotExistException,PasswordIncorrectException{
@@ -212,5 +216,17 @@ public class UserServiceImpl implements UserService{
 		user.setPositionId(positionId);
 		user.setPhone(phone);
 		this.logic.save(user);
+	}
+
+	@Override
+	public List<SelectVo> lookupUser(String name) {
+		List<SelectVo> vos = new ArrayList<SelectVo>();
+		List<User> users = this.logic.findByStatusAndNameLike(UserStatus.ACTIVE, name);
+		for (User user : users) {
+			vos.add(new SelectVo(user.getId().toString(), 
+					user.getName() + "(" + this.userGroupLogic.findOne(user.getGroupId()).getName() + ")"
+					));
+		}
+		return vos;
 	}
 }

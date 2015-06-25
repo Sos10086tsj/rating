@@ -13,14 +13,17 @@ import com.chinesedreamer.rating.rating.logic.RatingUserVoteLogic;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.model.RatingStatus;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
+import com.chinesedreamer.rating.rating.vo.RatingPageVo;
 import com.chinesedreamer.rating.rating.vo.RatingTemplateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
 import com.chinesedreamer.rating.system.user.model.User;
 import com.chinesedreamer.rating.template.logic.RatingSuppTemplateLogic;
 import com.chinesedreamer.rating.template.logic.RatingTemplateLogic;
+import com.chinesedreamer.rating.template.logic.RatingTemplateOptionMappingLogic;
 import com.chinesedreamer.rating.template.logic.RatingTemplateVoterLogic;
 import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
 import com.chinesedreamer.rating.template.model.RatingTemplate;
+import com.chinesedreamer.rating.template.model.RatingTemplateOptionMapping;
 import com.chinesedreamer.rating.template.model.RatingTemplateVoter;
 
 /**
@@ -41,6 +44,8 @@ public class RatingServiceImpl implements RatingService{
 	private RatingTemplateVoterLogic templateVoterLogic;
 	@Resource
 	private RatingUserVoteLogic ratingUserVoteLogic;
+	@Resource
+	private RatingTemplateOptionMappingLogic templateOptionMappingLogic;
 	
 	@Override
 	public void saveRating(RatingCreateVo vo) {
@@ -110,5 +115,25 @@ public class RatingServiceImpl implements RatingService{
 		}
 		vo.setTemplates(templateVos);
 		return vo;
+	}
+	@Override
+	public RatingPageVo getRatingVotePage(Long tmplId) {
+		RatingPageVo vo = new RatingPageVo();
+		RatingTemplate rt = this.templateLogic.findOne(tmplId);
+		vo.setTmplId(tmplId);
+		vo.setTmplName(rt.getName());
+		vo.setRatingId(rt.getRatingId());
+		Rating r = this.logic.findOne(rt.getRatingId());
+		vo.setRatingName(r.getName());
+		return vo;
+	}
+	@Override
+	public List<SelectVo> getTmplOptions(Long tmplId) {
+		List<SelectVo> vos = new ArrayList<SelectVo>();
+		List<RatingTemplateOptionMapping> options = this.templateOptionMappingLogic.findByTmplId(tmplId);
+		for (RatingTemplateOptionMapping option : options) {
+			vos.add(new SelectVo(option.getOptionId().toString(), option.getOption().getName()));
+		}
+		return vos;
 	}
 }
