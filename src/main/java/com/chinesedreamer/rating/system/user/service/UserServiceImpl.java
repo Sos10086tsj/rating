@@ -25,6 +25,7 @@ import com.chinesedreamer.rating.system.rabc.mapping.logic.UserRoleMappingLogic;
 import com.chinesedreamer.rating.system.rabc.mapping.model.ResAuOprMapping;
 import com.chinesedreamer.rating.system.rabc.mapping.model.RoleAuthMapping;
 import com.chinesedreamer.rating.system.rabc.mapping.model.UserRoleMapping;
+import com.chinesedreamer.rating.system.rabc.resource.logic.SysResourceLogic;
 import com.chinesedreamer.rating.system.rabc.resource.model.SysResource;
 import com.chinesedreamer.rating.system.session.logic.UserSessionLogic;
 import com.chinesedreamer.rating.system.session.model.UserSession;
@@ -62,6 +63,8 @@ public class UserServiceImpl implements UserService{
 	private RoleAuthMappingLogic roleAuthMappingLogic;
 	@Resource
 	private ResAuOprMappingLogic resAuOprMappingLogic;
+	@Resource
+	private SysResourceLogic sysResourceLogic;
 	
 	@Override
 	public ResponseVo login(String username, String password) throws UserFrozenException,UserNotExistException,PasswordIncorrectException{
@@ -137,6 +140,13 @@ public class UserServiceImpl implements UserService{
 				root.put(resource.getCode(), menu);
 			}else {//二级菜单
 				Menu menu = root.get(resource.getParentCode());
+				if (null == menu) {//只授权了子菜单的权限，需要补充父菜单权限
+					menu = new Menu();
+					SysResource parentResource = this.sysResourceLogic.findByCode(resource.getParentCode());
+					menu.setName(parentResource.getName());
+					menu.setUrl(parentResource.getUrl());
+					menu.setSeq(parentResource.getSeq());
+				}
 				Menu subMenu = new Menu();
 				subMenu.setName(resource.getName());
 				subMenu.setUrl(resource.getUrl());

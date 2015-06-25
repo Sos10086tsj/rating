@@ -4,7 +4,7 @@
 		title="定性指标基础信息" 
 		class="easyui-datagrid" 
 		style="width:900px; height: 400px; padding-left: 200px;" 
-		url="${ctx }/system/rating/list" 
+		url="${ctx }/rating/list" 
 		toolbar="#toolbar" 
 		pagination="true"  
         rownumbers="true" 
@@ -14,16 +14,16 @@
         <thead>
         	<tr>
         		<th field="id"  width="50">ID#</th>  
-        		<th field="name"  width="50">姓名</th>
+        		<th field="name"  width="50">投票事件</th>
         		<th field="effFrom" formatter="rating.dateFormat" width="50">开始时间</th>
         		<th field="effTo" formatter="rating.dateFormat" width="50">结束时间</th>
-        		<th field="status"  width="50">状态</th>
+        		<th field="templates" formatter="rating.userrating.tempalteFormat" width="50">投票</th>
         	</tr>
         </thead>
 </table>
 
 <div id="toolbar">
-	<a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-add" plain="true"onclick="rating.ratingmgmt.newRating()">添加</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-edit" plain="true"onclick="rating.ratingmgmt.editRating()">修改</a>  
-    <!-- <a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-remove" plain="true"onclick="rating.usermgmt.destroyUser()">删除</a> -->  
+	<!-- <a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-add" plain="true"onclick="rating.usermgmt.newUser()">添加</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-edit" plain="true"onclick="rating.usermgmt.editUser()">修改</a>  
+    <a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-remove" plain="true"onclick="rating.usermgmt.destroyUser()">删除</a> -->  
 </div>

@@ -11,5 +11,5 @@ import com.chinesedreamer.rating.system.rabc.resource.model.SysResource;
  * Copyright:   Copyright (c)2015
  */
 public interface SysResourceRepository extends BaseRepository<SysResource, Long>{
-
+	public SysResource findByCode(String code);
 }

@@ -1,9 +1,12 @@
 package com.chinesedreamer.rating.system.rabc.resource.logic;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogicImpl;
 import com.chinesedreamer.rating.system.rabc.resource.model.SysResource;
+import com.chinesedreamer.rating.system.rabc.resource.repository.SysResourceRepository;
 
 /** 
  * Description: 
@@ -14,5 +17,11 @@ import com.chinesedreamer.rating.system.rabc.resource.model.SysResource;
  */
 @Service
 public class SysResourceLogicImpl extends BaseLogicImpl<SysResource, Long> implements SysResourceLogic{
+	@Resource
+	private SysResourceRepository repository;
+	@Override
+	public SysResource findByCode(String code) {
+		return this.repository.findByCode(code);
+	}
 
 }

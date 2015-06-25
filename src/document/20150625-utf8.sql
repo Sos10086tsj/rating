@@ -50,3 +50,55 @@ insert into rating.rating_supp_tmpl_option_weight(supp_tmpl_id,supp_option_id,we
 insert into rating.rating_supp_tmpl_option_weight(supp_tmpl_id,supp_option_id,weight) values(4,23,8.33);
 insert into rating.rating_supp_tmpl_option_weight(supp_tmpl_id,supp_option_id,weight) values(4,24,8.33);
 insert into rating.rating_supp_tmpl_option_weight(supp_tmpl_id,supp_option_id,weight) values(4,25,8.33);
+
+--用户投票记录表
+CREATE TABLE `rating`.`rating_user_vote` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `rating_id` BIGINT NULL,
+  `tmpl_id` BIGINT NULL,
+  `user_id` BIGINT NULL,
+  `vote_date` TIMESTAMP NULL,
+  `version` BIGINT NULL DEFAULT 0,
+  PRIMARY KEY (`id`));
+
+ALTER TABLE `rating`.`rating_user_vote` 
+ADD COLUMN `group_id` BIGINT NULL AFTER `user_id`,
+ADD COLUMN `position_id` INT NULL AFTER `group_id`;
+
+  
+--投票详情
+  CREATE TABLE `rating`.`rating_user_vote_item` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `user_vote_id` BIGINT NULL,
+  `option_id` BIGINT NULL,
+  `score_id` BIGINT NULL,
+  `scorer` BIGINT NULL,
+  PRIMARY KEY (`id`));
+
+--得分可选项
+CREATE TABLE `rating`.`rating_score` (
+  `id` BIGINT NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `score` INT NULL,
+  `version` BIGINT NULL DEFAULT 0,
+  PRIMARY KEY (`id`));
+  
+  ALTER TABLE `rating`.`rating_score` 
+CHANGE COLUMN `id` `id` BIGINT(20) NOT NULL AUTO_INCREMENT ;
+
+--初始化数据
+INSERT INTO `rating`.`rating_score` (`name`, `score`) VALUES ('表现突出', '5');
+INSERT INTO `rating`.`rating_score` (`name`, `score`) VALUES ('表现较好', '4');
+INSERT INTO `rating`.`rating_score` (`name`, `score`) VALUES ('表现一般', '3');
+INSERT INTO `rating`.`rating_score` (`name`, `score`) VALUES ('表现较差', '2');
+INSERT INTO `rating`.`rating_score` (`name`, `score`) VALUES ('表现很差', '1');
+INSERT INTO `rating`.`rating_score` (`name`, `score`) VALUES ('表现极差', '0');
+
+
+--投票资源
+INSERT INTO `rating`.`sys_resource` (`code`, `name`, `url`, `show`, `seq`) VALUES ('RATING', '投票', 'rating', '1', '2.00');
+INSERT INTO `rating`.`sys_authority` (`code`, `name`, `show`) VALUES ('AU_RATING', '投票权限', '1');
+INSERT INTO `rating`.`sys_res_au_opr_mapping` (`res_code`, `auth_code`, `opr_code`) VALUES ('RATING', 'AU_RATING', 'MGMT');
+INSERT INTO `rating`.`sys_resource` (`code`, `name`, `url`, `show`, `parent_code`, `seq`) VALUES ('RATING_VOTE', '参与投票', 'rating', '1', 'RATING', '2.01');
+UPDATE `rating`.`sys_res_au_opr_mapping` SET `res_code`='RATING_VOTE' WHERE `id`='8';
+
