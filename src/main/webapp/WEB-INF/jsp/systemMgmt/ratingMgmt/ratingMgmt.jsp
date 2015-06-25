@@ -11,9 +11,6 @@
 	<rating:menu/>
 	<!-- table 维护用户 -->
 	<%@include file="ratingList.jsp"%>
-
-	<!-- 编辑弹窗 -->
-	<%@include file="ratingEdit.jsp"%>
 	
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>

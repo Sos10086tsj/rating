@@ -9,8 +9,5 @@
 </head>
 <body>
 	<rating:menu/>
-	<iframe id="rating_iframe" name="rating_iframe" src="" width="1200" height="600"> 
-		
-	</iframe>
 </body>
 </html>

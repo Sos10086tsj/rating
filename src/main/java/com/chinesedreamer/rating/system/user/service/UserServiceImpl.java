@@ -129,13 +129,13 @@ public class UserServiceImpl implements UserService{
 		Map<String, Menu> root = new HashMap<String, Menu>();
 		//浠呬粎涓ょ骇鑿滃崟锛屽浜庡綋鍓嶇郴缁熻冻锟
 		for (SysResource resource : resources) {
-			if (StringUtils.isEmpty(resource.getParentCode())) {//鐖惰妭锟
+			if (StringUtils.isEmpty(resource.getParentCode())) {//一级菜单
 				Menu menu = new Menu();
 				menu.setName(resource.getName());
 				menu.setUrl(resource.getUrl());
 				menu.setSeq(resource.getSeq());
 				root.put(resource.getCode(), menu);
-			}else {//澶勭悊瀛愯彍锟
+			}else {//二级菜单
 				Menu menu = root.get(resource.getParentCode());
 				Menu subMenu = new Menu();
 				subMenu.setName(resource.getName());

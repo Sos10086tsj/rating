@@ -2,6 +2,7 @@ package com.chinesedreamer.rating.rating.service;
 
 import java.util.List;
 
+import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 
@@ -13,10 +14,16 @@ import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
  */
 public interface RatingService {
 	/**
-	 * 鍒涘缓涓�鎶曠エ浜嬩欢
+	 * 保存
 	 * @param vo
 	 */
 	public void saveRating(RatingCreateVo vo);
 	
 	public List<Rating> findAll();
+	
+	/**
+	 * 获取所有可用的模板，如A、B、C、D卷
+	 * @return
+	 */
+	public List<SelectVo> getAllTemplates();
 }

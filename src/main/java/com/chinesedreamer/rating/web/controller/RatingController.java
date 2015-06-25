@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,15 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.chinesedreamer.rating.common.vo.ResponseVo;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.service.RatingService;
+import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 
 /** 
  * Description: 
  * @author Paris Tao
  * @version 1.0beta
- * @date 2015Äê6ÔÂ24ÈÕ ÏÂÎç8:17:11 
+ * @date 2015ï¿½ï¿½6ï¿½ï¿½24ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½8:17:11 
  * Copyright:   Copyright (c)2015
  */
 @Controller
@@ -30,7 +29,7 @@ public class RatingController {
 	private RatingService ratingService;
 	
 	/**
-	 * ÒÑ¾­´æÔÚµÄÍ¶Æ±
+	 * æŠ•ç¥¨ç®¡ç†åˆ—è¡¨é¡µ
 	 * @param model
 	 * @return
 	 */
@@ -44,16 +43,21 @@ public class RatingController {
 		return rstMap;
 	}
 	
+	@RequestMapping(value = "system/rating/create",method = RequestMethod.GET)
+	public String showCreateRating(Model model){
+		model.addAttribute("m", new RatingCreateVo());
+		model.addAttribute("suppTemplates", this.ratingService.getAllTemplates());
+		return "systemMgmt/ratingMgmt/create";
+	}
+	
 	/**
-	 * ´´½¨Ò»´Î
+	 * æ–°å»ºæŠ•ç¥¨æäº¤
 	 * @param request
 	 * @return
 	 */
-	@ResponseBody
 	@RequestMapping(value = "system/rating/create",method = RequestMethod.POST)
-	public ResponseVo createRating(HttpServletRequest request){
-		ResponseVo vo = new ResponseVo();
-		String name = request.getParameter("name").trim();
-		return vo;
+	public String createRating(RatingCreateVo vo){
+		this.ratingService.saveRating(vo);
+		return "redirect:/system/rating";
 	}
 }

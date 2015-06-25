@@ -1,10 +1,7 @@
 rating.ratingmgmt = {
-	//创建用户
+	//跳转新建页
 	newRating : function(){
-		$('#dlg').dialog('open').dialog('setTitle','New User');
-		$('#fm').form('clear');
-		$('#fm').attr("url",ctx + '/system/rating/create');
-		//url = 'save_user.php';
+		window.open(ctx + '/system/rating/create' , '_blank');
 	},
 	//修改用户
 	editRating : function(){

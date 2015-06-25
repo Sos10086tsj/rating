@@ -38,6 +38,9 @@ public class IndexController {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		this.userService.login(username, password);
+		
+		model.addAttribute("menus", this.userService.getUserMenus(username));
+		
 		return "index";
 	}
 }
