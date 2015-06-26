@@ -1,17 +1,26 @@
 <%@tag pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/jsp/base/baselib.jspf" %>
-<div id='cssmenu'>
-		<ul>
-			<li class="active"><a href='#'>首页</a></li>
-			<c:forEach items="${menus }" var="menu">
-				<li <c:if test="${not empty menu.subMenu}" >class='has-sub'</c:if>>
-					<a href='#'>${menu.name }></a>
+<%--
+<div class="easyui-accordion" data-options="fit:true,border:false">
+<c:forEach items="${menus }" var="menu" varStatus="index">
+	<div title="${menu.name }" <c:if test="${index.index == 0 }">data-options="selected:true"</c:if>>
+		<c:forEach items="${menu.subMenu }" var="subMenu">
+			<div><a href='${ctx }/${subMenu.url }'>${subMenu.name }</a></div>
+		</c:forEach> 
+	</div>
+</c:forEach>
+</div> --%>
+<div class="easyui-panel" style="padding:5px">
+	<ul class="easyui-tree" id="js_menu_tree">
+		<c:forEach items="${menus }" var="menu" varStatus="index">
+			<li>
+				<span>${menu.name }</span>
+				<ul>
 					<c:forEach items="${menu.subMenu }" var="subMenu">
-						<ul>
-							<li><a href='${ctx }/${subMenu.url }'>${subMenu.name }</a></li>
-						</ul>
+						<li ><span><a href="${ctx }/${subMenu.url }">${subMenu.name }</a></span></li>
 					</c:forEach>
-				</li>
-			</c:forEach>
-		</ul>
+				</ul>
+			</li>
+		</c:forEach>
+	</ul>
 </div>
