@@ -8,13 +8,16 @@
 <title>评分考核系统</title>
 </head>
 <body class="easyui-layout">
-	<div data-options="region:'west',split:true,title:'West'" style="width:150px;padding:2px;">
+	<div data-options="region:'west',split:true,title:'菜单'" style="width:150px;padding:2px;">
 	<!-- 菜单 -->
 	<rating:menu/>
 	<!-- 菜单结束 -->
 	</div>
-	<div data-options="region:'center',title:'Center'"></div>
+	<div data-options="region:'center',title:'评分系统',iconCls:'icon-ok'">
+		<div class="easyui-tabs" data-options="fit:true,border:false,plain:true">
+			<div title="About" data-options="href:'${ctx }/welcom'" style="padding:10px"></div>
+		</div>
+	</div>
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
-<script type="text/javascript" src="${ctx}/resources/js/menu/menu.js"></script>
 </html>

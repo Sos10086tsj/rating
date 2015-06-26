@@ -43,4 +43,9 @@ public class IndexController {
 		
 		return "index";
 	}
+	
+	@RequestMapping(value = "welcome",method = RequestMethod.GET)
+	public String welcome(Model model,HttpServletRequest request){
+		return "welcome";
+	}
 }

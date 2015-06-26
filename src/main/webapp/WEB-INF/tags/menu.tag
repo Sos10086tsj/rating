@@ -11,8 +11,8 @@
 </c:forEach>
 </div> --%>
 <div class="easyui-panel" style="padding:5px">
-	<ul class="easyui-tree" id="js_menu_tree">
-		<c:forEach items="${menus }" var="menu" varStatus="index">
+	<ul class="easyui-tree">
+		<c:forEach items="${menus }" var="menu">
 			<li>
 				<span>${menu.name }</span>
 				<ul>
