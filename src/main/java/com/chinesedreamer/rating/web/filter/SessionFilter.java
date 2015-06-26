@@ -28,7 +28,7 @@ import com.chinesedreamer.rating.system.user.service.UserService;
  * @version beta
  */
 public class SessionFilter implements Filter{
-	
+	private static final String[] ignoreUri = new String[]{".css",".js",".jpg",".png","gif"};
 	@Autowired
 	private @Getter @Setter UserSessionService userSessionService;
 	@Autowired
@@ -42,16 +42,27 @@ public class SessionFilter implements Filter{
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+			FilterChain chain) throws IOException, ServletException {	
 		HttpServletRequest httpServletRequest = (HttpServletRequest)request;
 		String uri = httpServletRequest.getServletPath();
 		SessionContext.setContext(request);
-		if (StringUtils.isNotEmpty(uri) && !(uri.equals("/index") || uri.equals("/login"))) {
+		if (StringUtils.isNotEmpty(uri) && !(uri.equals("/index") || uri.equals("/login")) && !isStaticResourceRequest(uri)) {
 			this.userSessionService.validateSession();
 			String username = this.userSessionService.getCurrentUserSession().getUsername();
 			httpServletRequest.getSession().setAttribute("menus", this.userService.getUserMenus(username));
 		}
 		chain.doFilter(request, response);
+	}
+	
+	private boolean isStaticResourceRequest(String uri) {
+		boolean isStaticResourceRequest = false;
+		for (String ignore : ignoreUri) {
+			if (uri.endsWith(ignore)) {
+				isStaticResourceRequest = true;
+				break;
+			}
+		}
+		return isStaticResourceRequest;
 	}
 
 	@Override

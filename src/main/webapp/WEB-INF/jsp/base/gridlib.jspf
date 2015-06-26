@@ -3,3 +3,4 @@
 <link rel="stylesheet" type="text/css" href="${ctx }/resources/components/grid/theme/icon.css">
 <script type="text/javascript" src="${ctx }/resources/components/grid/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${ctx }/resources/components/grid/plugins/jquery.pagination.js"></script>
+<script type="text/javascript" src="${ctx }/resources/components/grid/locale/easyui-lang-zh_CN.js"></script>
