@@ -8,7 +8,35 @@
 <title>评分考核系统</title>
 </head>
 <body>
-	123
+	<table 	id="js_rating_vote_dg" 
+		title="投票：${votePage.ratingName }-${votePage.tmplName }" 
+		class="easyui-datagrid" 
+		style="width:1000px; height: 400px; padding-left: 200px;" 
+		url="${ctx }/rating/vote/user/${votePage.tmplId}" 
+		toolbar="#js_rating_vote_tb" 
+		pagination="true"  
+        rownumbers="true" 
+        fitcolumns="true" 
+        singleselect="true">
+        
+        <thead>
+        	<tr>
+        		<th data-options="field:'itemid',width:80">Item ID</th>
+        		<c:forEach items="${options }" var="item">
+        			<th field="${item.value }" editor="numberbox" width="50">${item.label }</th>
+        		</c:forEach>
+        		<%--<th field="id"  width="50">ID#</th>  
+        		<th field="name"  width="50">投票事件</th>
+        		<th field="effFrom" formatter="rating.dateFormat" width="50">开始时间</th>
+        		<th field="effTo" formatter="rating.dateFormat" width="50">结束时间</th>
+        		<th field="templates" formatter="rating.userrating.tempalteFormat" width="50">投票</th> --%>
+        	</tr>
+        </thead>
+	</table>
+	<div id="js_rating_vote_tb" style="height:auto">
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="rating.userrating.addVote()">增加</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除</a>
+	</div>
 	
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>

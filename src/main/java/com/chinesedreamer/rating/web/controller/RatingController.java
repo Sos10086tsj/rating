@@ -122,7 +122,7 @@ public class RatingController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "rating/vote/user/{tmplId}",method = RequestMethod.GET)
+	@RequestMapping(value = "rating/vote/user/{tmplId}",method = RequestMethod.POST)
 	public Map<String, Object> userRaringVote(Model model,@PathVariable("tmplId")Long tmplId){
 		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
 		return this.ratingService.getUserRatingVote(tmplId, user);
