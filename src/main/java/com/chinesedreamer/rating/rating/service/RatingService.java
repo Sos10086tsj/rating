@@ -1,6 +1,7 @@
 package com.chinesedreamer.rating.rating.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.model.Rating;
@@ -50,4 +51,12 @@ public interface RatingService {
 	 * @return
 	 */
 	public List<SelectVo> getTmplOptions(Long tmplId);
+	
+	/**
+	 * 获取用户投票信息
+	 * @param tmplId
+	 * @param user
+	 * @return
+	 */
+	public Map<String, Object> getUserRatingVote(Long tmplId,User user);
 }

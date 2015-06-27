@@ -1,7 +1,9 @@
 package com.chinesedreamer.rating.rating.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -9,14 +11,21 @@ import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.logic.RatingLogic;
+import com.chinesedreamer.rating.rating.logic.RatingScoreLogic;
+import com.chinesedreamer.rating.rating.logic.RatingUserVoteItemLogic;
 import com.chinesedreamer.rating.rating.logic.RatingUserVoteLogic;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.model.RatingStatus;
+import com.chinesedreamer.rating.rating.model.RatingUserVote;
+import com.chinesedreamer.rating.rating.model.RatingUserVoteItem;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingPageVo;
 import com.chinesedreamer.rating.rating.vo.RatingTemplateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
+import com.chinesedreamer.rating.rating.vo.RatingUserVoteVo;
+import com.chinesedreamer.rating.system.user.logic.UserLogic;
 import com.chinesedreamer.rating.system.user.model.User;
+import com.chinesedreamer.rating.template.logic.RatingSuppOptionLogic;
 import com.chinesedreamer.rating.template.logic.RatingSuppTemplateLogic;
 import com.chinesedreamer.rating.template.logic.RatingTemplateLogic;
 import com.chinesedreamer.rating.template.logic.RatingTemplateOptionMappingLogic;
@@ -45,7 +54,15 @@ public class RatingServiceImpl implements RatingService{
 	@Resource
 	private RatingUserVoteLogic ratingUserVoteLogic;
 	@Resource
+	private RatingUserVoteItemLogic ratingUserVoteItemLogic;
+	@Resource
 	private RatingTemplateOptionMappingLogic templateOptionMappingLogic;
+	@Resource
+	private UserLogic userLogic;
+	@Resource
+	private RatingScoreLogic scoreLogic;
+	@Resource
+	private RatingSuppOptionLogic optionLogic;
 	
 	@Override
 	public void saveRating(RatingCreateVo vo) {
@@ -132,8 +149,86 @@ public class RatingServiceImpl implements RatingService{
 		List<SelectVo> vos = new ArrayList<SelectVo>();
 		List<RatingTemplateOptionMapping> options = this.templateOptionMappingLogic.findByTmplId(tmplId);
 		for (RatingTemplateOptionMapping option : options) {
-			vos.add(new SelectVo(option.getOptionId().toString(), option.getOption().getName()));
+			vos.add(new SelectVo("option_" + option.getOptionId(), option.getOption().getName()));
 		}
 		return vos;
+	}
+	
+	/**
+	 * 生成已投票数据JSON数据源
+	 * @param voteVos
+	 * @param options
+	 * @return
+	 */
+	private List<Map<String, Object>> generateRatingVoteJsonDatasource(List<RatingUserVoteVo> voteVos, List<RatingTemplateOptionMapping> options) {
+		List<Map<String, Object>> rst = new ArrayList<Map<String,Object>>();
+		for (RatingUserVoteVo voteVo : voteVos) {
+			Map<String, Object> item = new HashMap<String, Object>();
+			item.put("scorerId", voteVo.getUserId());
+			item.put("scorerName", voteVo.getUserName());
+			Map<Long, RatingUserVoteItem> voteVoMap = voteVo.getVoteItems();
+			for (RatingTemplateOptionMapping option : options) {
+				if (voteVoMap.keySet().contains(option.getId())) {
+					item.put("option_" + option.getId(), option.getId());
+				}else{
+					item.put("option_" + option.getId(), "-1");
+				}
+			}
+			rst.add(item);
+		}
+		return rst;
+	}
+	
+	@Override
+	public Map<String, Object> getUserRatingVote(Long tmplId, User user) {
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		List<RatingUserVoteVo> voteVos = new ArrayList<RatingUserVoteVo>();
+		
+		RatingTemplate rt = this.templateLogic.findOne(tmplId);
+		RatingUserVote userVote = this.ratingUserVoteLogic.findByRatingIdAndTmplIdAndUserId(
+				rt.getRatingId(), tmplId, user.getId());
+		if (null != userVote) {//已投过票
+			//所有投票数据
+			List<RatingUserVoteItem> voteItems = this.ratingUserVoteItemLogic.findByUserVoteId(userVote.getId());
+			Map<Long, List<RatingUserVoteItem>> voteMap = new HashMap<Long, List<RatingUserVoteItem>>();
+			for (RatingUserVoteItem voteItem : voteItems) {
+				Long key = voteItem.getScorer();
+				List<RatingUserVoteItem> tmpItems = null;
+				if (voteMap.containsKey(key)) {
+					tmpItems = voteMap.get(key);
+				}else {
+					tmpItems = new ArrayList<RatingUserVoteItem>();
+				}
+				tmpItems.add(voteItem);
+				voteMap.put(key, tmpItems);
+			}
+			for (Long key : voteMap.keySet()) {
+				voteVos.add(this.getVoteVo(voteMap.get(key)));
+			}
+		}
+		//所有投票项
+		List<RatingTemplateOptionMapping> options = this.templateOptionMappingLogic.findByTmplId(tmplId);
+		rstMap.put("total", voteVos.size());
+		rstMap.put("rows", this.generateRatingVoteJsonDatasource(voteVos, options));
+		return rstMap;
+	}
+	
+	/**
+	 * 瓶装投票row，一个得分人一行
+	 * @param voteItem
+	 * @param options
+	 * @return
+	 */
+	private RatingUserVoteVo getVoteVo(List<RatingUserVoteItem> voteItems) {
+		RatingUserVoteVo vo = new RatingUserVoteVo();
+		RatingUserVoteItem first = voteItems.get(0);
+		vo.setUserId(first.getScorer());
+		vo.setUserName(this.userLogic.findOne(first.getScorer()).getName());
+		Map<Long, RatingUserVoteItem> itemMap = new HashMap<Long, RatingUserVoteItem>();
+		for (RatingUserVoteItem voteItem : voteItems) {
+			itemMap.put(voteItem.getOptionId(), voteItem);
+		}
+		vo.setVoteItems(itemMap);
+		return vo;
 	}
 }

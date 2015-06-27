@@ -1,9 +1,14 @@
 package com.chinesedreamer.rating.rating.logic;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogicImpl;
 import com.chinesedreamer.rating.rating.model.RatingUserVoteItem;
+import com.chinesedreamer.rating.rating.repository.RatingUserVoteItemRepository;
 
 /**
  * Description: 
@@ -13,5 +18,11 @@ import com.chinesedreamer.rating.rating.model.RatingUserVoteItem;
  */
 @Service
 public class RatingUserVoteItemLogicImpl extends BaseLogicImpl<RatingUserVoteItem, Long> implements RatingUserVoteItemLogic{
+	@Resource
+	private RatingUserVoteItemRepository repository;
+	@Override
+	public List<RatingUserVoteItem> findByUserVoteId(Long userVoteId) {
+		return this.repository.findByUserVoteId(userVoteId);
+	}
 
 }

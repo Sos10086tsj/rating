@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.rating.repository;
 
+import java.util.List;
+
 import com.chinesedreamer.rating.base.jpa.repository.BaseRepository;
 import com.chinesedreamer.rating.rating.model.RatingUserVoteItem;
 
@@ -10,5 +12,5 @@ import com.chinesedreamer.rating.rating.model.RatingUserVoteItem;
  * @version beta
  */
 public interface RatingUserVoteItemRepository extends BaseRepository<RatingUserVoteItem, Long>{
-
+	public List<RatingUserVoteItem> findByUserVoteId(Long userVoteId);
 }

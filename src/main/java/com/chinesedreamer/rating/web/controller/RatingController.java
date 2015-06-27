@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.service.RatingService;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
@@ -112,18 +111,32 @@ public class RatingController {
 	@RequestMapping(value = "rating/vote/{tmplId}",method = RequestMethod.GET)
 	public String showRaringVote(Model model,@PathVariable("tmplId")Long tmplId){
 		model.addAttribute("votePage", this.ratingService.getRatingVotePage(tmplId));
+		model.addAttribute("options", this.ratingService.getTmplOptions(tmplId));
 		return "rating/ratingVote";
 	}
 	
 	/**
-	 * 获取模板相应的得分项
+	 * 获取用户已投数据
 	 * @param model
 	 * @param tmplId
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "rating/vote/options/{tmplId}",method = RequestMethod.GET)
-	public List<SelectVo> getRatingOptions(Model model,@PathVariable("tmplId")Long tmplId){
-		return this.ratingService.getTmplOptions(tmplId);
+	@RequestMapping(value = "rating/vote/user/{tmplId}",method = RequestMethod.GET)
+	public Map<String, Object> userRaringVote(Model model,@PathVariable("tmplId")Long tmplId){
+		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
+		return this.ratingService.getUserRatingVote(tmplId, user);
 	}
+	
+//	/**
+//	 * 获取模板相应的得分项
+//	 * @param model
+//	 * @param tmplId
+//	 * @return
+//	 */
+//	@ResponseBody
+//	@RequestMapping(value = "rating/vote/options/{tmplId}",method = RequestMethod.GET)
+//	public List<SelectVo> getRatingOptions(Model model,@PathVariable("tmplId")Long tmplId){
+//		return this.ratingService.getTmplOptions(tmplId);
+//	}
 }

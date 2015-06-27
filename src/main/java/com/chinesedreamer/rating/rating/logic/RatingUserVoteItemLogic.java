@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.rating.logic;
 
+import java.util.List;
+
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogic;
 import com.chinesedreamer.rating.rating.model.RatingUserVoteItem;
 
@@ -10,5 +12,5 @@ import com.chinesedreamer.rating.rating.model.RatingUserVoteItem;
  * @version beta
  */
 public interface RatingUserVoteItemLogic extends BaseLogic<RatingUserVoteItem, Long>{
-
+	public List<RatingUserVoteItem> findByUserVoteId(Long userVoteId);
 }
