@@ -17,7 +17,8 @@
 		pagination="true"  
         rownumbers="true" 
         fitcolumns="true" 
-        singleselect="true">
+        singleselect="true"
+        onClickRow = "rating.userrating.onClickRow">
         
         <thead>
         	<tr>
@@ -35,7 +36,9 @@
 	</table>
 	<div id="js_rating_vote_tb" style="height:auto">
 		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="rating.userrating.addVote()">增加</a>
-		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="rating.userrating.removeVote()">删除</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="rating.userrating.save()">Accept</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="rating.userrating.vote()">提交</a>
 	</div>
 	
 </body>

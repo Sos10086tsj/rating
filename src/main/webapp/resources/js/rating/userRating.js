@@ -11,8 +11,8 @@ rating.userrating = {
 				}else{
 					symble = "(未投)";
 				}
-				//var single = "<a href='" + ctx + "/rating/vote/'" + vote.id + ">" + vote.name + symble + "</a>  ";
-				var single  = "<a href=\"javascript(0)\" onclick=\"rating.addTab('" + vote.name + "投票','" + ctx + "/rating/vote/" + vote.id + "')\">" 
+				//var single = "<a href='" + ctx + "/rating/vote/'" + vote.id + ">" + vote.name + symble + "</a>  ";<A href="javascript:void(0)
+				var single  = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('" + vote.name + "投票','" + ctx + "/rating/vote/" + vote.id + "')\">" 
 				+ vote.name + symble + "</a>        ";
 				link += single;
 			}
@@ -21,6 +21,16 @@ rating.userrating = {
 	},
 	
 	editIndex : undefined,
+	onClickRow : function(){
+		if (rating.userrating.editIndex != index){
+			if (rating.userrating.endEditing()){
+				$('#js_rating_vote_dg').datagrid('selectRow', index).datagrid('beginEdit', index);
+					rating.userrating.editIndex = index;
+			} else {
+				$('#js_rating_vote_dg').datagrid('selectRow', rating.userrating.editIndex);
+			}
+		}
+	},
 	endEditing:	function (){
 		if (rating.userrating.editIndex == undefined){return true}
 		if ($('#js_rating_vote_dg').datagrid('validateRow', rating.userrating.editIndex)){
@@ -42,5 +52,34 @@ rating.userrating = {
 			rating.userrating.editIndex = $('#js_rating_vote_dg').datagrid('getRows').length-1;
 			$('#js_rating_vote_dg').datagrid('selectRow', rating.userrating.editIndex).datagrid('beginEdit', rating.userrating.editIndex);
 		}
+	},
+	//删除行
+	removeVote: function(){
+		if (rating.userrating.editIndex == undefined){return}
+			$('#js_rating_vote_dg').datagrid('cancelEdit', rating.userrating.editIndex).datagrid('deleteRow', rating.userrating.editIndex);
+			rating.userrating.editIndex = undefined;
+	},
+	//保存
+	save: function(){
+		if (rating.userrating.endEditing()){
+			$('#js_rating_vote_dg').datagrid('acceptChanges');
+		}
+	},
+	//提交
+	vote:function(){
+		rating.userrating.endEditing();
+		var dg = $("#js_rating_vote_dg");
+		var rows = dg.datagrid("getRows");
+		for(var i=0;i<rows.length;i++){
+			alert(rows[i].itemid);
+		}
 	}
 };
+
+$(function(){
+//	$("#js_rating_vote_dg").datagrid({
+//		onClickRow: function (rowIndex, rowData){
+//			
+//		}
+//	});
+});
