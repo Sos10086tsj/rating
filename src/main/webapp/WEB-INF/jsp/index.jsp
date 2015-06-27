@@ -14,7 +14,7 @@
 	<!-- 菜单结束 -->
 	</div>
 	<div data-options="region:'center',title:'评分系统',iconCls:'icon-ok'">
-		<div class="easyui-tabs" data-options="fit:true,border:false,plain:true">
+		<div class="easyui-tabs" data-options="fit:true,border:false,plain:true" id="js_tabs">
 			<div title="欢迎" data-options="href:'${ctx }/welcome'" style="padding:10px"></div>
 		</div>
 	</div>

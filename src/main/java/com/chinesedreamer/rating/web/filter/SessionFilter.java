@@ -48,8 +48,6 @@ public class SessionFilter implements Filter{
 		SessionContext.setContext(request);
 		if (StringUtils.isNotEmpty(uri) && !(uri.equals("/index") || uri.equals("/login")) && !isStaticResourceRequest(uri)) {
 			this.userSessionService.validateSession();
-			String username = this.userSessionService.getCurrentUserSession().getUsername();
-			httpServletRequest.getSession().setAttribute("menus", this.userService.getUserMenus(username));
 		}
 		chain.doFilter(request, response);
 	}

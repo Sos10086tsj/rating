@@ -8,7 +8,6 @@
 <title>评分考核系统</title>
 </head>
 <body>
-	<rating:menu/>
 	<!-- table 维护用户 -->
 	<%@include file="userList.jsp"%>
 

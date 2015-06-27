@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/jsp/base/taglibs.jsp" %>
 <!-- jQuery -->
-<script type="text/javascript" src="${ctx}/resources/components/jQuery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="${ctx}/resources/components/jQuery/jquery.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/rating.js"></script>
 <script>
 	var ctx = '${ctx}';

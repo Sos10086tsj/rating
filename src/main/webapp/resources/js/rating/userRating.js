@@ -10,7 +10,9 @@ rating.userrating = {
 				}else{
 					symble = "(未投)";
 				}
-				var single = "<a href='" + ctx + "/rating/vote/'" + vote.id + ">" + vote.name + symble + "</a>  ";
+				//var single = "<a href='" + ctx + "/rating/vote/'" + vote.id + ">" + vote.name + symble + "</a>  ";
+				var single  = "<a href=\"javascript(0)\" onclick=\"rating.addTab('" + vote.name + "投票','" + ctx + "/rating/vote/" + vote.id + "')\">" 
+				+ vote.name + symble + "</a>        ";
 				link += single;
 			}
 		}
