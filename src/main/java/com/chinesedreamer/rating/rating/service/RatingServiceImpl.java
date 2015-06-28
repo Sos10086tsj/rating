@@ -15,6 +15,7 @@ import com.chinesedreamer.rating.rating.logic.RatingScoreLogic;
 import com.chinesedreamer.rating.rating.logic.RatingUserVoteItemLogic;
 import com.chinesedreamer.rating.rating.logic.RatingUserVoteLogic;
 import com.chinesedreamer.rating.rating.model.Rating;
+import com.chinesedreamer.rating.rating.model.RatingScore;
 import com.chinesedreamer.rating.rating.model.RatingStatus;
 import com.chinesedreamer.rating.rating.model.RatingUserVote;
 import com.chinesedreamer.rating.rating.model.RatingUserVoteItem;
@@ -230,5 +231,14 @@ public class RatingServiceImpl implements RatingService{
 		}
 		vo.setVoteItems(itemMap);
 		return vo;
+	}
+	@Override
+	public List<SelectVo> getAllScores() {
+		List<SelectVo> vos = new ArrayList<SelectVo>();
+		List<RatingScore> scores = this.scoreLogic.findAll();
+		for (RatingScore score : scores) {
+			vos.add(new SelectVo(score.getId().toString(), score.getName()));
+		}
+		return vos;
 	}
 }

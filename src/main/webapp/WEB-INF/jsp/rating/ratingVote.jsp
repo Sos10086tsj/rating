@@ -11,7 +11,7 @@
 	<table 	id="js_rating_vote_dg" 
 		title="投票：${votePage.ratingName }-${votePage.tmplName }" 
 		class="easyui-datagrid" 
-		style="width:1000px; height: 400px; padding-left: 200px;" 
+		style="width:${gridWidth}px; height: 600px; padding-left: 200px;" 
 		url="${ctx }/rating/vote/user/${votePage.tmplId}" 
 		toolbar="#js_rating_vote_tb" 
 		pagination="true"  
@@ -22,22 +22,43 @@
         
         <thead>
         	<tr>
-        		<th data-options="field:'itemid',width:80">Item ID</th>
+        		<th data-options="field:'scorerId',width:120,
+        				formatter:function(value,row){
+							return row.label;
+						},
+						editor:{
+							type:'combobox',
+							options:{
+								data:${usersJson },
+								valueField:'value',
+								textField:'label',
+								panelHeight:'auto',
+								required:true
+							}
+						}">姓名</th>
         		<c:forEach items="${options }" var="item">
-        			<th field="${item.value }" editor="numberbox" width="50">${item.label }</th>
+        			<th data-options="field:'${item.value }',width:100,
+        				formatter:function(value,row){
+							return row.label;
+						},editor:{
+							type:'combobox',
+							options:{
+								valueField:'value',
+								textField:'label',
+								data : ${scores },
+								required:true
+							}
+						}">${item.label }</th>
+        			<%--<th class="js_score_option" field="${item.value }" formatter="rating.userrating.scoreFormat" width="50"
+        			editor="{'type':'combobox','options':{valueField:'value',textField:'label',required:true,data='eval(${options})'}"
+        			>${item.label }</th> --%>
         		</c:forEach>
-        		<%--<th field="id"  width="50">ID#</th>  
-        		<th field="name"  width="50">投票事件</th>
-        		<th field="effFrom" formatter="rating.dateFormat" width="50">开始时间</th>
-        		<th field="effTo" formatter="rating.dateFormat" width="50">结束时间</th>
-        		<th field="templates" formatter="rating.userrating.tempalteFormat" width="50">投票</th> --%>
         	</tr>
         </thead>
 	</table>
 	<div id="js_rating_vote_tb" style="height:auto">
 		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="rating.userrating.addVote()">增加</a>
 		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="rating.userrating.removeVote()">删除</a>
-		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="rating.userrating.save()">Accept</a>
 		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="rating.userrating.vote()">提交</a>
 	</div>
 	

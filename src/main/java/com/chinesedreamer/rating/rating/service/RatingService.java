@@ -59,4 +59,10 @@ public interface RatingService {
 	 * @return
 	 */
 	public Map<String, Object> getUserRatingVote(Long tmplId,User user);
+	
+	/**
+	 * 获取得分选项
+	 * @return
+	 */
+	public List<SelectVo> getAllScores();
 }

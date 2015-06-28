@@ -21,7 +21,7 @@ rating.userrating = {
 	},
 	
 	editIndex : undefined,
-	onClickRow : function(){
+	onClickRow : function(index){
 		if (rating.userrating.editIndex != index){
 			if (rating.userrating.endEditing()){
 				$('#js_rating_vote_dg').datagrid('selectRow', index).datagrid('beginEdit', index);
@@ -58,12 +58,6 @@ rating.userrating = {
 		if (rating.userrating.editIndex == undefined){return}
 			$('#js_rating_vote_dg').datagrid('cancelEdit', rating.userrating.editIndex).datagrid('deleteRow', rating.userrating.editIndex);
 			rating.userrating.editIndex = undefined;
-	},
-	//保存
-	save: function(){
-		if (rating.userrating.endEditing()){
-			$('#js_rating_vote_dg').datagrid('acceptChanges');
-		}
 	},
 	//提交
 	vote:function(){

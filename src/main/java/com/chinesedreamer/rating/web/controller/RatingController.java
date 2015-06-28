@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
+import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.service.RatingService;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
@@ -111,7 +113,12 @@ public class RatingController {
 	@RequestMapping(value = "rating/vote/{tmplId}",method = RequestMethod.GET)
 	public String showRaringVote(Model model,@PathVariable("tmplId")Long tmplId){
 		model.addAttribute("votePage", this.ratingService.getRatingVotePage(tmplId));
-		model.addAttribute("options", this.ratingService.getTmplOptions(tmplId));
+		List<SelectVo> optiosn = this.ratingService.getTmplOptions(tmplId);
+		model.addAttribute("options", optiosn);
+		model.addAttribute("gridWidth", optiosn.size() * 100 + 120);
+		List<SelectVo> users = this.userService.lookupUser("");
+		model.addAttribute("usersJson", JSON.toJSONString(users).replace("\"", "'"));
+		model.addAttribute("scores", JSON.toJSONString(this.ratingService.getAllScores()).replace("\"", "'"));
 		return "rating/ratingVote";
 	}
 	

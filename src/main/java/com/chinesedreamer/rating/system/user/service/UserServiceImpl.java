@@ -221,7 +221,12 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<SelectVo> lookupUser(String name) {
 		List<SelectVo> vos = new ArrayList<SelectVo>();
-		List<User> users = this.logic.findByStatusAndNameLike(UserStatus.ACTIVE, name);
+		List<User> users = new ArrayList<User>();
+		if (StringUtils.isEmpty(name)) {
+			users = this.logic.findAll();
+		}else {
+			users = this.logic.findByStatusAndNameLike(UserStatus.ACTIVE, name.trim());
+		}
 		for (User user : users) {
 			vos.add(new SelectVo(user.getId().toString(), 
 					user.getName() + "(" + this.userGroupLogic.findOne(user.getGroupId()).getName() + ")"

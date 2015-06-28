@@ -1,6 +1,5 @@
 package com.chinesedreamer.rating.web.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +7,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -92,12 +90,9 @@ public class UserController {
 	
 	/*********** user 部分 *************/
 	@ResponseBody
-	@RequestMapping(value = "user/query",method = RequestMethod.POST)
+	@RequestMapping(value = "user/query",method = RequestMethod.GET)
 	public List<SelectVo> queryUser(Model model, HttpServletRequest request){
 		String name = request.getParameter("name");
-		if (StringUtils.isEmpty(name)) {
-			return new ArrayList<SelectVo>();
-		}
-		return this.userService.lookupUser(name.trim());
+		return this.userService.lookupUser(name);
 	}
 }
