@@ -36,8 +36,17 @@ var rating = {
     		//_refresh_ifram.src = refresh_url;  
     		_refresh_ifram.contentWindow.location.href=refresh_url;  
     	}
+	},
+	
+	formatCombobox:function(value, datasource){
+		var ds = eval(datasource);
+		for(var i=0; i < ds.length ; i++){
+        	if(ds[i].value == value){
+        		return ds[i].label;
+        	}
+   		}
+    	return value;
 	}
-
 };
 
 $(function(){

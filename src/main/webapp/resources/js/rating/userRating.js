@@ -21,7 +21,7 @@ rating.userrating = {
 	},
 	
 	editIndex : undefined,
-	onClickRow : function(index){
+	onDbClickRow : function(index){
 		if (rating.userrating.editIndex != index){
 			if (rating.userrating.endEditing()){
 				$('#js_rating_vote_dg').datagrid('selectRow', index).datagrid('beginEdit', index);
@@ -39,14 +39,18 @@ rating.userrating = {
 //			var ed = $('#js_rating_vote_dg').datagrid('getEditor', {index:rating.userrating.editIndex,field:'itemid'});
 //			var productname = $(ed.target).combobox('getText');
 //			$('#js_rating_vote_dg').datagrid('getRows')[rating.userrating.editIndex]['productname'] = productname;
-//			$('#js_rating_vote_dg').datagrid('endEdit', rating.userrating.editIndex);
+			$('#js_rating_vote_dg').datagrid('endEdit', rating.userrating.editIndex);
 			rating.userrating.editIndex = undefined;
 			return true;
 		} else {
 			return false;
 		}
 	},
-	
+	accept:function(){
+		if (rating.userrating.endEditing()){
+			$("#js_rating_vote_dg").datagrid('acceptChanges');
+		}
+	},
 	//增加一个投票
 	addVote:function(){
 		if (rating.userrating.endEditing()){
@@ -63,24 +67,33 @@ rating.userrating = {
 		$('#js_rating_vote_dg').datagrid('cancelEdit', rating.userrating.editIndex).datagrid('deleteRow', rating.userrating.editIndex);
 		rating.userrating.editIndex = undefined;
 	},
+//	accept: function(){
+//		if (rating.userrating.endEditing()){
+//			$('#js_rating_vote_dg').datagrid('acceptChanges');
+//		}
+//	},
 	//提交
 	vote:function(){
 		rating.userrating.endEditing();
 		var datasource = eval($("#js_option_json_hidden").html());
 		var dg = $("#js_rating_vote_dg");
+		dg.datagrid('acceptChanges');
 		var rows = dg.datagrid("getRows");
+		var items = new Array();
 		for(var i=0;i<rows.length;i++){
+			var item = {};
 			var rowData = rows[i];
-//			for(var j=0; j<datasource.length; j++){
-//				var property = datasource[j];
-//				//TODO
-//				console.log("value:" + rowData.property);
-//			}
 			for(attribute in rowData){
-				console.log(obj[attribute]);
-				//TODO 封装后提交
+				item[attribute] = rowData[attribute];
 			}
+			items.push(item);
 		}
+		//console.log("data:" + JSON.stringify(items));
+		$.post(ctx + '/rating/userVote/' + $("#js_tmpl_id_hidden").html(),{"votes":JSON.stringify(items)}, 
+			function(data, textStatus, jqXHR){
+				alert("保存成功");
+			}
+		);
 	}
 };
 

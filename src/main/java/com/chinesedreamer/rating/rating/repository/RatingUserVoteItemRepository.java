@@ -13,4 +13,5 @@ import com.chinesedreamer.rating.rating.model.RatingUserVoteItem;
  */
 public interface RatingUserVoteItemRepository extends BaseRepository<RatingUserVoteItem, Long>{
 	public List<RatingUserVoteItem> findByUserVoteId(Long userVoteId);
+	public RatingUserVoteItem findByUserVoteIdAndOptionIdAndScorer(Long userVoteId,Long optionId, Long scorer);
 }

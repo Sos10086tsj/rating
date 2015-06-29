@@ -1,9 +1,12 @@
 package com.chinesedreamer.rating.rating.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -153,7 +156,9 @@ public class RatingServiceImpl implements RatingService{
 		List<OptionTitle> vos = new ArrayList<OptionTitle>();
 		List<RatingTemplateOptionMapping> options = this.templateOptionMappingLogic.findByTmplId(tmplId);
 		for (RatingTemplateOptionMapping option : options) {
-			vos.add(new OptionTitle("option_" + option.getOptionId(), option.getOption().getName(), option.getOption().getName().length() * 15));
+			String name = option.getOption().getName();
+			Integer width = (name.length() > 4 ? name.length() * 20 : 4 * 20);
+			vos.add(new OptionTitle("option_" + option.getOptionId(), name , width));
 		}
 		return vos;
 	}
@@ -172,11 +177,12 @@ public class RatingServiceImpl implements RatingService{
 			item.put("scorerName", voteVo.getUserName());
 			Map<Long, RatingUserVoteItem> voteVoMap = voteVo.getVoteItems();
 			for (RatingTemplateOptionMapping option : options) {
-				if (voteVoMap.keySet().contains(option.getId())) {
-					item.put("option_" + option.getId(), option.getId());
-				}else{
-					item.put("option_" + option.getId(), "-1");
+				if (voteVoMap.keySet().contains(option.getOptionId())) {
+					item.put("option_" + option.getOptionId(), voteVoMap.get(option.getOptionId()).getScoreId());
 				}
+//				else{
+//					item.put("option_" + option.getId(), "-1");
+//				}
 			}
 			rst.add(item);
 		}
@@ -248,9 +254,44 @@ public class RatingServiceImpl implements RatingService{
 	public void submitVote(String datasource, Long tmplId, User user){
 		
 		JSONArray jsonArray = JSONArray.parseArray(datasource);
+		if (null == jsonArray || jsonArray.size() == 0) {
+			return;
+		}
+		//投票记录
+		RatingTemplate template = this.templateLogic.findOne(tmplId);
+		RatingUserVote vote = this.ratingUserVoteLogic.findByRatingIdAndTmplIdAndUserId(template.getRatingId(), tmplId, user.getId());
+		if (null == vote) {
+			vote = new RatingUserVote();
+		}	
+		vote.setGroupId(user.getGroupId());
+		vote.setPositionId(user.getPositionId());
+		vote.setRatingId(template.getRatingId());
+		vote.setTmplId(tmplId);
+		vote.setUserId(user.getId());
+		vote.setVoteDate(new Date());
+		this.ratingUserVoteLogic.save(vote);
+		//投票具体结果
+		Set<RatingUserVoteItem> voteItems = new HashSet<RatingUserVoteItem>();
+		List<RatingTemplateOptionMapping> options = this.templateOptionMappingLogic.findByTmplId(tmplId);
 		for (Object object : jsonArray) {
-			JSONObject vote = (JSONObject)object;
-			
+			JSONObject voteRow = (JSONObject)object;
+			Long scorerId = voteRow.getLong("scorerId");
+			for (RatingTemplateOptionMapping option : options) {
+				if (null != voteRow.getLong("option_" + option.getOptionId())) {
+					RatingUserVoteItem vi = this.ratingUserVoteItemLogic.findByUserVoteIdAndOptionIdAndScorer(vote.getId(), option.getId(),scorerId);
+					if (null == vi) {
+						vi = new RatingUserVoteItem();
+					}
+					vi.setUserVoteId(vote.getId());
+					vi.setOptionId(option.getOptionId());
+					vi.setScoreId(voteRow.getLong("option_" + option.getOptionId()));
+					vi.setScorer(scorerId);
+					voteItems.add(vi);
+				}
+			}
+		}
+		for (RatingUserVoteItem voteItem : voteItems) {
+			this.ratingUserVoteItemLogic.save(voteItem);
 		}
 	}
 }

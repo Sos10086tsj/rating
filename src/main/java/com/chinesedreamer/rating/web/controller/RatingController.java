@@ -149,15 +149,15 @@ public class RatingController {
 	 * @param request
 	 * @return
 	 */
+	@ResponseBody
 	@RequestMapping(value = "rating/userVote/{tmplId}",method = RequestMethod.POST)
-	public String userVote(Model model, HttpServletRequest request){
+	public void userVote(Model model,@PathVariable("tmplId")Long tmplId, HttpServletRequest request){
+		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
 		//1. 获取投票数据列表
-		String datasource = request.getParameter("datasource");
+		String datasource = request.getParameter("votes");
 		if (StringUtils.isNotEmpty(datasource)) {
-			this.ratingService.submitVote(datasource);
+			this.ratingService.submitVote(datasource,tmplId,user);
 		}
-		//2. 保存
-		return "redirect/:rating/list";
 	}
 	
 //	/**
