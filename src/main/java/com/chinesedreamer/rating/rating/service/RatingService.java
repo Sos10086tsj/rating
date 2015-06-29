@@ -3,6 +3,7 @@ package com.chinesedreamer.rating.rating.service;
 import java.util.List;
 import java.util.Map;
 
+import com.chinesedreamer.rating.common.vo.OptionTitle;
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
@@ -50,7 +51,7 @@ public interface RatingService {
 	 * @param tmplId
 	 * @return
 	 */
-	public List<SelectVo> getTmplOptions(Long tmplId);
+	public List<OptionTitle> getTmplOptions(Long tmplId);
 	
 	/**
 	 * 获取用户投票信息
@@ -65,4 +66,12 @@ public interface RatingService {
 	 * @return
 	 */
 	public List<SelectVo> getAllScores();
+	
+	/**
+	 * 提交投票
+	 * @param datasource
+	 * @param tmplId
+	 * @param user
+	 */
+	public void submitVote(String datasource, Long tmplId, User user);
 }

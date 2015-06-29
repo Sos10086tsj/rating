@@ -37,7 +37,7 @@
 							}
 						}">姓名</th>
         		<c:forEach items="${options }" var="item">
-        			<th data-options="field:'${item.value }',width:100,
+        			<th data-options="field:'${item.value }',width:${item.width },
         				formatter:function(value,row){
 							return row.label;
 						},editor:{
@@ -61,7 +61,7 @@
 		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="rating.userrating.removeVote()">删除</a>
 		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="rating.userrating.vote()">提交</a>
 	</div>
-	
+<label id="js_option_json_hidden" style="display:none;">${optionsJson }</label>	
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
 <script type="text/javascript" src="${ctx}/resources/js/rating/userRating.js"></script>

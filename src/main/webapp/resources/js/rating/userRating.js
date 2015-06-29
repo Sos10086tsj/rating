@@ -32,7 +32,9 @@ rating.userrating = {
 		}
 	},
 	endEditing:	function (){
-		if (rating.userrating.editIndex == undefined){return true}
+		if (rating.userrating.editIndex == undefined){
+			return true;
+		}
 		if ($('#js_rating_vote_dg').datagrid('validateRow', rating.userrating.editIndex)){
 //			var ed = $('#js_rating_vote_dg').datagrid('getEditor', {index:rating.userrating.editIndex,field:'itemid'});
 //			var productname = $(ed.target).combobox('getText');
@@ -55,17 +57,29 @@ rating.userrating = {
 	},
 	//删除行
 	removeVote: function(){
-		if (rating.userrating.editIndex == undefined){return}
-			$('#js_rating_vote_dg').datagrid('cancelEdit', rating.userrating.editIndex).datagrid('deleteRow', rating.userrating.editIndex);
-			rating.userrating.editIndex = undefined;
+		if (rating.userrating.editIndex == undefined){
+			return;
+		};
+		$('#js_rating_vote_dg').datagrid('cancelEdit', rating.userrating.editIndex).datagrid('deleteRow', rating.userrating.editIndex);
+		rating.userrating.editIndex = undefined;
 	},
 	//提交
 	vote:function(){
 		rating.userrating.endEditing();
+		var datasource = eval($("#js_option_json_hidden").html());
 		var dg = $("#js_rating_vote_dg");
 		var rows = dg.datagrid("getRows");
 		for(var i=0;i<rows.length;i++){
-			alert(rows[i].itemid);
+			var rowData = rows[i];
+//			for(var j=0; j<datasource.length; j++){
+//				var property = datasource[j];
+//				//TODO
+//				console.log("value:" + rowData.property);
+//			}
+			for(attribute in rowData){
+				console.log(obj[attribute]);
+				//TODO 封装后提交
+			}
 		}
 	}
 };

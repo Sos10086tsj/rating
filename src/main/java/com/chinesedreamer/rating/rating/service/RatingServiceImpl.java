@@ -9,6 +9,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.chinesedreamer.rating.common.vo.OptionTitle;
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.logic.RatingLogic;
 import com.chinesedreamer.rating.rating.logic.RatingScoreLogic;
@@ -146,11 +149,11 @@ public class RatingServiceImpl implements RatingService{
 		return vo;
 	}
 	@Override
-	public List<SelectVo> getTmplOptions(Long tmplId) {
-		List<SelectVo> vos = new ArrayList<SelectVo>();
+	public List<OptionTitle> getTmplOptions(Long tmplId) {
+		List<OptionTitle> vos = new ArrayList<OptionTitle>();
 		List<RatingTemplateOptionMapping> options = this.templateOptionMappingLogic.findByTmplId(tmplId);
 		for (RatingTemplateOptionMapping option : options) {
-			vos.add(new SelectVo("option_" + option.getOptionId(), option.getOption().getName()));
+			vos.add(new OptionTitle("option_" + option.getOptionId(), option.getOption().getName(), option.getOption().getName().length() * 15));
 		}
 		return vos;
 	}
@@ -240,5 +243,14 @@ public class RatingServiceImpl implements RatingService{
 			vos.add(new SelectVo(score.getId().toString(), score.getName()));
 		}
 		return vos;
+	}
+	@Override
+	public void submitVote(String datasource, Long tmplId, User user){
+		
+		JSONArray jsonArray = JSONArray.parseArray(datasource);
+		for (Object object : jsonArray) {
+			JSONObject vote = (JSONObject)object;
+			
+		}
 	}
 }

@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.chinesedreamer.rating.common.vo.OptionTitle;
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.service.RatingService;
@@ -113,12 +116,17 @@ public class RatingController {
 	@RequestMapping(value = "rating/vote/{tmplId}",method = RequestMethod.GET)
 	public String showRaringVote(Model model,@PathVariable("tmplId")Long tmplId){
 		model.addAttribute("votePage", this.ratingService.getRatingVotePage(tmplId));
-		List<SelectVo> optiosn = this.ratingService.getTmplOptions(tmplId);
-		model.addAttribute("options", optiosn);
-		model.addAttribute("gridWidth", optiosn.size() * 100 + 120);
+		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+		Integer totalWidth = 120;
+		for (OptionTitle optionTitle : options) {
+			totalWidth += optionTitle.getWidth();
+		}
+		model.addAttribute("options", options);
+		model.addAttribute("gridWidth", totalWidth);
 		List<SelectVo> users = this.userService.lookupUser("");
 		model.addAttribute("usersJson", JSON.toJSONString(users).replace("\"", "'"));
 		model.addAttribute("scores", JSON.toJSONString(this.ratingService.getAllScores()).replace("\"", "'"));
+		model.addAttribute("optionsJson", JSON.toJSONString(options));
 		return "rating/ratingVote";
 	}
 	
@@ -133,6 +141,23 @@ public class RatingController {
 	public Map<String, Object> userRaringVote(Model model,@PathVariable("tmplId")Long tmplId){
 		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
 		return this.ratingService.getUserRatingVote(tmplId, user);
+	}
+	
+	/**
+	 * 用户提交投票
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "rating/userVote/{tmplId}",method = RequestMethod.POST)
+	public String userVote(Model model, HttpServletRequest request){
+		//1. 获取投票数据列表
+		String datasource = request.getParameter("datasource");
+		if (StringUtils.isNotEmpty(datasource)) {
+			this.ratingService.submitVote(datasource);
+		}
+		//2. 保存
+		return "redirect/:rating/list";
 	}
 	
 //	/**
