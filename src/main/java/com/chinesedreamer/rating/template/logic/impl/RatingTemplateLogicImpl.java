@@ -63,6 +63,7 @@ public class RatingTemplateLogicImpl extends BaseLogicImpl<RatingTemplate, Long>
 			RatingTemplate rt = new RatingTemplate();
 			rt.setName(rst.getName());
 			rt.setRatingId(rating.getId());
+			rt.setCode(rst.getCode());
 			this.repository.save(rt);
 			//2. 鎶曠エ浜烘暟鎹繚瀛�			
 			List<RatingSuppTemplateVoter> voters = this.suppTemplateVoterRepository.findBySuppTmplId(suppTemplateId);

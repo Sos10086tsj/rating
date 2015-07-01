@@ -25,4 +25,7 @@ public @Getter @Setter class RatingSuppTemplate extends BaseVersionEntity<Long>{
 	private static final long serialVersionUID = -5217988245551811317L;
 	@Column
 	private String name;//卷名
+	
+	@Column
+	private String code;
 }

@@ -14,7 +14,7 @@ import lombok.Setter;
 public @Getter @Setter class RptScore {
 	//得分人信息
 	private String name;//得分人姓名
-	private Long groupId;//得分人所在组
-	private Integer positionId;//得分人所在职位
+	private String group;//得分人所在组
+	private String position;//得分人所在职位
 	private Map<String, Integer> scores;//得分
 }

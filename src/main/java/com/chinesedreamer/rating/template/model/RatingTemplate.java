@@ -28,4 +28,7 @@ public @Getter @Setter class RatingTemplate extends BaseEntity<Long>{
 	
 	@Column(name = "rating_id")//鍏宠仈鐨勬姇绁ㄤ簨椤�	
 	private Long ratingId;
+	
+	@Column
+	private String code;
 }

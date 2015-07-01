@@ -10,5 +10,5 @@ import com.chinesedreamer.rating.template.model.RatingTmplOptionWeight;
  * @version beta
  */
 public interface RatingTmplOptionWeightRepository extends BaseRepository<RatingTmplOptionWeight, Long>{
-
+	public RatingTmplOptionWeight findByTmplIdAndOptionId(Long tmplId,Long optionId);
 }
