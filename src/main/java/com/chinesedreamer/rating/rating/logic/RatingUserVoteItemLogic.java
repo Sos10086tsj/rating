@@ -14,4 +14,10 @@ import com.chinesedreamer.rating.rating.model.RatingUserVoteItem;
 public interface RatingUserVoteItemLogic extends BaseLogic<RatingUserVoteItem, Long>{
 	public List<RatingUserVoteItem> findByUserVoteId(Long userVoteId);
 	public RatingUserVoteItem findByUserVoteIdAndOptionIdAndScorer(Long userVoteId, Long optionId, Long scorer);
+	/**
+	 * 获取某次投票得分的用户
+	 * @param voteId
+	 * @return
+	 */
+	public List<Long> getScores(Long voteId);
 }

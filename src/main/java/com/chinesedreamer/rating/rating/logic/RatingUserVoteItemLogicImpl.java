@@ -28,5 +28,10 @@ public class RatingUserVoteItemLogicImpl extends BaseLogicImpl<RatingUserVoteIte
 	public RatingUserVoteItem findByUserVoteIdAndOptionIdAndScorer(Long userVoteId,Long optionId, Long scorer) {
 		return this.repository.findByUserVoteIdAndOptionIdAndScorer(userVoteId, optionId,scorer);
 	}
+	@Override
+	public List<Long> getScores(Long voteId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

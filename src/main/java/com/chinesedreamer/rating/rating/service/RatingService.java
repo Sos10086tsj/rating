@@ -9,6 +9,7 @@ import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingPageVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
+import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
 import com.chinesedreamer.rating.system.user.model.User;
 
 /**
@@ -74,4 +75,11 @@ public interface RatingService {
 	 * @param user
 	 */
 	public void submitVote(String datasource, Long tmplId, User user);
+	
+	/**
+	 * 获取统计结果
+	 * @param tmplId
+	 * @return
+	 */
+	public RptVo showRpt(Long tmplId);
 }

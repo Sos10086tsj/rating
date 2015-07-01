@@ -30,6 +30,8 @@ import com.chinesedreamer.rating.rating.vo.RatingPageVo;
 import com.chinesedreamer.rating.rating.vo.RatingTemplateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVoteVo;
+import com.chinesedreamer.rating.rating.vo.rpt.RptScore;
+import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
 import com.chinesedreamer.rating.system.user.logic.UserLogic;
 import com.chinesedreamer.rating.system.user.model.User;
 import com.chinesedreamer.rating.template.logic.RatingSuppOptionLogic;
@@ -286,6 +288,9 @@ public class RatingServiceImpl implements RatingService{
 					vi.setOptionId(option.getOptionId());
 					vi.setScoreId(voteRow.getLong("option_" + option.getOptionId()));
 					vi.setScorer(scorerId);
+					User scorer = this.userLogic.findOne(scorerId);
+					vi.setScorerGroup(scorer.getGroupId());
+					vi.setScorerPosition(scorer.getPositionId());
 					voteItems.add(vi);
 				}
 			}
@@ -293,5 +298,45 @@ public class RatingServiceImpl implements RatingService{
 		for (RatingUserVoteItem voteItem : voteItems) {
 			this.ratingUserVoteItemLogic.save(voteItem);
 		}
+	}
+	@Override
+	public RptVo showRpt(Long tmplId) {
+		RptVo vo = new RptVo();
+		RatingTemplate rt = this.templateLogic.findOne(tmplId);
+		Long ratingId = rt.getRatingId();
+		Rating rating = this.logic.findOne(ratingId);
+		vo.setName(rating.getName());
+		vo.setFrom(rating.getEffFrom());
+		vo.setTo(rating.getEffTo());
+		vo.setStatus(rating.getStatus().toString());
+		//2. 获取统计结果rows
+		//2.1 找到所有的投票记录
+		List<RatingUserVote> userVotes = this.ratingUserVoteLogic.findByTmplId(tmplId);
+		List<Map<String, Object>> tmpMaps = this.getUserVoteMaps(userVotes);
+		
+		vo.setVoterNum(voterNum);
+		vo.setRptVos(rptVos);
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	private List<Map<String, Object>> getUserVoteMaps(Long tmplId) {
+		List<RatingUserVote> userVotes = this.ratingUserVoteLogic.findByTmplId(tmplId);
+		
+		Map<Long, List<Map<Object, Object>>> userMap = new HashMap<Long, List<Map<Object, Object>>>();
+		
+		
+		for (RatingUserVote userVote : userVotes) {
+			Set<Long> finishedUsers = new HashSet<Long>();
+			List<RatingUserVoteItem> voteItems = this.ratingUserVoteItemLogic.findByUserVoteId(userVote.getId());
+			for (RatingUserVoteItem voteItem : voteItems) {
+				if (condition) {
+					
+				}
+			}
+		}
+		//根据用户统计数据结束
+
+		return tmpMaps;
 	}
 }

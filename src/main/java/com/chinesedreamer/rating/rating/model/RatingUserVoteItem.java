@@ -35,4 +35,10 @@ public @Getter @Setter class RatingUserVoteItem extends BaseEntity<Long>{
 	
 	@Column
 	private Long scorer;//得分人
+	
+	@Column(name = "scorer_group")
+	private Long scorerGroup;//得分人所在组
+	
+	@Column(name = "scorer_position")
+	private Integer scorerPosition;//得分人所在职位
 }

@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.rating.logic;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -22,6 +24,10 @@ public class RatingUserVoteLogicImpl extends BaseLogicImpl<RatingUserVote, Long>
 	public RatingUserVote findByRatingIdAndTmplIdAndUserId(Long ratingId,
 			Long tmplId, Long userId) {
 		return this.repository.findByRatingIdAndTmplIdAndUserId(ratingId, tmplId, userId);
+	}
+	@Override
+	public List<RatingUserVote> findByTmplId(Long tmplId) {
+		return this.repository.findByTmplId(tmplId);
 	}
 
 }
