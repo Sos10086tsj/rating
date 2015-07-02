@@ -1,4 +1,8 @@
 package com.chinesedreamer.rating.rating.service;
+
+import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
+
+
 /** 
  * Description: 
  * @author Paris Tao
@@ -7,5 +11,5 @@ package com.chinesedreamer.rating.rating.service;
  * Copyright:   Copyright (c)2015
  */
 public interface StatisticsService {
-
+	public RptVo generateReport(Long tmplId);
 }

@@ -9,11 +9,11 @@ import lombok.Getter;
  * @version beta
  */
 public enum OptionCategory {
-	BXDF("BXDF","表现得分"),
-	NLDF("NLDF","能力得分"),
-	WCRWQK("WCRWQK","完成任务情况"),
-	ZZNL("ZZNL","组织能力"),
-	ZHNL("ZHNL","综合能力");
+	BXDF("BXDF","琛ㄧ幇寰楀垎"),
+	NLDF("NLDF","鑳藉姏寰楀垎"),
+	WCRWQK("WCRWQK","瀹屾垚浠诲姟鎯呭喌"),
+	ZZNL("ZZNL","缁勭粐鑳藉姏"),
+	ZHNL("ZHNL","缁煎悎鑳藉姏");
 	
 	private @Getter final String code;
 	private @Getter final String label;

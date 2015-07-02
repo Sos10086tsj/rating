@@ -21,5 +21,5 @@ public @Getter @Setter class RptVo {
 	private String status;//状态
 	private Integer voterNum;//参与投票的人
 	
-	private List<RptVo> rptVos;//统计列表
+	private List<RptScore> scores;//统计列表
 }

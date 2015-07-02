@@ -30,24 +30,16 @@ import com.chinesedreamer.rating.rating.vo.RatingPageVo;
 import com.chinesedreamer.rating.rating.vo.RatingTemplateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVoteVo;
-import com.chinesedreamer.rating.rating.vo.rpt.RptScore;
-import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
-import com.chinesedreamer.rating.system.group.logic.UserGroupLogic;
-import com.chinesedreamer.rating.system.group.model.UserGroup;
-import com.chinesedreamer.rating.system.user.UserPositionType;
 import com.chinesedreamer.rating.system.user.logic.UserLogic;
 import com.chinesedreamer.rating.system.user.model.User;
-import com.chinesedreamer.rating.template.logic.RatingSuppOptionLogic;
 import com.chinesedreamer.rating.template.logic.RatingSuppTemplateLogic;
 import com.chinesedreamer.rating.template.logic.RatingTemplateLogic;
 import com.chinesedreamer.rating.template.logic.RatingTemplateOptionMappingLogic;
 import com.chinesedreamer.rating.template.logic.RatingTemplateVoterLogic;
-import com.chinesedreamer.rating.template.logic.RatingTmplOptionWeightLogic;
 import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
 import com.chinesedreamer.rating.template.model.RatingTemplate;
 import com.chinesedreamer.rating.template.model.RatingTemplateOptionMapping;
 import com.chinesedreamer.rating.template.model.RatingTemplateVoter;
-import com.chinesedreamer.rating.template.model.RatingTmplOptionWeight;
 
 /**
  * Description: 
@@ -75,12 +67,6 @@ public class RatingServiceImpl implements RatingService{
 	private UserLogic userLogic;
 	@Resource
 	private RatingScoreLogic scoreLogic;
-	@Resource
-	private RatingSuppOptionLogic optionLogic;
-	@Resource
-	private UserGroupLogic userGroupLogic;
-	@Resource
-	private RatingTmplOptionWeightLogic ratingTmplOptionWeightLogic;
 	
 	@Override
 	public void saveRating(RatingCreateVo vo) {
@@ -308,74 +294,6 @@ public class RatingServiceImpl implements RatingService{
 			this.ratingUserVoteItemLogic.save(voteItem);
 		}
 	}
-	@Override
-	public RptVo showRpt(Long tmplId) {
-		RptVo vo = new RptVo();
-		RatingTemplate rt = this.templateLogic.findOne(tmplId);
-		Long ratingId = rt.getRatingId();
-		Rating rating = this.logic.findOne(ratingId);
-		vo.setName(rating.getName());
-		vo.setFrom(rating.getEffFrom());
-		vo.setTo(rating.getEffTo());
-		vo.setStatus(rating.getStatus().toString());
-		//2. 获取统计结果rows
-		//2.1 找到所有的投票记录
-		List<RatingUserVote> userVotes = this.ratingUserVoteLogic.findByTmplId(tmplId);
-		List<Map<String, Object>> tmpMaps = this.getUserVoteMaps(userVotes);
-		
-		vo.setVoterNum(voterNum);
-		vo.setRptVos(rptVos);
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
-	private List<Map<String, Object>> getUserVoteMaps(Long tmplId) {
-		List<RatingUserVote> userVotes = this.ratingUserVoteLogic.findByTmplId(tmplId);
-		
-		//获取每个得分用户情况
-		Map<String, Map<Object, Object>> userMap = new HashMap<String, Map<Object, Object>>();
-		for (RatingUserVote userVote : userVotes) {
-			Set<String> finishedUsers = new HashSet<String>();
-			List<RatingUserVoteItem> voteItems = this.ratingUserVoteItemLogic.findByUserVoteId(userVote.getId());
-			for (RatingUserVoteItem voteItem : voteItems) {
-				String key = voteItem.getScorer() + "|" + userVote.getUserId();
-				Map<Object, Object> tmpMap = null;
-				if (finishedUsers.contains(key)) {
-					tmpMap = userMap.get(key);
-				}else {
-					tmpMap = new HashMap<Object, Object>();
-					tmpMap.put("voter", userVote.getUserId());
-					tmpMap.put("voterGroup", userVote.getGroupId());
-					tmpMap.put("voterPositon", userVote.getPositionId());
-					tmpMap.put("scorer", voteItem.getScorer());
-					tmpMap.put("scorerGroup", voteItem.getScorerGroup());
-					tmpMap.put("scorerPosition", voteItem.getScorerPosition());
-				}
-				tmpMap.put("option_" + voteItem.getOptionId(), 
-						this.scoreLogic.findOne(voteItem.getScoreId()).getScore());
-				userMap.put(key, tmpMap);
-				finishedUsers.add(key);
-			}
-		}
-		//合并不同的投票人的分数
-		Map<String, RptScore> scoreMap = new HashMap<String, RptScore>();
-		for (String key : userMap.keySet()) {
-			int index = key.indexOf("|");
-			String scoreKey = key.substring(0, index);
-			RptScore score = null;
-			Map<Object, Object> userMapItem = userMap.get(key);
-			if (scoreMap.containsKey(scoreKey)) {
-				score = scoreMap.get(scoreKey);
-			}else {
-				score = new RptScore();
-				UserGroup scorerGroup = this.userGroupLogic.findOne((Long)userMapItem.get("scorerGroup"));
-				score.setGroup(scorerGroup.getName());
-				UserPositionType scorerPosition = UserPositionType.get((Integer)userMapItem.get("scorerPosition"));
-				score.setPosition(scorerPosition.getLabel());
-				score.setScores(new HashMap<String, Integer>());
-			}
-		}
-
-		return tmpMaps;
-	}
+	
 }

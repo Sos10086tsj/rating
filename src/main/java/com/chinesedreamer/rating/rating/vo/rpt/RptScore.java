@@ -16,5 +16,5 @@ public @Getter @Setter class RptScore {
 	private String name;//得分人姓名
 	private String group;//得分人所在组
 	private String position;//得分人所在职位
-	private Map<String, Integer> scores;//得分
+	private Map<String, Float> scores;//得分
 }
