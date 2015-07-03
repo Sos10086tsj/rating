@@ -8,10 +8,10 @@
 <title>评分考核系统</title>
 </head>
 <body >
-	<div style="margin:0 auto;margin-top:200px;width:400px;">
-	<div class="easyui-panel" title="用户登录" style="width:400px; ">
+	<div style="margin:0 auto;margin-top:200px;width:350px;">
+	<div class="easyui-panel" title="用户登录" style="width:350px; ">
 		<div style="padding:10px 60px 20px 60px;">
-			<form id="js_login_form" method="post" name="js_login_form" action="${ctx }/login">
+			<form id="js_login_form" method="post" name="js_login_form" action="${ctx }/login" onkeydown="rating.login.keyDown(event);">
 				<table cellpadding="5">
 					<tr>
                     	<td>用户名</td>
@@ -22,8 +22,9 @@
                     	<td><input class="easyui-textbox" type="password" name="password" data-options="required:true"></input></td>
                 	</tr>
 				</table>
+				<%--<input type="text" style="display:none;" onkeydown="rating.login.keyDown(e);"/> --%>
 			</form>
-			<div style="text-align:center;padding:5px">
+			<div style="float:right;margin-right:5px;padding:10px">
             	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="rating.login.login()">登录</a>
         	</div>
 		</div>
