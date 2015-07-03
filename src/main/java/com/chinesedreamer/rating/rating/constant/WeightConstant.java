@@ -23,4 +23,17 @@ public class WeightConstant {
 	public static Float B_NLDF_INNER_LEADER_PERCENT = 0.4f;//B表能力本组组长
 	public static Float B_NLDF_ZONGTI_PERCENT = 0.4f;//B表能力总体组
 	public static Float B_NLDF_OUTER_LEADER_PERCENT = 0.2f;//B表能力外组组长
+	
+	//C表设置
+	public static Float C_WCRWQK_PERCENT = 1.0F;//C表	完成任务情况
+	public static Float C_ZZNL_PERCENT = 1.0F;//C表	组织能力
+	public static Float C_ZHNL_PERCENT = 1.0F;//C表	综合能力
+	public static Float C_ZONGTI_PERCENT = 0.7f;//C表 总体组
+	public static Float C_LEADER_PERCENT = 0.7f;//C表 非总体组长
+	
+	//D表设置
+	public static Float D_WCRWQK_PERCENT = 1.0F;//D表	完成任务情况
+	public static Float D_ZZNL_PERCENT = 1.0F;//D表	组织能力
+	public static Float D_ZHNL_PERCENT = 1.0F;//D表	综合能力
+	public static Float D_ZUYUAN_PERCENT = 0.3f;//D表 总体组
 }

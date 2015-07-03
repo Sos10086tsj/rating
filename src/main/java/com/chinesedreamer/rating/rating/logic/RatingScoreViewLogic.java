@@ -1,5 +1,6 @@
 package com.chinesedreamer.rating.rating.logic;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogic;
@@ -13,4 +14,6 @@ import com.chinesedreamer.rating.rating.model.RatingScoreView;
  */
 public interface RatingScoreViewLogic extends BaseLogic<RatingScoreView, Long>{
 	public List<RatingScoreView> findByTmplId(Long tmplId);
+	
+	public BigInteger count(Long tmplId);
 }

@@ -1,8 +1,12 @@
 package com.chinesedreamer.rating.rating.logic;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Service;
 
@@ -20,9 +24,24 @@ import com.chinesedreamer.rating.rating.repository.RatingScoreViewRepository;
 public class RatingScoreViewLogicImpl extends BaseLogicImpl<RatingScoreView, Long> implements RatingScoreViewLogic{
 	@Resource
 	private RatingScoreViewRepository repository;
+	@PersistenceContext
+	private EntityManager em;
 	@Override
 	public List<RatingScoreView> findByTmplId(Long tmplId) {
 		return this.repository.findByTmplId(tmplId);
 	}
+	@Override
+	public BigInteger count(Long tmplId) {
+		Query query = em.createNativeQuery(this.generateCountSql(tmplId));
+		return (BigInteger)query.getSingleResult();
+	}
 
+	private String generateCountSql(Long tmplId) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(" SELECT count(DISTINCT s.voter_id) ")
+		.append(" FROM v_score s ")
+		.append(" WHERE s.tmpl_id = ")
+		.append(tmplId);
+		return buffer.toString();
+	}
 }
