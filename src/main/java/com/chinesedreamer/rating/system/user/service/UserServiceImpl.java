@@ -253,8 +253,13 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public ResponseVo updatePassword(String username, String oldPassword,
-			String newPassword) {
+	public User showUserProfile(String username) {
+		return this.logic.findByUsername(username);
+	}
+	
+	@Override
+	public ResponseVo updateProfile(String username, String oldPassword, String newPassword,
+			String name,String phone) {
 		ResponseVo vo = new ResponseVo();
 		User user = this.logic.findByUsername(username);
 		if (null == user) {
@@ -263,9 +268,21 @@ public class UserServiceImpl implements UserService{
 		if (!EncryptionUtil.md5L32(oldPassword + user.getSalt()).equals(user.getPassword())) {
 			vo.setErrorMessage("用户名或密码错误");
 		}else {
-			user.setPassword(EncryptionUtil.md5L32(newPassword + user.getSalt()));
+			user.setName(name);
+			user.setPhone(phone);
+			if (StringUtils.isNotEmpty(newPassword)) {
+				user.setPassword(EncryptionUtil.md5L32(newPassword + user.getSalt()));
+			}
 			this.logic.save(user);
 		}
 		return vo;
 	}
+
+	@Override
+	public void logout(UserSession userSession) {
+		// TODO Auto-generated method stub
+		this.userSessionLogic.clear(userSession);
+	}
+
+	
 }

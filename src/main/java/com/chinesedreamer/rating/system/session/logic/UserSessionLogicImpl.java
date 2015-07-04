@@ -82,4 +82,11 @@ public class UserSessionLogicImpl extends BaseCacheAspect implements UserSession
 		}
 	}
 
+	@Override
+	public void clear(UserSession userSession) {
+		this.evict(userSessionPrefix + userSession.getSessionId());
+		UserSession saved = this.repository.findBySessionId(userSession.getSessionId());
+		this.repository.delete(saved);
+	}
+
 }

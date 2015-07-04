@@ -91,13 +91,33 @@ public class UserController {
 		return vo;
 	}
 	
+//	/**
+//	 * 获取个人信息
+//	 * @param model
+//	 * @return
+//	 */
+//	@RequestMapping(value = "system/user/showProfile",method = RequestMethod.POST)
+//	public String showProfile(Model model){
+//		String username = this.userSessionService.getCurrentUserSession().getUsername();
+//		model.addAttribute("profile", this.userService.showUserProfile(username));
+//		return "/systemMgmt/userMgmt/userProfile";
+//	}
+	
+	/**
+	 * 修改个人信息
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping(value = "system/user/updatePassword",method = RequestMethod.POST)
-	public ResponseVo updatePassword(HttpServletRequest request){
+	@RequestMapping(value = "system/user/updateProfile",method = RequestMethod.POST)
+	public ResponseVo updateProfile(HttpServletRequest request){
+		String name = request.getParameter("name").trim();
+		String phone = request.getParameter("phone").trim();
 		String oldPassword = request.getParameter("oldPassword").trim();
 		String newPassword = request.getParameter("newPassword").trim();
 		String username = this.userSessionService.getCurrentUserSession().getUsername();
-		return this.userService.updatePassword(username, oldPassword, newPassword);
+		return this.userService.updateProfile(username, oldPassword, newPassword,
+				name,phone);
 	}
 	
 	/*********** user 部分 *************/

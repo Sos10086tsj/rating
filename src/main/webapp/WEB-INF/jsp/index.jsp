@@ -18,6 +18,8 @@
 			<div title="欢迎" data-options="href:'${ctx }/welcome'" style="padding:10px"></div>
 		</div>
 	</div>
+	
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
+<script type="text/javascript" src="${ctx}/resources/js/menu.js"></script>
 </html>

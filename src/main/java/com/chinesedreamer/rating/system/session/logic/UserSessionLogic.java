@@ -17,6 +17,8 @@ public interface UserSessionLogic {
 	 */
 	public void saveUserSessionCache(UserSession userSession);
 	
+	public void clear(UserSession userSession);
+	
 	/**
 	 * 检查session是否存在
 	 */

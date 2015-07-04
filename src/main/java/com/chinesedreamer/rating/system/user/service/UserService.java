@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.chinesedreamer.rating.common.vo.ResponseVo;
 import com.chinesedreamer.rating.common.vo.SelectVo;
+import com.chinesedreamer.rating.system.session.model.UserSession;
 import com.chinesedreamer.rating.system.user.exception.PasswordIncorrectException;
 import com.chinesedreamer.rating.system.user.exception.UserFrozenException;
 import com.chinesedreamer.rating.system.user.exception.UserNotExistException;
@@ -27,6 +28,11 @@ public interface UserService {
 	 */
 	public ResponseVo login(String username, String password) throws UserFrozenException,UserNotExistException,PasswordIncorrectException;
 	
+	/**
+	 * 退出
+	 * @param user
+	 */
+	public void logout(UserSession userSession);
 	/**
 	 * 获取用户菜单
 	 * @param username
@@ -74,11 +80,16 @@ public interface UserService {
 	 */
 	public List<SelectVo> lookupUser(String name);
 	
+	public User showUserProfile(String username);
 	/**
-	 * 修改密码
+	 * 修改用户信息
 	 * @param username
 	 * @param oldPassword
 	 * @param newPassword
+	 * @param name
+	 * @param phone
+	 * @return
 	 */
-	public ResponseVo updatePassword(String username, String oldPassword, String newPassword);
+	public ResponseVo updateProfile(String username, String oldPassword, String newPassword,
+			String name,String phone);
 }
