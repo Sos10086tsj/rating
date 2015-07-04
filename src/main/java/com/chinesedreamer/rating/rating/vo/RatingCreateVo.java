@@ -16,5 +16,7 @@ public @Getter @Setter class RatingCreateVo {
 	private String name;
 	private Long[] templateIds;
 	private Date effFrom;
+	private String effFromStr;
 	private Date effTo;
+	private String effToStr;
 }

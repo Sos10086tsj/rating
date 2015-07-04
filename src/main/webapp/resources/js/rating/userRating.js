@@ -7,9 +7,9 @@ rating.userrating = {
 				var vote = value[i];
 				var symble = "";
 				if(vote.voted){//已投
-					symble = "(已投)";
+					symble = "(投票)";
 				}else{
-					symble = "(未投)";
+					symble = "(重投)";
 				}
 				//var single = "<a href='" + ctx + "/rating/vote/'" + vote.id + ">" + vote.name + symble + "</a>  ";<A href="javascript:void(0)
 				var single  = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('" + vote.name + "投票','" + ctx + "/rating/vote/" + vote.id + "')\">" 

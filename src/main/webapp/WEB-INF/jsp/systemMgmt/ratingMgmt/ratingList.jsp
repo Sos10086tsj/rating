@@ -17,13 +17,13 @@
         		<th field="name"  width="50">姓名</th>
         		<th field="effFrom" formatter="rating.dateFormat" width="50">开始时间</th>
         		<th field="effTo" formatter="rating.dateFormat" width="50">结束时间</th>
-        		<th field="status"  width="50">状态</th>
+        		<!-- <th field="status"  width="50">状态</th> -->
         	</tr>
         </thead>
 </table>
 
 <div id="toolbar">
 	<a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-add" plain="true"onclick="rating.ratingmgmt.newRating()">添加</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-edit" plain="true"onclick="rating.ratingmgmt.editRating()">修改</a>  
-    <!-- <a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-remove" plain="true"onclick="rating.usermgmt.destroyUser()">删除</a> -->  
+	<!--<a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-edit" plain="true"onclick="rating.ratingmgmt.editRating()">修改</a>  
+     <a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-remove" plain="true"onclick="rating.usermgmt.destroyUser()">删除</a> -->  
 </div>

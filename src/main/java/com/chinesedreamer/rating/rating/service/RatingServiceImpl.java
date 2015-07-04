@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
@@ -40,6 +41,7 @@ import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
 import com.chinesedreamer.rating.template.model.RatingTemplate;
 import com.chinesedreamer.rating.template.model.RatingTemplateOptionMapping;
 import com.chinesedreamer.rating.template.model.RatingTemplateVoter;
+import com.chinesedreamer.rating.util.DateUtil;
 
 /**
  * Description: 
@@ -74,8 +76,12 @@ public class RatingServiceImpl implements RatingService{
 		Rating rating = new Rating();
 		rating.setName(vo.getName());
 		rating.setStatus(RatingStatus.ACTIVE);
-		rating.setEffFrom(vo.getEffFrom());
-		rating.setEffTo(vo.getEffTo());
+		if (StringUtils.isNotEmpty(vo.getEffFromStr())) {
+			rating.setEffFrom(DateUtil.format(vo.getEffFromStr(), "yyyy-MM-dd"));
+		}
+		if (StringUtils.isNotEmpty(vo.getEffToStr())) {
+			rating.setEffTo(DateUtil.format(vo.getEffToStr(), "yyyy-MM-dd"));
+		}
 		rating = this.logic.save(rating);
 		
 		//2. 保存模板
