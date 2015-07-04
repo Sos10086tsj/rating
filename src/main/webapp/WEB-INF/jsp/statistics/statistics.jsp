@@ -8,11 +8,11 @@
 <title>评分考核系统</title>
 </head>
 <body>
-	<table 	id="dg" 
+	<table 	id="js_statistics_rating_dg" 
 		title="定性指标基础信息" 
 		class="easyui-datagrid" 
 		style="width:900px; height: 400px; padding-left: 200px;" 
-		url="${ctx }/rating/list" 
+		url="${ctx }/rating/statistics/list" 
 		pagination="true"  
         rownumbers="true" 
         fitcolumns="true" 
@@ -24,11 +24,12 @@
         		<th field="name"  width="50">投票事件</th>
         		<th field="effFrom" formatter="rating.dateFormat" width="50">开始时间</th>
         		<th field="effTo" formatter="rating.dateFormat" width="50">结束时间</th>
-        		<th field="templates" formatter="rating.userrating.tempalteFormat" width="50">投票</th>
+        		<th field="templates" formatter="rating.userrating.tempalteFormat" width="50">查看统计</th>
         	</tr>
         </thead>
 </table>
+
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
-<script type="text/javascript" src="${ctx}/resources/js/rating/userRating.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/statistics/statistics.js"></script>
 </html>

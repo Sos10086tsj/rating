@@ -160,15 +160,36 @@ public class RatingController {
 		}
 	}
 	
-//	/**
-//	 * 获取模板相应的得分项
-//	 * @param model
-//	 * @param tmplId
-//	 * @return
-//	 */
-//	@ResponseBody
-//	@RequestMapping(value = "rating/vote/options/{tmplId}",method = RequestMethod.GET)
-//	public List<SelectVo> getRatingOptions(Model model,@PathVariable("tmplId")Long tmplId){
-//		return this.ratingService.getTmplOptions(tmplId);
-//	}
+	
+	/**
+	 * 显示统计
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "rating/statistics",method = RequestMethod.GET)
+	public String showStatistics(Model model){
+		return "statistics/statistics";
+	}
+	
+	/**
+	 * 所有投票列表
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "rating/statistics/list",method = RequestMethod.GET)
+	public Map<String, Object> showStatisticsRatings(Model model){
+		return null;
+	}
+	
+	/**
+	 * 展示某起投票的结果
+	 * @param model
+	 * @param tmplId
+	 * @return
+	 */
+	@RequestMapping(value = "rating/statistics/{tmplId}",method = RequestMethod.GET)
+	public String showStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId){
+		return "statistics/detail";
+	}
 }
