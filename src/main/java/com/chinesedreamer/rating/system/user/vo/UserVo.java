@@ -12,8 +12,11 @@ import lombok.Setter;
  */
 public @Getter @Setter class UserVo {
 	private Long id;
+	private String username;
 	private String name;
+	private String groupId;
 	private String groupName;
+	private String positionId;
 	private String positionName;
 	private String phone;
 	private String status;

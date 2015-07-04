@@ -15,11 +15,11 @@
 				<table cellpadding="5">
 					<tr>
                     	<td>用户名</td>
-                    	<td><input class="easyui-textbox" type="text" name="username" data-options="required:true"></input></td>
+                    	<td><input class="easyui-textbox" type="text" name="username" data-options="required:true,iconCls:'icon-man',iconWidth:38"></input></td>
                 	</tr>
                 	<tr>
                     	<td>密码</td>
-                    	<td><input class="easyui-textbox" type="password" name="password" data-options="required:true"></input></td>
+                    	<td><input class="easyui-textbox" type="password" name="password" data-options="required:true,iconCls:'icon-lock',iconWidth:38"></input></td>
                 	</tr>
 				</table>
 				<%--<input type="text" style="display:none;" onkeydown="rating.login.keyDown(e);"/> --%>

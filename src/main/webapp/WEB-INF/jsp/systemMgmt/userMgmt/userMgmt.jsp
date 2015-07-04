@@ -17,4 +17,5 @@
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
 <script type="text/javascript" src="${ctx}/resources/js/systemMgmt/userMgmt.js"></script>
+<link rel="stylesheet" type="text/css" href="${ctx }/resources/css/usermgmt.css">
 </html>

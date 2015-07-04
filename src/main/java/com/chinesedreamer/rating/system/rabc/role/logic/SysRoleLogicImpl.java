@@ -1,9 +1,12 @@
 package com.chinesedreamer.rating.system.rabc.role.logic;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogicImpl;
 import com.chinesedreamer.rating.system.rabc.role.model.SysRole;
+import com.chinesedreamer.rating.system.rabc.role.repository.SysRoleRepsitory;
 
 /** 
  * Description: 
@@ -14,5 +17,11 @@ import com.chinesedreamer.rating.system.rabc.role.model.SysRole;
  */
 @Service
 public class SysRoleLogicImpl extends BaseLogicImpl<SysRole, Long> implements SysRoleLogic{
+	@Resource
+	private SysRoleRepsitory repository;
+	@Override
+	public SysRole findByName(String name) {
+		return this.repository.findByName(name);
+	}
 
 }

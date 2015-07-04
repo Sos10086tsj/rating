@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.web.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -7,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.system.group.service.UserGroupServcie;
 import com.chinesedreamer.rating.system.user.UserPositionType;
 
@@ -30,10 +33,12 @@ public class SystemMgmtController {
 	 */
 	@RequestMapping(value = "user",method = RequestMethod.GET)
 	public String mgmtUser(Model model){
-		//閮ㄩ棬鍒楄〃
-		model.addAttribute("groups", this.userGroupServcie.getAllGroups()) ;
-		//鑱屼綅鍒楄〃
-		model.addAttribute("positions", UserPositionType.values());
+		//用户组别
+		List<SelectVo> groups = this.userGroupServcie.getAllGroups();
+		model.addAttribute("groups", groups) ;
+		//职位
+		UserPositionType[] positions = UserPositionType.values();
+		model.addAttribute("positions", positions);
 		
 		return "systemMgmt/userMgmt/userMgmt";
 	}

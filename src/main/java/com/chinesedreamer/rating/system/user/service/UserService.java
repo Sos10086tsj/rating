@@ -73,4 +73,12 @@ public interface UserService {
 	 * @return
 	 */
 	public List<SelectVo> lookupUser(String name);
+	
+	/**
+	 * 修改密码
+	 * @param username
+	 * @param oldPassword
+	 * @param newPassword
+	 */
+	public ResponseVo updatePassword(String username, String oldPassword, String newPassword);
 }

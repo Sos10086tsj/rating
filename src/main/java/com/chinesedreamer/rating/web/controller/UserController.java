@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinesedreamer.rating.common.vo.ResponseVo;
 import com.chinesedreamer.rating.common.vo.SelectVo;
+import com.chinesedreamer.rating.system.session.service.UserSessionService;
 import com.chinesedreamer.rating.system.user.service.UserService;
 import com.chinesedreamer.rating.system.user.vo.UserVo;
 
@@ -29,6 +30,8 @@ import com.chinesedreamer.rating.system.user.vo.UserVo;
 public class UserController {
 	@Resource
 	private UserService userService;
+	@Resource
+	private UserSessionService userSessionService;
 	
 	/**
 	 * 鑾峰彇鎵�湁鐢ㄦ埛鍒楄〃
@@ -81,11 +84,20 @@ public class UserController {
 		Integer positionId = Integer.parseInt(request.getParameter("positionId").trim());
 		String phone = request.getParameter("phone").trim();
 		if (null == this.userService.getUser(username)) {
-			vo.setErrorMessage("鐢ㄦ埛涓嶅瓨鍦紒");
+			vo.setErrorMessage("用户不存在");
 		}else {
 			this.userService.updateUser(username,name, groupId, positionId, phone);
 		}
 		return vo;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "system/user/updatePassword",method = RequestMethod.POST)
+	public ResponseVo updatePassword(HttpServletRequest request){
+		String oldPassword = request.getParameter("oldPassword").trim();
+		String newPassword = request.getParameter("newPassword").trim();
+		String username = this.userSessionService.getCurrentUserSession().getUsername();
+		return this.userService.updatePassword(username, oldPassword, newPassword);
 	}
 	
 	/*********** user 部分 *************/
