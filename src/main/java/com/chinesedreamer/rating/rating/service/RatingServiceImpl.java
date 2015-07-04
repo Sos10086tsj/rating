@@ -31,6 +31,9 @@ import com.chinesedreamer.rating.rating.vo.RatingPageVo;
 import com.chinesedreamer.rating.rating.vo.RatingTemplateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVoteVo;
+import com.chinesedreamer.rating.system.group.UserGroupLevel;
+import com.chinesedreamer.rating.system.group.logic.UserGroupLogic;
+import com.chinesedreamer.rating.system.group.model.UserGroup;
 import com.chinesedreamer.rating.system.user.logic.UserLogic;
 import com.chinesedreamer.rating.system.user.model.User;
 import com.chinesedreamer.rating.template.logic.RatingSuppTemplateLogic;
@@ -69,6 +72,8 @@ public class RatingServiceImpl implements RatingService{
 	private UserLogic userLogic;
 	@Resource
 	private RatingScoreLogic scoreLogic;
+	@Resource
+	private UserGroupLogic userGroupLogic;
 	
 	@Override
 	public void saveRating(RatingCreateVo vo) {
@@ -126,9 +131,12 @@ public class RatingServiceImpl implements RatingService{
 		//获取所有模板 RatingTemplateVo
 		List<RatingTemplate> templates = this.templateLogic.findByRatingId(rating.getId());
 		for (RatingTemplate template : templates) {
-			List<RatingTemplateVoter> votes = this.templateVoterLogic.findByTmplIdAndGroupIdAndPositionId(template.getId(), user.getGroupId(), user.getPositionId());//非总体组可以查到对应的数据
-			if (null == votes || votes.isEmpty()) {
+			List<RatingTemplateVoter> votes = null;
+			UserGroup userGroup = this.userGroupLogic.findOne(user.getGroupId());
+			if (userGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {//总体组
 				votes = this.templateVoterLogic.findByTmplIdAndGroupId(template.getId(), user.getGroupId());//总体组可以查到
+			}else {
+				votes = this.templateVoterLogic.findByTmplIdAndGroupIdAndPositionId(template.getId(), user.getGroupId(), user.getPositionId());//非总体组
 			}
 			if (null != votes && !votes.isEmpty()) {
 				for (RatingTemplateVoter vote : votes) {//找到A、D或者B、C

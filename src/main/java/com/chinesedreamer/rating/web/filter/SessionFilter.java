@@ -46,7 +46,11 @@ public class SessionFilter implements Filter{
 		HttpServletRequest httpServletRequest = (HttpServletRequest)request;
 		String uri = httpServletRequest.getServletPath();
 		SessionContext.setContext(request);
-		if (StringUtils.isNotEmpty(uri) && !(uri.equals("/index") || uri.equals("/login")) && !isStaticResourceRequest(uri)) {
+		if (StringUtils.isNotEmpty(uri) 
+				&& !(uri.equals("/index") 
+						|| uri.equals("/logout") 
+						|| uri.equals("/login")) 
+						&& !isStaticResourceRequest(uri)) {
 			this.userSessionService.validateSession();
 		}
 		chain.doFilter(request, response);
