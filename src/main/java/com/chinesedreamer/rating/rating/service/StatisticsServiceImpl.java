@@ -16,9 +16,10 @@ import com.chinesedreamer.rating.rating.logic.RatingLogic;
 import com.chinesedreamer.rating.rating.logic.RatingScoreViewLogic;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.model.RatingScoreView;
-import com.chinesedreamer.rating.rating.vo.rpt.RptScore;
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
+import com.chinesedreamer.rating.system.group.UserGroupLevel;
 import com.chinesedreamer.rating.system.group.logic.UserGroupLogic;
+import com.chinesedreamer.rating.system.group.model.UserGroup;
 import com.chinesedreamer.rating.system.user.UserPositionType;
 import com.chinesedreamer.rating.system.user.logic.UserLogic;
 import com.chinesedreamer.rating.template.OptionCategory;
@@ -69,26 +70,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 	private void getRptScores(RptVo vo,RatingTemplate template){
 		List<RatingScoreView> scoreViews = this.scoreViewLogic.findByTmplId(template.getId());
 		String code = template.getCode();
-		if (code.equals("A")) {//A卷
-			this.statisticsA(vo, scoreViews, template);
-		}else if (code.equals("B")) {//B卷
-			
-		}else if (code.equals("C")) {//C卷
-			
-		}else if (code.equals("D")) {//D卷
-			
-		}
-	}
-	
-	/**
-	 * 统计A卷得分。A卷组内20%，组外10%，占总比例70%
-	 * @param vo
-	 * @param scoreViews
-	 * @param template
-	 */
-	private void statisticsA(RptVo vo,List<RatingScoreView> scoreViews,RatingTemplate template) {
 		
-		List<RptScore> scores = new ArrayList<RptScore>();
 		Map<Long, List<RatingScoreView>> scoreViewMap = new HashMap<Long, List<RatingScoreView>>();
 		//1. 分离得分用户
 		for (RatingScoreView scoreView : scoreViews) {
@@ -102,13 +84,35 @@ public class StatisticsServiceImpl implements StatisticsService{
 			scoreViewMap.put(scoreView.getScorer(), tmp);
 		}
 		
+		if (code.equals("A")) {//A卷
+			this.statisticsA(vo, scoreViewMap, template);
+		}else if (code.equals("B")) {//B卷
+			this.statisticsB(vo, scoreViewMap, template);
+		}else if (code.equals("C")) {//C卷
+			this.statisticsC(vo, scoreViewMap, template);
+		}else if (code.equals("D")) {//D卷
+			this.statisticsD(vo, scoreViewMap, template);
+		}
+	}
+	
+	/**
+	 * 统计A卷得分。A卷组内20%，组外10%，占总比例70%
+	 * @param vo
+	 * @param scoreViews
+	 * @param template
+	 */
+	private void statisticsA(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
+		
+		List<Map<String, String>> scores = new ArrayList<Map<String, String>>();
+		
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
 			List<RatingScoreView> tmp = scoreViewMap.get(key);
-			RptScore score = new RptScore();
-			score.setName(this.userLogic.findOne(key).getName());
-			score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
-			score.setPosition(UserPositionType.get(tmp.get(0).getScorerPosition()).getLabel());
+			Map<String, String> score = new HashMap<String, String>();
+			//score.setName(this.userLogic.findOne(key).getName());
+			//score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
+			//score.setPosition(UserPositionType.get(tmp.get(0).getScorerPosition()).getLabel());
+			score.put("name", this.userLogic.findOne(key).getName());
 			
 			Set<Long> innerVoter = new HashSet<Long>();
 			Set<Long> outerVoter = new HashSet<Long>();
@@ -140,11 +144,12 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}
 			}
 			
-			Map<String, Float> scoreMap = new HashMap<String, Float>();
 			for (Long optionKey : innerMap.keySet()) {
 				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionKey);
 				Float innerValue = innerMap.get(optionKey);
+				innerValue = (null == innerValue ? 0 : innerValue);
 				Float outerValue = outerMap.get(optionKey);
+				outerValue = (null == outerValue ? 0 : outerValue);
 				float innerRate = 1.0f;
 				float outerRate = 1.0f;
 				float rate = 1.0f;
@@ -160,10 +165,9 @@ public class StatisticsServiceImpl implements StatisticsService{
 				int innerNum = innerVoter.isEmpty() ? 1 : innerVoter.size();
 				int outerNum = outerVoter.isEmpty() ? 1 : outerVoter.size();
 				Float value = rate * ( (innerValue / innerNum) * innerRate + (outerValue / outerNum) * outerRate );
-				scoreMap.put("option_" + optionKey, value);
+				score.put("option_" + optionKey, value.toString());
 			}
 			
-			score.setScores(scoreMap);
 			scores.add(score);
 		}
 
@@ -171,34 +175,22 @@ public class StatisticsServiceImpl implements StatisticsService{
 	}
 	
 	/**
-	 * 统计A卷得分。A卷组内20%，组外10%，占总比例70%
+	 * 统计B卷得分
 	 * @param vo
 	 * @param scoreViews
 	 * @param template
 	 */
-	private void statisticsB(RptVo vo,List<RatingScoreView> scoreViews,RatingTemplate template) {
-		
-		List<RptScore> scores = new ArrayList<RptScore>();
-		Map<Long, List<RatingScoreView>> scoreViewMap = new HashMap<Long, List<RatingScoreView>>();
-		//1. 分离得分用户
-		for (RatingScoreView scoreView : scoreViews) {
-			List<RatingScoreView> tmp = null;
-			if (scoreViewMap.containsKey(scoreView.getScorer())) {
-				tmp = scoreViewMap.get(scoreView.getScorer());
-			}else {
-				tmp = new ArrayList<RatingScoreView>();
-			}
-			tmp.add(scoreView);
-			scoreViewMap.put(scoreView.getScorer(), tmp);
-		}
-		
+	private void statisticsB(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
+		List<Map<String, String>> scores = new ArrayList<Map<String, String>>();
+
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
 			List<RatingScoreView> tmp = scoreViewMap.get(key);
-			RptScore score = new RptScore();
-			score.setName(this.userLogic.findOne(key).getName());
-			score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
-			score.setPosition(UserPositionType.get(tmp.get(0).getScorerPosition()).getLabel());
+			Map<String, String> score = new HashMap<String, String>();
+//			score.setName(this.userLogic.findOne(key).getName());
+//			score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
+//			score.setPosition(UserPositionType.get(tmp.get(0).getScorerPosition()).getLabel());
+			score.put("name", this.userLogic.findOne(key).getName());
 			
 			Set<Long> innerVoter = new HashSet<Long>();
 			Set<Long> outerVoter = new HashSet<Long>();
@@ -211,7 +203,10 @@ public class StatisticsServiceImpl implements StatisticsService{
 			//获取总分与投票人数
 			for (RatingScoreView scoreView : tmp) {
 				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), scoreView.getOptionId());
-				if (scoreView.getVoterGroupId().equals(scoreView.getScorerGroup()) && scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())) {//本组组长
+				UserGroup voterGroup = this.userGroupLogic.findOne(scoreView.getVoterGroupId());
+				if (scoreView.getVoterGroupId().equals(scoreView.getScorerGroup()) 
+						&&
+						scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())) {//本组组长
 					innerVoter.add(scoreView.getVoterId());
 					Long optionKey = scoreView.getOptionId();
 					Float value = 0.0000f;
@@ -220,7 +215,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					}
 					value+= scoreView.getScore() * weight.getWeight().floatValue();
 					innerMap.put(optionKey, value);
-				}else if(scoreView.getVoterGroupId().equals(scoreView.getScorerGroup()) && scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())){
+				}else if(!scoreView.getVoterGroupId().equals(scoreView.getScorerGroup()) && scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())){
 					outerVoter.add(scoreView.getVoterId());
 					Long optionKey = scoreView.getOptionId();
 					Float value = 0.0000f;
@@ -229,33 +224,192 @@ public class StatisticsServiceImpl implements StatisticsService{
 					}
 					value+= scoreView.getScore() * weight.getWeight().floatValue();
 					outerMap.put(optionKey, value);
+				}else if (voterGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {
+					zongtiVoter.add(scoreView.getVoterId());
+					Long optionKey = scoreView.getOptionId();
+					Float value = 0.0000f;
+					if (zongtiMap.containsKey(optionKey)) {
+						value = zongtiMap.get(optionKey);
+					}
+					value+= scoreView.getScore() * weight.getWeight().floatValue();
+					zongtiMap.put(optionKey, value);
 				}
 			}
 			
-			Map<String, Float> scoreMap = new HashMap<String, Float>();
 			for (Long optionKey : innerMap.keySet()) {
 				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionKey);
 				Float innerValue = innerMap.get(optionKey);
+				innerValue = (null == innerValue ? 0 : innerValue);
 				Float outerValue = outerMap.get(optionKey);
+				outerValue = (null == outerValue ? 0 : outerValue);
+				Float zongtiValue = zongtiMap.get(optionKey);
+				zongtiValue = (null == zongtiValue ? 0 : zongtiValue);
 				float innerRate = 1.0f;
 				float outerRate = 1.0f;
+				float zongtiRate = 1.0f;
 				float rate = 1.0f;
 				if (suppOption.getCategory().equals(OptionCategory.BXDF)) {
-					innerRate = WeightConstant.A_BXDF_INNER_PERCENT;
-					outerRate = WeightConstant.A_BXDF_OUTER_PERCENT;
-					rate = WeightConstant.A_BXDF_PERCENTF;
+					innerRate = WeightConstant.B_BXDF_INNER_LEADER_PERCENT;
+					outerRate = WeightConstant.B_BXDF_OUTER_LEADER_PERCENT;
+					zongtiRate = WeightConstant.B_BXDF_ZONGTI_PERCENT;
+					rate = WeightConstant.B_BXDF_PERCENTF;
 				}else if (suppOption.getCategory().equals(OptionCategory.NLDF)) {
-					innerRate = WeightConstant.A_NLDF_INNER_PERCENT;
-					outerRate = WeightConstant.A_NLDF_OUTER_PERCENT;
-					rate = WeightConstant.A_NLDF_PERCENTF;
+					innerRate = WeightConstant.B_NLDF_INNER_LEADER_PERCENT;
+					outerRate = WeightConstant.B_NLDF_OUTER_LEADER_PERCENT;
+					zongtiRate = WeightConstant.B_NLDF_ZONGTI_PERCENT;
+					rate = WeightConstant.B_NLDF_PERCENTF;
 				}
 				int innerNum = innerVoter.isEmpty() ? 1 : innerVoter.size();
 				int outerNum = outerVoter.isEmpty() ? 1 : outerVoter.size();
-				Float value = rate * ( (innerValue / innerNum) * innerRate + (outerValue / outerNum) * outerRate );
-				scoreMap.put("option_" + optionKey, value);
+				int zongtiNum = zongtiVoter.isEmpty() ? 1 : zongtiVoter.size();
+				Float value = rate * ( (innerValue / innerNum) * innerRate + (outerValue / outerNum) * outerRate + (zongtiValue / zongtiNum) * zongtiRate);
+				score.put("option_" + optionKey, value.toString());
+			}
+			scores.add(score);
+		}
+
+		vo.setScores(scores);
+	}
+	
+	/**
+	 * 统计C卷得分
+	 * @param vo
+	 * @param scoreViews
+	 * @param template
+	 */
+	private void statisticsC(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
+		List<Map<String, String>> scores = new ArrayList<Map<String, String>>();
+
+		//2. 根据每个用户计算得分
+		for (Long key : scoreViewMap.keySet()) {
+			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			Map<String, String> score = new HashMap<String, String>();
+//			score.setName(this.userLogic.findOne(key).getName());
+//			score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
+//			score.setPosition(UserPositionType.get(tmp.get(0).getScorerPosition()).getLabel());
+			score.put("name", this.userLogic.findOne(key).getName());
+			
+			Set<Long> leaderVoter = new HashSet<Long>();
+			Set<Long> zongtiVoter = new HashSet<Long>();
+			
+			Map<Long, Float> leaderMap = new HashMap<Long, Float>();
+			Map<Long, Float> zongtiMap = new HashMap<Long, Float>();
+			
+			//获取总分与投票人数
+			for (RatingScoreView scoreView : tmp) {
+				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), scoreView.getOptionId());
+				UserGroup voterGroup = this.userGroupLogic.findOne(scoreView.getVoterGroupId());
+				if (scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())) {//组长
+					leaderVoter.add(scoreView.getVoterId());
+					Long optionKey = scoreView.getOptionId();
+					Float value = 0.0000f;
+					if (leaderMap.containsKey(optionKey)) {
+						value = leaderMap.get(optionKey);
+					}
+					value+= scoreView.getScore() * weight.getWeight().floatValue();
+					leaderMap.put(optionKey, value);
+				}else if (voterGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {
+					zongtiVoter.add(scoreView.getVoterId());
+					Long optionKey = scoreView.getOptionId();
+					Float value = 0.0000f;
+					if (zongtiMap.containsKey(optionKey)) {
+						value = zongtiMap.get(optionKey);
+					}
+					value+= scoreView.getScore() * weight.getWeight().floatValue();
+					zongtiMap.put(optionKey, value);
+				}
 			}
 			
-			score.setScores(scoreMap);
+			for (Long optionKey : leaderMap.keySet()) {
+				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionKey);
+				Float leaderValue = leaderMap.get(optionKey);
+				leaderValue = (null == leaderValue ? 0 : leaderValue);
+				Float zongtiValue = zongtiMap.get(optionKey);
+				zongtiValue = (null == zongtiValue ? 0 : zongtiValue);
+				float leaderRate = 1.0f;
+				float zongtiRate = 1.0f;
+				float rate = 1.0f;
+				if (suppOption.getCategory().equals(OptionCategory.WCRWQK)) {
+					leaderRate = WeightConstant.C_WCRWQK_LEADER_PERCENTF;
+					zongtiRate = WeightConstant.C_WCRWQK_ZONGTI_PERCENTF;
+					rate = WeightConstant.C_WCRWQK_PERCENTF;
+				}else if (suppOption.getCategory().equals(OptionCategory.ZZNL)) {
+					leaderRate = WeightConstant.C_ZZNL_LEADER_PERCENTF;
+					zongtiRate = WeightConstant.C_ZZNL_ZONGTI_PERCENTF;
+					rate = WeightConstant.C_ZZNL_PERCENTF;
+				}else if (suppOption.getCategory().equals(OptionCategory.ZHNL)) {
+					leaderRate = WeightConstant.C_ZHNL_LEADER_PERCENTF;
+					zongtiRate = WeightConstant.C_ZHNL_ZONGTI_PERCENTF;
+					rate = WeightConstant.C_ZHNL_PERCENTF;
+				}
+				int leaderNum = leaderVoter.isEmpty() ? 1 : leaderVoter.size();
+				int zongtiNum = zongtiVoter.isEmpty() ? 1 : zongtiVoter.size();
+				Float value = rate * ( (leaderValue / leaderNum) * leaderRate + (zongtiValue / zongtiNum) * zongtiRate);
+				score.put("option_" + optionKey, value.toString());
+			}
+			scores.add(score);
+		}
+
+		vo.setScores(scores);
+	}
+	
+	/**
+	 * 统计D卷得分
+	 * @param vo
+	 * @param scoreViews
+	 * @param template
+	 */
+	private void statisticsD(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
+		List<Map<String, String>> scores = new ArrayList<Map<String, String>>();
+
+		//2. 根据每个用户计算得分
+		for (Long key : scoreViewMap.keySet()) {
+			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			Map<String, String> score = new HashMap<String, String>();
+//			score.setName(this.userLogic.findOne(key).getName());
+//			score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
+//			score.setPosition(UserPositionType.get(tmp.get(0).getScorerPosition()).getLabel());
+			score.put("name", this.userLogic.findOne(key).getName());
+			
+			Set<Long> zuyuanVoter = new HashSet<Long>();
+
+			Map<Long, Float> zuyuanMap = new HashMap<Long, Float>();
+			
+			//获取总分与投票人数
+			for (RatingScoreView scoreView : tmp) {
+				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), scoreView.getOptionId());
+				if (scoreView.getVoterPositionId().equals(UserPositionType.TEAM_MATE.getValue())) {//组远
+					zuyuanVoter.add(scoreView.getVoterId());
+					Long optionKey = scoreView.getOptionId();
+					Float value = 0.0000f;
+					if (zuyuanMap.containsKey(optionKey)) {
+						value = zuyuanMap.get(optionKey);
+					}
+					value+= scoreView.getScore() * weight.getWeight().floatValue();
+					zuyuanMap.put(optionKey, value);
+				}
+			}
+			
+			for (Long optionKey : zuyuanMap.keySet()) {
+				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionKey);
+				Float zuyuanValue = zuyuanMap.get(optionKey);
+				zuyuanValue = (null == zuyuanValue ? 0 : zuyuanValue);
+				float zuyuanRate = 1.0f;
+				float rate = 1.0f;
+				if (suppOption.getCategory().equals(OptionCategory.WCRWQK)) {
+					zuyuanRate = WeightConstant.D_WCRWQK_ZUYUAN_PERCENTF;
+					rate = WeightConstant.D_WCRWQK_PERCENTF;
+				}else if (suppOption.getCategory().equals(OptionCategory.ZZNL)) {
+					zuyuanRate = WeightConstant.D_ZZNL_ZUYUAN_PERCENTF;
+					rate = WeightConstant.D_WCRWQK_PERCENTF;
+				}else if (suppOption.getCategory().equals(OptionCategory.ZHNL)) {
+					zuyuanRate = WeightConstant.D_ZHNL_ZUYUAN_PERCENTF;
+					rate = WeightConstant.D_WCRWQK_PERCENTF;
+				}
+				int zuyuanNum = zuyuanVoter.isEmpty() ? 1 : zuyuanVoter.size();
+				Float value = rate * ( (zuyuanValue / zuyuanNum) * zuyuanRate);
+				score.put("option_" + optionKey, value.toString());
+			}
 			scores.add(score);
 		}
 

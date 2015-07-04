@@ -2,6 +2,7 @@ package com.chinesedreamer.rating.rating.vo.rpt;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,5 +22,5 @@ public @Getter @Setter class RptVo {
 	private String status;//状态
 	private Integer voterNum;//参与投票的人
 	
-	private List<RptScore> scores;//统计列表
+	private List<Map<String, String>> scores;//统计列表
 }

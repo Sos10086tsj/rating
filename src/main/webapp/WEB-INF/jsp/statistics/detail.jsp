@@ -9,7 +9,7 @@
 </head>
 <body>
 	<table 	id="js_rating_vote_dg" 
-		title="投票：${votePage.ratingName }-${votePage.tmplName }" 
+		title="投票：${rptVo.name}" 
 		class="easyui-datagrid" 
 		style="width:${gridWidth + 40}px; height: 600px; padding-left: 200px;"
 		data-options="
@@ -22,7 +22,7 @@
         
         <thead>
         	<tr>
-        		<th data-options="field:'scorerId',width:120">姓名</th>
+        		<th data-options="field:'name',width:120">姓名</th>
         		<c:forEach items="${options }" var="item">
         			<th data-options="field:'${item.value }',width:${item.width }">${item.label }</th>
         		</c:forEach>

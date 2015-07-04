@@ -20,8 +20,10 @@ import com.chinesedreamer.rating.common.vo.OptionTitle;
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.service.RatingService;
+import com.chinesedreamer.rating.rating.service.StatisticsService;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
+import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
 import com.chinesedreamer.rating.system.session.service.UserSessionService;
 import com.chinesedreamer.rating.system.user.model.User;
 import com.chinesedreamer.rating.system.user.service.UserService;
@@ -41,6 +43,8 @@ public class RatingController {
 	private UserSessionService userSessionService;
 	@Resource
 	private UserService userService;
+	@Resource
+	private StatisticsService statisticsService;
 	
 	/**
 	 * 投票管理列表页
@@ -177,7 +181,7 @@ public class RatingController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "rating/statistics/list",method = RequestMethod.GET)
+	@RequestMapping(value = "rating/statistics/list",method = {RequestMethod.GET,RequestMethod.POST})
 	public Map<String, Object> showStatisticsRatings(Model model){
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
@@ -196,6 +200,13 @@ public class RatingController {
 	@RequestMapping(value = "rating/statistics/detail/{tmplId}",method = RequestMethod.GET)
 	public String showStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId){
 		model.addAttribute("tmplId", tmplId);
+		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+		Integer totalWidth = 120;
+		for (OptionTitle optionTitle : options) {
+			totalWidth += optionTitle.getWidth();
+		}
+		model.addAttribute("options", options);
+		model.addAttribute("gridWidth", totalWidth);
 		return "statistics/detail";
 	}
 	
@@ -207,7 +218,12 @@ public class RatingController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "rating/statistics/{tmplId}",method = {RequestMethod.GET,RequestMethod.POST})
-	public String getStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId){
-		return "statistics/detail";
+	public Map<String, Object> getStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId){
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		RptVo rptVo = this.statisticsService.generateReport(tmplId);
+		model.addAttribute("rptVo", rptVo);
+		rstMap.put("total", rptVo.getScores().size());
+		rstMap.put("rows", rptVo.getScores());
+		return rstMap;
 	}
 }
