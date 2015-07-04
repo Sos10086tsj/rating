@@ -179,17 +179,35 @@ public class RatingController {
 	@ResponseBody
 	@RequestMapping(value = "rating/statistics/list",method = RequestMethod.GET)
 	public Map<String, Object> showStatisticsRatings(Model model){
-		return null;
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
+		List<RatingUserVo> vos = this.ratingService.getStatisticsRatings(user);
+		rstMap.put("total", vos.size());
+		rstMap.put("rows", vos);
+		return rstMap;
 	}
 	
 	/**
-	 * 展示某起投票的结果
+	 * 跳转投票详情展示页
 	 * @param model
 	 * @param tmplId
 	 * @return
 	 */
-	@RequestMapping(value = "rating/statistics/{tmplId}",method = RequestMethod.GET)
+	@RequestMapping(value = "rating/statistics/detail/{tmplId}",method = RequestMethod.GET)
 	public String showStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId){
+		model.addAttribute("tmplId", tmplId);
+		return "statistics/detail";
+	}
+	
+	/**
+	 * 获取投票统计结果
+	 * @param model
+	 * @param tmplId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "rating/statistics/{tmplId}",method = {RequestMethod.GET,RequestMethod.POST})
+	public String getStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId){
 		return "statistics/detail";
 	}
 }

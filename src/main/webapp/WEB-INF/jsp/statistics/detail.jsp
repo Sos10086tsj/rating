@@ -13,74 +13,23 @@
 		class="easyui-datagrid" 
 		style="width:${gridWidth + 40}px; height: 600px; padding-left: 200px;"
 		data-options="
-		url:'${ctx }/rating/vote/user/${votePage.tmplId}',
-		toolbar:'#js_rating_vote_tb',
+		url:'${ctx }/rating/statistics/${tmplId}',
 		pagination:true ,
         rownumbers:true,
         fitcolumns:true,
-        singleselect:true,
-        onDblClickCell:rating.userrating.onDbClickRow"
+        singleselect:true"
         >
         
         <thead>
         	<tr>
-        		<th data-options="field:'scorerId',width:120,
-        				formatter:function(value,row){
-        					var datasource = eval(${usersJson });
-        					for(var i=0; i < datasource.length ; i++){
-        						if(datasource[i].value == value){
-        							return datasource[i].label;
-        						}
-        					}
-        					return value;
-						},
-						editor:{
-							type:'combobox',
-							options:{
-								data:${usersJson },
-								valueField:'value',
-								textField:'label',
-								panelHeight:'auto',
-								required:true
-							}
-						}">姓名</th>
+        		<th data-options="field:'scorerId',width:120">姓名</th>
         		<c:forEach items="${options }" var="item">
-        			<th data-options="field:'${item.value }',width:${item.width },
-        				formatter:function(value,row){
-							var datasource = eval(${scores });
-        					for(var i=0; i < datasource.length ; i++){
-        						if(datasource[i].value == value){
-        							return datasource[i].label;
-        						}
-        					}
-        					return value;
-						},editor:{
-							type:'combobox',
-							options:{
-								valueField:'value',
-								textField:'label',
-								data : ${scores },
-								panelHeight:'auto',
-								required:true
-							}
-						}">${item.label }</th>
-        			<%--<th class="js_score_option" field="${item.value }" formatter="rating.userrating.scoreFormat" width="50"
-        			editor="{'type':'combobox','options':{valueField:'value',textField:'label',required:true,data='eval(${options})'}"
-        			>${item.label }</th> --%>
+        			<th data-options="field:'${item.value }',width:${item.width }">${item.label }</th>
         		</c:forEach>
         	</tr>
         </thead>
 	</table>
-	<div id="js_rating_vote_tb" style="height:auto">
-		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="rating.userrating.addVote()">增加</a>
-		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="rating.userrating.removeVote()">删除</a>
-		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="rating.userrating.accept()">本地保存</a>
-		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="rating.userrating.vote()">提交</a>
-	</div>
-<label id="js_option_json_hidden" style="display:none;">${optionsJson }</label>	
-<label id="js_tmpl_id_hidden" style="display:none;">${votePage.tmplId}</label>	
 
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
-<script type="text/javascript" src="${ctx}/resources/js/rating/userRating.js"></script>
 </html>

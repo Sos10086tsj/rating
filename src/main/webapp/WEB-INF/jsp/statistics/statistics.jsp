@@ -24,7 +24,7 @@
         		<th field="name"  width="50">投票事件</th>
         		<th field="effFrom" formatter="rating.dateFormat" width="50">开始时间</th>
         		<th field="effTo" formatter="rating.dateFormat" width="50">结束时间</th>
-        		<th field="templates" formatter="rating.userrating.tempalteFormat" width="50">查看统计</th>
+        		<th field="templates" formatter="rating.statistics.tempalteFormat" width="100">查看统计</th>
         	</tr>
         </thead>
 </table>

@@ -74,4 +74,11 @@ public interface RatingService {
 	 * @param user
 	 */
 	public void submitVote(String datasource, Long tmplId, User user);
+	
+	/**
+	 * 所有可见的统计投票
+	 * @param user
+	 * @return
+	 */
+	public List<RatingUserVo> getStatisticsRatings(User user);
 }

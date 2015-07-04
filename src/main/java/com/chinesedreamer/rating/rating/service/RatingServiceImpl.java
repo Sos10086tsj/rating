@@ -308,6 +308,34 @@ public class RatingServiceImpl implements RatingService{
 			this.ratingUserVoteItemLogic.save(voteItem);
 		}
 	}
-	
+	@Override
+	public List<RatingUserVo> getStatisticsRatings(User user) {
+		List<RatingUserVo> vos = new ArrayList<RatingUserVo>();
+		List<Rating> ratings = this.logic.findAll();
+		for (Rating rating : ratings) {
+			vos.add(this.convert2StatisticsVo(rating,user));
+		}
+		return vos;
+	}
+	private RatingUserVo convert2StatisticsVo(Rating rating,User user) {
+		RatingUserVo vo = new RatingUserVo();
+		vo.setId(rating.getId());
+		vo.setName(rating.getName());
+		vo.setEffFrom(rating.getEffFrom());
+		vo.setEffTo(rating.getEffTo());
+		
+		List<RatingTemplateVo> templateVos = new ArrayList<RatingTemplateVo>();
+		//获取所有模板 RatingTemplateVo
+		List<RatingTemplate> templates = this.templateLogic.findByRatingId(rating.getId());
+		for (RatingTemplate template : templates) {
+			RatingTemplateVo rtVo = new RatingTemplateVo();
+			rtVo.setId(template.getId());
+			rtVo.setName(template.getName());
+			templateVos.add(rtVo);
+		}
+		vo.setTemplates(templateVos);
+		
+		return vo;
+	}
 	
 }

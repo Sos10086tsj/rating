@@ -19,7 +19,6 @@ import com.chinesedreamer.rating.rating.model.RatingScoreView;
 import com.chinesedreamer.rating.rating.vo.rpt.RptScore;
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
 import com.chinesedreamer.rating.system.group.logic.UserGroupLogic;
-import com.chinesedreamer.rating.system.group.model.UserGroup;
 import com.chinesedreamer.rating.system.user.UserPositionType;
 import com.chinesedreamer.rating.system.user.logic.UserLogic;
 import com.chinesedreamer.rating.template.OptionCategory;
