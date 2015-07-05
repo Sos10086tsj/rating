@@ -24,5 +24,9 @@ public class RatingScoreViewLogicImpl extends BaseLogicImpl<RatingScoreView, Lon
 	public List<RatingScoreView> findByTmplId(Long tmplId) {
 		return this.repository.findByTmplId(tmplId);
 	}
+	@Override
+	public List<RatingScoreView> findByTmplIdAndScorer(Long tmplId, Long scorer) {
+		return this.repository.findByTmplIdAndScorer(tmplId, scorer);
+	}
 
 }

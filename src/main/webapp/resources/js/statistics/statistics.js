@@ -13,6 +13,16 @@ rating.statistics = {
 			}
 		}
 		return link;
+	},
+	
+	detailNameFormat : function(value, rec, index){
+//		console.info("value:"+value);
+//		console.info("rec:"+rec);
+//		console.info("index:"+index);
+		var link = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('投票明细--" 
+		+ value + "','" + ctx + "/rating/statistics/" + $("#js_statistics_detail_tmpl_id_hidden").val() 
+		+  "/" + rec.user_id  + "')\">" + value + "</a>        ";
+		return link;
 	}
 };
 

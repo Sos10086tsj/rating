@@ -113,6 +113,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 			//score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
 			//score.setPosition(UserPositionType.get(tmp.get(0).getScorerPosition()).getLabel());
 			score.put("name", this.userLogic.findOne(key).getName());
+			score.put("user_id", key.toString());
 			
 			Set<Long> innerVoter = new HashSet<Long>();
 			Set<Long> outerVoter = new HashSet<Long>();
@@ -191,6 +192,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 //			score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
 //			score.setPosition(UserPositionType.get(tmp.get(0).getScorerPosition()).getLabel());
 			score.put("name", this.userLogic.findOne(key).getName());
+			score.put("user_id", key.toString());
 			
 			Set<Long> innerVoter = new HashSet<Long>();
 			Set<Long> outerVoter = new HashSet<Long>();
@@ -288,6 +290,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 //			score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
 //			score.setPosition(UserPositionType.get(tmp.get(0).getScorerPosition()).getLabel());
 			score.put("name", this.userLogic.findOne(key).getName());
+			score.put("user_id", key.toString());
 			
 			Set<Long> leaderVoter = new HashSet<Long>();
 			Set<Long> zongtiVoter = new HashSet<Long>();
@@ -370,6 +373,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 //			score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
 //			score.setPosition(UserPositionType.get(tmp.get(0).getScorerPosition()).getLabel());
 			score.put("name", this.userLogic.findOne(key).getName());
+			score.put("user_id", key.toString());
 			
 			Set<Long> zuyuanVoter = new HashSet<Long>();
 
@@ -414,5 +418,119 @@ public class StatisticsServiceImpl implements StatisticsService{
 		}
 
 		vo.setScores(scores);
+	}
+
+	@Override
+	public List<Map<String, String>> userDetails(Long tmplId, Long user) {
+		List<Map<String, String>> rstMap = new ArrayList<Map<String,String>>();
+		
+		RatingTemplate template = this.templateLogic.findOne(tmplId);
+		List<RatingScoreView> scoreViews = this.scoreViewLogic.findByTmplIdAndScorer(tmplId, user);
+		String code = template.getCode();
+		Map<Long, List<RatingScoreView>> scoreViewMap = new HashMap<Long, List<RatingScoreView>>();
+		//1. 根据投票用户分离
+		for (RatingScoreView scoreView : scoreViews) {
+			List<RatingScoreView> tmp = null;
+			if (scoreViewMap.containsKey(scoreView.getVoterId())) {
+				tmp = scoreViewMap.get(scoreView.getVoterId());
+			}else {
+				tmp = new ArrayList<RatingScoreView>();
+			}
+			tmp.add(scoreView);
+			scoreViewMap.put(scoreView.getVoterId(), tmp);
+		}
+		
+		if (code.equals("A")) {//A卷
+			this.userDetailA(rstMap, scoreViewMap, template);
+		}else if (code.equals("B")) {//B卷
+			this.userDetailB(rstMap, scoreViewMap, template);
+		}else if (code.equals("C")) {//C卷
+			this.userDetailC(rstMap, scoreViewMap, template);
+		}else if (code.equals("D")) {//D卷
+			this.userDetailD(rstMap, scoreViewMap, template);
+		}
+		
+		return rstMap;
+	}
+	
+	private void userDetailA(List<Map<String, String>> rstMap,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template){
+		for (Long key : scoreViewMap.keySet()) {
+			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			Map<String, String> score = new HashMap<String, String>();
+			score.put("name", this.userLogic.findOne(key).getName());
+			score.put("user_id", key.toString());
+			for (RatingScoreView scoreView : tmp) {
+				Long optionKey = scoreView.getOptionId();
+				if (scoreView.getVoterGroupId().equals(scoreView.getScorerGroup())) {
+					score.put("source", "本组");
+				}else {
+					score.put("source", "外组");
+				}
+				score.put("option_" + optionKey, scoreView.getScore().toString());
+			}
+			rstMap.add(score);
+		}
+	}
+	
+	private void userDetailB(List<Map<String, String>> rstMap,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template){
+		for (Long key : scoreViewMap.keySet()) {
+			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			Map<String, String> score = new HashMap<String, String>();
+			score.put("name", this.userLogic.findOne(key).getName());
+			score.put("user_id", key.toString());
+			for (RatingScoreView scoreView : tmp) {
+				Long optionKey = scoreView.getOptionId();
+				UserGroup voterGroup = this.userGroupLogic.findOne(scoreView.getVoterGroupId());
+				if (scoreView.getVoterGroupId().equals(scoreView.getScorerGroup()) 
+						&&
+						scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())) {//本组组长
+					score.put("source", "本组组长");
+				}else if(!scoreView.getVoterGroupId().equals(scoreView.getScorerGroup()) 
+						&& scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())){
+					score.put("source", "外组组长");
+				}else if (voterGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {
+					score.put("source", "总体组");
+				}
+				score.put("option_" + optionKey, scoreView.getScore().toString());
+			}
+			rstMap.add(score);
+		}
+	}
+	
+	private void userDetailC(List<Map<String, String>> rstMap,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template){
+		for (Long key : scoreViewMap.keySet()) {
+			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			Map<String, String> score = new HashMap<String, String>();
+			score.put("name", this.userLogic.findOne(key).getName());
+			score.put("user_id", key.toString());
+			for (RatingScoreView scoreView : tmp) {
+				Long optionKey = scoreView.getOptionId();
+				UserGroup voterGroup = this.userGroupLogic.findOne(scoreView.getVoterGroupId());
+				if (scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())) {//组长
+					score.put("source", "组长");
+				}else if (voterGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {
+					score.put("source", "总体组");
+				}
+				score.put("option_" + optionKey, scoreView.getScore().toString());
+			}
+			rstMap.add(score);
+		}
+	}
+	
+	private void userDetailD(List<Map<String, String>> rstMap,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template){
+		for (Long key : scoreViewMap.keySet()) {
+			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			Map<String, String> score = new HashMap<String, String>();
+			score.put("name", this.userLogic.findOne(key).getName());
+			score.put("user_id", key.toString());
+			for (RatingScoreView scoreView : tmp) {
+				Long optionKey = scoreView.getOptionId();
+				if (scoreView.getVoterPositionId().equals(UserPositionType.TEAM_MATE.getValue())) {//组远
+					score.put("source", "本组");
+				}
+				score.put("option_" + optionKey, scoreView.getScore().toString());
+			}
+			rstMap.add(score);
+		}
 	}
 }

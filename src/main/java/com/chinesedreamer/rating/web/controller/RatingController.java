@@ -226,4 +226,37 @@ public class RatingController {
 		rstMap.put("rows", rptVo.getScores());
 		return rstMap;
 	}
+	
+	/**
+	 * 得分明细
+	 * @param model
+	 * @param tmplId
+	 * @param userId
+	 * @return
+	 */
+	@RequestMapping(value = "rating/statistics/{tmplId}/{userId}",method = RequestMethod.GET)
+	public String showUserStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId,
+			@PathVariable("userId")Long userId){
+		model.addAttribute("tmplId", tmplId);
+		model.addAttribute("userId", userId);
+		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+		Integer totalWidth = 120;
+		for (OptionTitle optionTitle : options) {
+			totalWidth += optionTitle.getWidth();
+		}
+		model.addAttribute("options", options);
+		model.addAttribute("gridWidth", totalWidth);
+		return "statistics/userDetail";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "rating/statistics/detail/{tmplId}/{userId}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> getUserStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId,
+			@PathVariable("userId")Long userId){
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		List<Map<String, String>> vos = this.statisticsService.userDetails(tmplId, userId);
+		rstMap.put("total", vos.size());
+		rstMap.put("rows", vos);
+		return rstMap;
+	}
 }
