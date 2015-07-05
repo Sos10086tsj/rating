@@ -95,10 +95,3 @@ INSERT INTO `rating`.`rating_score` (`name`, `score`) VALUES ('表现很差', '1
 INSERT INTO `rating`.`rating_score` (`name`, `score`) VALUES ('表现极差', '0');
 
 
---投票资源
-INSERT INTO `rating`.`sys_resource` (`code`, `name`, `url`, `show`, `seq`) VALUES ('RATING', '投票', 'rating', '1', '2.00');
-INSERT INTO `rating`.`sys_authority` (`code`, `name`, `show`) VALUES ('AU_RATING', '投票权限', '1');
-INSERT INTO `rating`.`sys_res_au_opr_mapping` (`res_code`, `auth_code`, `opr_code`) VALUES ('RATING', 'AU_RATING', 'MGMT');
-INSERT INTO `rating`.`sys_resource` (`code`, `name`, `url`, `show`, `parent_code`, `seq`) VALUES ('RATING_VOTE', '参与投票', 'rating', '1', 'RATING', '2.01');
-UPDATE `rating`.`sys_res_au_opr_mapping` SET `res_code`='RATING_VOTE' WHERE `id`='8';
-

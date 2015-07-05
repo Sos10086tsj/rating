@@ -54,6 +54,9 @@ CREATE TABLE `rating`.`sys_resource` (
 ALTER TABLE `rating`.`sys_resource` 
 CHANGE COLUMN `seq` `seq` DECIMAL(10,2) NULL DEFAULT NULL ;
 
+INSERT INTO `rating`.`sys_resource` (`code`, `name`, `url`, `seq`) VALUES ('SYS_MGMT', '系统管理', 'system', '1');
+INSERT INTO `rating`.`sys_resource` (`code`, `name`, `url`, `parent_code`, `seq`) VALUES ('USER_MGMT', '用户管理', 'system/user', 'SYS_MGMT', '1.1');
+
 CREATE TABLE `rating`.`sys_authority` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(45) NULL,
@@ -62,6 +65,8 @@ CREATE TABLE `rating`.`sys_authority` (
   `version` BIGINT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `SYS_AUTHORITY_PK_INDEX` (`code` ASC));
+INSERT INTO `rating`.`sys_authority` (`code`, `name`) VALUES ('AU_SYS_MGMT', '系统管理');
+INSERT INTO `rating`.`sys_authority` (`code`, `name`) VALUES ('AU_USER_MGMT', '用户管理');
 
 CREATE TABLE `rating`.`sys_operation` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
@@ -71,6 +76,7 @@ CREATE TABLE `rating`.`sys_operation` (
   `version` BIGINT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `SYS_OPR_PK_INDEX` (`code` ASC));
+INSERT INTO `rating`.`sys_operation` (`code`, `name`) VALUES ('MGMT', '管理');
 
 CREATE TABLE `rating`.`sys_res_au_opr_mapping` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
@@ -78,6 +84,10 @@ CREATE TABLE `rating`.`sys_res_au_opr_mapping` (
   `auth_code` VARCHAR(45) NULL,
   `opr_code` VARCHAR(45) NULL,
   PRIMARY KEY (`id`));
+
+INSERT INTO `rating`.`sys_res_au_opr_mapping` (`res_code`, `auth_code`, `opr_code`) VALUES ('SYS_MGMT', 'AU_SYS_MGMT', 'MGMT');
+INSERT INTO `rating`.`sys_res_au_opr_mapping` (`res_code`, `auth_code`, `opr_code`) VALUES ('USER_MGMT', 'AU_USER_MGMT', 'MGMT');
+
 
 CREATE TABLE `rating`.`sys_role` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
@@ -173,6 +183,3 @@ CREATE TABLE `rating`.`rating_tmpl_option_weight` (
   `option_id` BIGINT NULL,
   `weight` DECIMAL(10,2) NULL,
   PRIMARY KEY (`id`));
-
-  ALTER TABLE `rating`.`rating_supp_options` 
-ADD COLUMN `code` VARCHAR(45) NULL AFTER `version`;
