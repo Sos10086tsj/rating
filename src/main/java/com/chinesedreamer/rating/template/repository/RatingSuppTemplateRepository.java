@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.template.repository;
 
+import java.util.List;
+
 import com.chinesedreamer.rating.base.jpa.repository.BaseRepository;
 import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
 
@@ -10,5 +12,5 @@ import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
  * @version beta
  */
 public interface RatingSuppTemplateRepository extends BaseRepository<RatingSuppTemplate, Long>{
-
+	public List<RatingSuppTemplate> findByCode(String code);
 }

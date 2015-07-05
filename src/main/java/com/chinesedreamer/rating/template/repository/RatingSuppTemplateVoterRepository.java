@@ -13,4 +13,5 @@ import com.chinesedreamer.rating.template.model.RatingSuppTemplateVoter;
  */
 public interface RatingSuppTemplateVoterRepository extends BaseRepository<RatingSuppTemplateVoter, Long>{
 	public List<RatingSuppTemplateVoter> findBySuppTmplId(Long suppTmplId);
+	public List<RatingSuppTemplateVoter> findByGroupId(Long groupId);
 }
