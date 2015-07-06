@@ -31,9 +31,13 @@ public class RatingScoreViewLogicImpl extends BaseLogicImpl<RatingScoreView, Lon
 		return this.repository.findByTmplId(tmplId);
 	}
 	@Override
+	public BigInteger count(Long tmplId) {
+		Query query = em.createNativeQuery(this.generateCountSql(tmplId));
+		return (BigInteger)query.getSingleResult();
+	}
+	
 	public List<RatingScoreView> findByTmplIdAndScorer(Long tmplId, Long scorer) {
 		return this.repository.findByTmplIdAndScorer(tmplId, scorer);
-	}
 	}
 
 	private String generateCountSql(Long tmplId) {
