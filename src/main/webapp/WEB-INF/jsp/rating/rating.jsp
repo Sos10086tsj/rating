@@ -13,7 +13,6 @@
 		class="easyui-datagrid" 
 		style="width:900px; height: 400px; padding-left: 200px;" 
 		url="${ctx }/rating/list" 
-		toolbar="#toolbar" 
 		pagination="true"  
         rownumbers="true" 
         fitcolumns="true" 
@@ -29,12 +28,6 @@
         	</tr>
         </thead>
 </table>
-
-<div id="toolbar">
-	<!-- <a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-add" plain="true"onclick="rating.usermgmt.newUser()">添加</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-edit" plain="true"onclick="rating.usermgmt.editUser()">修改</a>  
-    <a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-remove" plain="true"onclick="rating.usermgmt.destroyUser()">删除</a> -->
-</div>
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
 <script type="text/javascript" src="${ctx}/resources/js/rating/userRating.js"></script>

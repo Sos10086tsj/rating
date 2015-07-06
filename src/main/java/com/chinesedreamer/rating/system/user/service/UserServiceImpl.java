@@ -29,6 +29,8 @@ import com.chinesedreamer.rating.system.rabc.mapping.model.RoleAuthMapping;
 import com.chinesedreamer.rating.system.rabc.mapping.model.UserRoleMapping;
 import com.chinesedreamer.rating.system.rabc.resource.logic.SysResourceLogic;
 import com.chinesedreamer.rating.system.rabc.resource.model.SysResource;
+import com.chinesedreamer.rating.system.rabc.role.logic.SysRoleLogic;
+import com.chinesedreamer.rating.system.rabc.role.model.SysRole;
 import com.chinesedreamer.rating.system.session.logic.UserSessionLogic;
 import com.chinesedreamer.rating.system.session.model.UserSession;
 import com.chinesedreamer.rating.system.user.MenuComparator;
@@ -55,6 +57,8 @@ import com.chinesedreamer.rating.web.filter.SessionFilter;
 public class UserServiceImpl implements UserService{
 	private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 	
+	private String USER_DEFAULT_ROLE = "DEFAULT";
+	
 	@Resource
 	private UserLogic logic;
 	@Resource
@@ -69,6 +73,8 @@ public class UserServiceImpl implements UserService{
 	private SysResourceLogic sysResourceLogic;
 	@Resource
 	private UserGroupLogic userGroupLogic;
+	@Resource
+	private SysRoleLogic roleLogic;
 	
 	@Override
 	public ResponseVo login(String username, String password) throws UserFrozenException,UserNotExistException,PasswordIncorrectException{
@@ -85,7 +91,7 @@ public class UserServiceImpl implements UserService{
 			throw ex;
 		}
 		if (!EncryptionUtil.md5L32(password + user.getSalt()).equals(user.getPassword())) {
-			PasswordIncorrectException ex = new PasswordIncorrectException("鐢ㄦ埛鍚嶆垨瀵嗙爜閿欒");
+			PasswordIncorrectException ex = new PasswordIncorrectException("用户名或密码错误");
 			logger.error("{}",ex);
 			throw ex;
 		}
@@ -177,11 +183,15 @@ public class UserServiceImpl implements UserService{
 	}
 	private UserVo conver2Vo(User user) {
 		UserVo vo = new UserVo();
+		vo.setUsername(user.getUsername());
+		vo.setGroupId(user.getUserGroup().getId().toString());
 		vo.setGroupName(user.getUserGroup().getName());
 		vo.setId(user.getId());
 		vo.setName(user.getName());
 		vo.setPhone(user.getPhone());
-		vo.setPositionName(UserPositionType.get(user.getPositionId()).getLabel());
+		UserPositionType position = UserPositionType.get(user.getPositionId());
+		vo.setPositionId(position.getValue().toString());
+		vo.setPositionName(position.getLabel());
 		vo.setStatus(user.getStatus().toString());
 		return vo;
 	}
@@ -199,7 +209,14 @@ public class UserServiceImpl implements UserService{
 		user.setStatus(UserStatus.ACTIVE);
 		user.setPhone(phone);
 		user.setPassword(EncryptionUtil.md5L32("123456" + salt));
-		this.logic.save(user);
+		user = this.logic.save(user);
+		
+		//默认添加投票、统计资源
+		SysRole defaultRole = this.roleLogic.findByName(this.USER_DEFAULT_ROLE);
+		UserRoleMapping userRoleMapping = new UserRoleMapping();
+		userRoleMapping.setRoleId(defaultRole.getId());
+		userRoleMapping.setUserId(user.getId());
+		this.userRoleMappingLogic.save(userRoleMapping);
 	}
 
 	@Override
@@ -234,4 +251,38 @@ public class UserServiceImpl implements UserService{
 		}
 		return vos;
 	}
+
+	@Override
+	public User showUserProfile(String username) {
+		return this.logic.findByUsername(username);
+	}
+	
+	@Override
+	public ResponseVo updateProfile(String username, String oldPassword, String newPassword,
+			String name,String phone) {
+		ResponseVo vo = new ResponseVo();
+		User user = this.logic.findByUsername(username);
+		if (null == user) {
+			vo.setErrorMessage("用户不存在或已被禁用");
+		}
+		if (!EncryptionUtil.md5L32(oldPassword + user.getSalt()).equals(user.getPassword())) {
+			vo.setErrorMessage("用户名或密码错误");
+		}else {
+			user.setName(name);
+			user.setPhone(phone);
+			if (StringUtils.isNotEmpty(newPassword)) {
+				user.setPassword(EncryptionUtil.md5L32(newPassword + user.getSalt()));
+			}
+			this.logic.save(user);
+		}
+		return vo;
+	}
+
+	@Override
+	public void logout(UserSession userSession) {
+		// TODO Auto-generated method stub
+		this.userSessionLogic.clear(userSession);
+	}
+
+	
 }

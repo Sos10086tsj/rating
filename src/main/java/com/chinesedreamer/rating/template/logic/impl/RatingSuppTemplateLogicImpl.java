@@ -25,5 +25,9 @@ public class RatingSuppTemplateLogicImpl extends BaseLogicImpl<RatingSuppTemplat
 	public List<RatingSuppTemplate> findAll() {
 		return this.repository.findAll();
 	}
+	@Override
+	public List<RatingSuppTemplate> findByCode(String code) {
+		return this.repository.findByCode(code);
+	}
 
 }

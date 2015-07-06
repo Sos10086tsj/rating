@@ -9,29 +9,44 @@
 <title>评分考核系统</title>
 </head>
 <body>
-	<rating:menu/>
 	
-	<form:form id="js_rating_cr_form" method="post" commandName="m" action="${ctx }/system/rating/create">
+	<form id="js_rating_cr_form" method="post" commandName="m" action="${ctx }/system/rating/create">
+		<div class="break_line"></div>
+		<div class="fitem">
+			<div class="user_edit_label float_left">
+				<label >投票主题</label>
+			</div>
+			<div style="margin-left:90px;">
+				<input name="name" class="easyui-textbox user_edit_input" required="true" >
+			</div>
+		</div>
+		<div class="break_line"></div>
 		<div>
-			<form:label path="name">标题：</form:label>
-			<form:input path="name" placeholder=""/>
+			<div class="user_edit_label float_left">
+				<label >选用模板</label>
+			</div>
+			<div style="margin-left:90px;">
+				<c:forEach items="${suppTemplates }" var="item">
+					<label><input type="checkbox" name="templateIds" checked="checked" value="${ item.value}"/>${ item.label}卷</label>
+				</c:forEach> 
+			</div>
 		</div>
-		<div> 
-			<form:label path="templateIds">选用模板：</form:label>
-			<c:forEach items="${suppTemplates }" var="item">
-				<label><form:checkbox path="templateIds" checked="checked" value="${ item.value}"/>${ item.label}</label>
-			</c:forEach> 
-		</div>
+		<div class="break_line"></div>
 		<div>
-			<form:label path="effFrom">投票时间：</form:label>
-			<form:input path="effFrom" type="text" class="easyui-datebox" />
-			至
-			<form:input path="effTo" type="text" class="easyui-datebox" />
+			<div class="user_edit_label float_left">
+				<label >投票时间</label>
+			</div>
+			<div style="margin-left:90px;">
+				<input name="effFromStr" type="text" class="easyui-datebox" />
+				至
+				<input name="effToStr" type="text" class="easyui-datebox" />	
+			</div>
 		</div>
+		<div class="break_line"></div>
 		<div>
-			<form:button type="submit">发起投票</form:button>
+			<button type="submit">发起投票</button>
 		</div>
-	</form:form>
+	</form>
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
 </html>

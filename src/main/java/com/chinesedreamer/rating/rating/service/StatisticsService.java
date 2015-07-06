@@ -1,5 +1,8 @@
 package com.chinesedreamer.rating.rating.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
 
 
@@ -12,4 +15,12 @@ import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
  */
 public interface StatisticsService {
 	public RptVo generateReport(Long tmplId);
+	
+	/**
+	 * 用户得分明细
+	 * @param tmplId
+	 * @param user
+	 * @return
+	 */
+	public List<Map<String, String>> userDetails(Long tmplId,Long user);
 }

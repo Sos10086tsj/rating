@@ -13,4 +13,5 @@ import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
  */
 public interface RatingSuppTemplateLogic extends BaseLogic<RatingSuppTemplate, Long>{
 	public List<RatingSuppTemplate> findAll();
+	public List<RatingSuppTemplate> findByCode(String code);
 }

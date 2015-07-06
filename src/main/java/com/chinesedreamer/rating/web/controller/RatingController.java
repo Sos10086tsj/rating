@@ -20,8 +20,10 @@ import com.chinesedreamer.rating.common.vo.OptionTitle;
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.service.RatingService;
+import com.chinesedreamer.rating.rating.service.StatisticsService;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
+import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
 import com.chinesedreamer.rating.system.session.service.UserSessionService;
 import com.chinesedreamer.rating.system.user.model.User;
 import com.chinesedreamer.rating.system.user.service.UserService;
@@ -41,6 +43,8 @@ public class RatingController {
 	private UserSessionService userSessionService;
 	@Resource
 	private UserService userService;
+	@Resource
+	private StatisticsService statisticsService;
 	
 	/**
 	 * 投票管理列表页
@@ -160,15 +164,99 @@ public class RatingController {
 		}
 	}
 	
-//	/**
-//	 * 获取模板相应的得分项
-//	 * @param model
-//	 * @param tmplId
-//	 * @return
-//	 */
-//	@ResponseBody
-//	@RequestMapping(value = "rating/vote/options/{tmplId}",method = RequestMethod.GET)
-//	public List<SelectVo> getRatingOptions(Model model,@PathVariable("tmplId")Long tmplId){
-//		return this.ratingService.getTmplOptions(tmplId);
-//	}
+	
+	/**
+	 * 显示统计
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "rating/statistics",method = RequestMethod.GET)
+	public String showStatistics(Model model){
+		return "statistics/statistics";
+	}
+	
+	/**
+	 * 所有投票列表
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "rating/statistics/list",method = {RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> showStatisticsRatings(Model model){
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
+		List<RatingUserVo> vos = this.ratingService.getStatisticsRatings(user);
+		rstMap.put("total", vos.size());
+		rstMap.put("rows", vos);
+		return rstMap;
+	}
+	
+	/**
+	 * 跳转投票详情展示页
+	 * @param model
+	 * @param tmplId
+	 * @return
+	 */
+	@RequestMapping(value = "rating/statistics/detail/{tmplId}",method = RequestMethod.GET)
+	public String showStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId){
+		model.addAttribute("tmplId", tmplId);
+		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+		Integer totalWidth = 120;
+		for (OptionTitle optionTitle : options) {
+			totalWidth += optionTitle.getWidth();
+		}
+		model.addAttribute("options", options);
+		model.addAttribute("gridWidth", totalWidth);
+		return "statistics/detail";
+	}
+	
+	/**
+	 * 获取投票统计结果
+	 * @param model
+	 * @param tmplId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "rating/statistics/{tmplId}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> getStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId){
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		RptVo rptVo = this.statisticsService.generateReport(tmplId);
+		model.addAttribute("rptVo", rptVo);
+		rstMap.put("total", rptVo.getScores().size());
+		rstMap.put("rows", rptVo.getScores());
+		return rstMap;
+	}
+	
+	/**
+	 * 得分明细
+	 * @param model
+	 * @param tmplId
+	 * @param userId
+	 * @return
+	 */
+	@RequestMapping(value = "rating/statistics/{tmplId}/{userId}",method = RequestMethod.GET)
+	public String showUserStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId,
+			@PathVariable("userId")Long userId){
+		model.addAttribute("tmplId", tmplId);
+		model.addAttribute("userId", userId);
+		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+		Integer totalWidth = 120;
+		for (OptionTitle optionTitle : options) {
+			totalWidth += optionTitle.getWidth();
+		}
+		model.addAttribute("options", options);
+		model.addAttribute("gridWidth", totalWidth);
+		return "statistics/userDetail";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "rating/statistics/detail/{tmplId}/{userId}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> getUserStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId,
+			@PathVariable("userId")Long userId){
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		List<Map<String, String>> vos = this.statisticsService.userDetails(tmplId, userId);
+		rstMap.put("total", vos.size());
+		rstMap.put("rows", vos);
+		return rstMap;
+	}
 }

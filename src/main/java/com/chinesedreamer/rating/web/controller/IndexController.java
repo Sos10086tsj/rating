@@ -33,6 +33,12 @@ public class IndexController {
 		return "login";
 	}
 	
+	@RequestMapping(value = "logout",method = {RequestMethod.GET,RequestMethod.POST})
+	public String logout(Model model,HttpServletRequest request) {
+		this.userService.logout(this.userSessionService.getCurrentUserSession());
+		return "login";
+	}
+	
 	@RequestMapping(value = "login",method = RequestMethod.POST)
 	public String userLogin(Model model,HttpServletRequest request) throws UserFrozenException,UserNotExistException,PasswordIncorrectException{
 		String username = request.getParameter("username");
@@ -40,6 +46,7 @@ public class IndexController {
 		this.userService.login(username, password);
 		
 		model.addAttribute("menus", this.userService.getUserMenus(username));
+		model.addAttribute("profile", this.userService.showUserProfile(username));
 		
 		return "index";
 	}

@@ -376,10 +376,10 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>${tomcat.plugin.version}</version>
 				<configuration>
-					<port>8090</port>
+					<port>8080</port>
 					<path>/rating</path>
 					<uriEncoding>UTF-8</uriEncoding>
-					<url>http://localhost:8090/manager/html</url>
+					<url>http://localhost:8080/manager/html</url>
 					<server>tomcat7</server>
 				</configuration>
 			</plugin>

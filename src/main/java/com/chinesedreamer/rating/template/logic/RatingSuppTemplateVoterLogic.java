@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.template.logic;
 
+import java.util.List;
+
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogic;
 import com.chinesedreamer.rating.template.model.RatingSuppTemplateVoter;
 
@@ -10,5 +12,5 @@ import com.chinesedreamer.rating.template.model.RatingSuppTemplateVoter;
  * @version beta
  */
 public interface RatingSuppTemplateVoterLogic extends BaseLogic<RatingSuppTemplateVoter, Long>{
-
+	public List<RatingSuppTemplateVoter> findByGroupId(Long groupId);
 }

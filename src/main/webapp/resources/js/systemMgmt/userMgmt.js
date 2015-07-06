@@ -1,22 +1,33 @@
 rating.usermgmt = {
 	//创建用户
 	newUser : function(){
-		$('#dlg').dialog('open').dialog('setTitle','New User');
-		$('#fm').form('clear');
-		$('#fm').attr("url",ctx + '/system/user/create');
+		$("#js_username").textbox({
+				'disabled': false
+			});
+		$("#js_pass_remind").show();
+		$('#js_user_edit').form('clear');
+		$("#js_hidden_url").val(ctx + '/system/user/create');
+		$('#dlg').dialog('open').dialog('setTitle','新建用户');
 		//url = 'save_user.php';
 	},
 	//修改用户
 	editUser : function(){
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
-			$('#dlg').dialog('open').dialog('setTitle','Edit User');
-			$('#fm').form('load',row);
-			$('#fm').attr("url",ctx + '/system/user/update');
+			$("#js_username").textbox({
+				//'disabled': true
+				'readonly':true
+			});
+			$("#js_pass_remind").hide();
+			$('#js_user_edit').form('load',row);
+			$("#js_hidden_url").val(ctx + '/system/user/update');
+			$('#dlg').dialog('open').dialog('setTitle','修改用户');
 		}
 	},
 	saveUser : function(){
-		 $('#fm').form('submit',{
+		var url = $("#js_hidden_url").val();
+		 $('#js_user_edit').form('submit',{
+		 	url : url,
 		 	onSubmit: function(){
             	return $(this).form('validate');
             },

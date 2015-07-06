@@ -65,7 +65,7 @@ public class RatingTemplateLogicImpl extends BaseLogicImpl<RatingTemplate, Long>
 			rt.setRatingId(rating.getId());
 			rt.setCode(rst.getCode());
 			this.repository.save(rt);
-			//2. 鎶曠エ浜烘暟鎹繚瀛�			
+			//2. 参与投票的人	
 			List<RatingSuppTemplateVoter> voters = this.suppTemplateVoterRepository.findBySuppTmplId(suppTemplateId);
 			for (RatingSuppTemplateVoter suppVoter : voters) {
 				RatingTemplateVoter voter = new RatingTemplateVoter();
@@ -74,7 +74,7 @@ public class RatingTemplateLogicImpl extends BaseLogicImpl<RatingTemplate, Long>
 				voter.setTmplId(rt.getId());
 				this.templateVoterRepository.save(voter);
 			}
-			//3. option淇濆瓨
+			//3. 可选项
 			List<RatingSuppTempalteOptionMapping> suppTemplateOptionMappings = this.suppTempalteOptionMappingRepository.findBySuppTmplId(suppTemplateId);
 			for (RatingSuppTempalteOptionMapping suppTemplateOptionMapping : suppTemplateOptionMappings) {
 				RatingTemplateOptionMapping templateOptionMapping = new RatingTemplateOptionMapping();
@@ -82,7 +82,7 @@ public class RatingTemplateLogicImpl extends BaseLogicImpl<RatingTemplate, Long>
 				templateOptionMapping.setSeq(suppTemplateOptionMapping.getSeq());
 				templateOptionMapping.setTmplId(rt.getId());
 				this.tempalteOptionMappingRepository.save(templateOptionMapping);
-				//4. 淇濆瓨鏉冮噸璁＄畻
+				//4. 权重
 				RatingSuppTmplOptionWeight suppWeight = this.suppTmplOptionWeightRepository.findBySuppTmplIdAndSuppOptionId(suppTemplateId, suppTemplateOptionMapping.getOptionId());
 				RatingTmplOptionWeight weight = new RatingTmplOptionWeight();
 				weight.setOptionId(suppTemplateOptionMapping.getOptionId());

@@ -11,5 +11,5 @@ import com.chinesedreamer.rating.system.rabc.role.model.SysRole;
  * Copyright:   Copyright (c)2015
  */
 public interface SysRoleRepsitory extends BaseRepository<SysRole, Long>{
-
+	public SysRole findByName(String name);
 }
