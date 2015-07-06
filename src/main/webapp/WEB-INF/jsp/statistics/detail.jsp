@@ -13,7 +13,7 @@
 		class="easyui-datagrid" 
 		style="width:${gridWidth + 40}px; height: 600px; padding-left: 200px;"
 		data-options="
-		url:'${ctx }/rating/statistics/${tmplId}',
+		url:'${ctx }/rating/statistics/${tmplIds}',
 		pagination:true ,
         rownumbers:true,
         fitcolumns:true,
@@ -29,7 +29,7 @@
         	</tr>
         </thead>
 	</table>
-<input id="js_statistics_detail_tmpl_id_hidden" type="hidden" value="${tmplId}">
+<input id="js_statistics_detail_tmpl_id_hidden" type="hidden" value="${tmplIds}">
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
 <script type="text/javascript" src="${ctx}/resources/js/statistics/statistics.js"></script>

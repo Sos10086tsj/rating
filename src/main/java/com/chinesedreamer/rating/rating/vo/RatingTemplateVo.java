@@ -11,6 +11,7 @@ import lombok.Setter;
  */
 public @Getter @Setter class RatingTemplateVo {
 	private Long id;
+	private String code;
 	private String name;
 	private Boolean voted;
 }

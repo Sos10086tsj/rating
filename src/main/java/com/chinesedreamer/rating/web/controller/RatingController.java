@@ -200,10 +200,40 @@ public class RatingController {
 	 * @param tmplId
 	 * @return
 	 */
-	@RequestMapping(value = "rating/statistics/detail/{tmplId}",method = RequestMethod.GET)
-	public String showStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId){
-		model.addAttribute("tmplId", tmplId);
-		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+//	@RequestMapping(value = "rating/statistics/detail/{tmplId}",method = RequestMethod.GET)
+//	public String showStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId){
+//		model.addAttribute("tmplId", tmplId);
+//		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+//		Integer totalWidth = 120;
+//		for (OptionTitle optionTitle : options) {
+//			totalWidth += optionTitle.getWidth();
+//		}
+//		model.addAttribute("options", options);
+//		model.addAttribute("gridWidth", totalWidth);
+//		return "statistics/detail";
+//	}
+	
+	/**
+	 * 获取投票统计结果
+	 * @param model
+	 * @param tmplId
+	 * @return
+	 */
+//	@ResponseBody
+//	@RequestMapping(value = "rating/statistics/{tmplId}",method = {RequestMethod.GET,RequestMethod.POST})
+//	public Map<String, Object> getStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId){
+//		Map<String, Object> rstMap = new HashMap<String, Object>();
+//		RptVo rptVo = this.statisticsService.generateReport(tmplId);
+//		model.addAttribute("rptVo", rptVo);
+//		rstMap.put("total", rptVo.getScores().size());
+//		rstMap.put("rows", rptVo.getScores());
+//		return rstMap;
+//	}
+	@RequestMapping(value = "rating/statistics/detail/{tmplIds}",method = RequestMethod.GET)
+	public String showStatisticsDetail(Model model,@PathVariable("tmplIds")String tmplIds){
+		model.addAttribute("tmplIds", tmplIds);
+		String[] ids = tmplIds.split(",");
+		List<OptionTitle> options = this.ratingService.getTmplOptions(Long.parseLong(ids[0]));//A卷字段比B卷少
 		Integer totalWidth = 120;
 		for (OptionTitle optionTitle : options) {
 			totalWidth += optionTitle.getWidth();
@@ -212,23 +242,50 @@ public class RatingController {
 		model.addAttribute("gridWidth", totalWidth);
 		return "statistics/detail";
 	}
-	
-	/**
-	 * 获取投票统计结果
-	 * @param model
-	 * @param tmplId
-	 * @return
-	 */
 	@ResponseBody
-	@RequestMapping(value = "rating/statistics/{tmplId}",method = {RequestMethod.GET,RequestMethod.POST})
-	public Map<String, Object> getStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId){
+	@RequestMapping(value = "rating/statistics/{tmplIds}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> getStatisticsDetail(Model model,@PathVariable("tmplIds")String tmplIds){
 		Map<String, Object> rstMap = new HashMap<String, Object>();
-		RptVo rptVo = this.statisticsService.generateReport(tmplId);
+		RptVo rptVo = this.statisticsService.generateReport(tmplIds);
 		model.addAttribute("rptVo", rptVo);
 		rstMap.put("total", rptVo.getScores().size());
 		rstMap.put("rows", rptVo.getScores());
 		return rstMap;
 	}
+	
+//	/**
+//	 * 得分明细
+//	 * @param model
+//	 * @param tmplId
+//	 * @param userId
+//	 * @return
+//	 */
+//	@RequestMapping(value = "rating/statistics/{tmplId}/{userId}",method = RequestMethod.GET)
+//	public String showUserStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId,
+//			@PathVariable("userId")Long userId){
+//		model.addAttribute("tmplId", tmplId);
+//		model.addAttribute("userId", userId);
+//		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+//		Integer totalWidth = 120;
+//		for (OptionTitle optionTitle : options) {
+//			totalWidth += optionTitle.getWidth();
+//		}
+//		model.addAttribute("options", options);
+//		model.addAttribute("gridWidth", totalWidth);
+//		return "statistics/userDetail";
+//	}
+//	
+//	
+//	@ResponseBody
+//	@RequestMapping(value = "rating/statistics/detail/{tmplId}/{userId}",method = {RequestMethod.GET,RequestMethod.POST})
+//	public Map<String, Object> getUserStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId,
+//			@PathVariable("userId")Long userId){
+//		Map<String, Object> rstMap = new HashMap<String, Object>();
+//		List<Map<String, String>> vos = this.statisticsService.userDetails(tmplId, userId);
+//		rstMap.put("total", vos.size());
+//		rstMap.put("rows", vos);
+//		return rstMap;
+//	}
 	
 	/**
 	 * 得分明细
@@ -237,12 +294,13 @@ public class RatingController {
 	 * @param userId
 	 * @return
 	 */
-	@RequestMapping(value = "rating/statistics/{tmplId}/{userId}",method = RequestMethod.GET)
-	public String showUserStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId,
+	@RequestMapping(value = "rating/statistics/{tmplIds}/{userId}",method = RequestMethod.GET)
+	public String showUserStatisticsDetail(Model model,@PathVariable("tmplIds")String tmplIds,
 			@PathVariable("userId")Long userId){
-		model.addAttribute("tmplId", tmplId);
+		model.addAttribute("tmplIds", tmplIds);
 		model.addAttribute("userId", userId);
-		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+		String[] ids = tmplIds.split(",");
+		List<OptionTitle> options = this.ratingService.getTmplOptions(Long.parseLong(ids[1]));//A卷字段比B卷少
 		Integer totalWidth = 120;
 		for (OptionTitle optionTitle : options) {
 			totalWidth += optionTitle.getWidth();
@@ -254,11 +312,11 @@ public class RatingController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value = "rating/statistics/detail/{tmplId}/{userId}",method = {RequestMethod.GET,RequestMethod.POST})
-	public Map<String, Object> getUserStatisticsDetail(Model model,@PathVariable("tmplId")Long tmplId,
+	@RequestMapping(value = "rating/statistics/detail/{tmplIds}/{userId}",method = RequestMethod.POST)
+	public Map<String, Object> getUserStatisticsDetail(Model model,@PathVariable("tmplIds")String tmplIds,
 			@PathVariable("userId")Long userId){
 		Map<String, Object> rstMap = new HashMap<String, Object>();
-		List<Map<String, String>> vos = this.statisticsService.userDetails(tmplId, userId);
+		List<Map<String, String>> vos = this.statisticsService.userDetails(tmplIds, userId);
 		rstMap.put("total", vos.size());
 		rstMap.put("rows", vos);
 		return rstMap;

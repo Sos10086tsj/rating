@@ -29,7 +29,8 @@ public class RatingExceptionHandler implements HandlerExceptionResolver{
 		String errorMessage = "";
 		logger.error("{}",ex);
 		if (ex instanceof BizException) {
-			errorMessage = ex.getMessage();
+			//errorMessage = ex.getMessage();
+			errorMessage = "<a herf='login'>超时，请重新登录</a>";
 		}else {
 			errorMessage = "系统异常，请联系管理员！";
 		}

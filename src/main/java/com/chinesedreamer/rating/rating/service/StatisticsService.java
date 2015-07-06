@@ -16,6 +16,8 @@ import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
 public interface StatisticsService {
 	public RptVo generateReport(Long tmplId);
 	
+	public RptVo generateReport(String tmplIds);
+	
 	/**
 	 * 用户得分明细
 	 * @param tmplId
@@ -23,4 +25,6 @@ public interface StatisticsService {
 	 * @return
 	 */
 	public List<Map<String, String>> userDetails(Long tmplId,Long user);
+	
+	public List<Map<String, String>> userDetails(String tmplIds,Long user);
 }

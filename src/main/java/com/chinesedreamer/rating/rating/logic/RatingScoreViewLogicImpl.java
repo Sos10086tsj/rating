@@ -48,4 +48,9 @@ public class RatingScoreViewLogicImpl extends BaseLogicImpl<RatingScoreView, Lon
 		.append(tmplId);
 		return buffer.toString();
 	}
+	@Override
+	public List<RatingScoreView> findByTmplIdIn(List<Long> tmplIds) {
+		return this.repository.findByTmplIdIn(tmplIds);
+	}
+
 }

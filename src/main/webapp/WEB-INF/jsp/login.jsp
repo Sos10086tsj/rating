@@ -12,7 +12,8 @@
 	<div class="easyui-panel" title="用户登录" style="width:350px; ">
 		<div style="padding:10px 60px 20px 60px;">
 			<form id="js_login_form" method="post" name="js_login_form" action="${ctx }/login" onkeydown="rating.login.keyDown(event);">
-				<table cellpadding="5">
+				<div><font color="#FF0000">${errorMessage }</font></div>
+				<table cellpadding="5">			
 					<tr>
                     	<td>用户名</td>
                     	<td><input class="easyui-textbox" type="text" name="username" data-options="required:true,iconCls:'icon-man',iconWidth:38"></input></td>

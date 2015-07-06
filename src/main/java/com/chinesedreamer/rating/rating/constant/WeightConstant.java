@@ -11,8 +11,8 @@ public class WeightConstant {
 	public static Float A_NLDF_PERCENTF = 0.3f;//A表能力
 	public static Float A_BXDF_INNER_PERCENT = 0.2f;//A表本组表现
 	public static Float A_BXDF_OUTER_PERCENT = 0.1f;//A表外租表现
-	public static Float A_NLDF_INNER_PERCENT = 1.0f;//A表本组能力
-	public static Float A_NLDF_OUTER_PERCENT = 1.0f;//A表外租能力
+	public static Float A_NLDF_INNER_PERCENT = 0.0f;//A表本组能力
+	public static Float A_NLDF_OUTER_PERCENT = 0.0f;//A表外租能力
 	
 	//B表设置
 	public static Float B_BXDF_PERCENTF = 0.7f;//B表表现

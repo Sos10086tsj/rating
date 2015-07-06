@@ -14,6 +14,7 @@ import com.chinesedreamer.rating.rating.model.RatingScoreView;
  */
 public interface RatingScoreViewLogic extends BaseLogic<RatingScoreView, Long>{
 	public List<RatingScoreView> findByTmplId(Long tmplId);
+	public List<RatingScoreView> findByTmplIdIn(List<Long> tmplIds);
 	
 	public BigInteger count(Long tmplId);
 	public List<RatingScoreView> findByTmplIdAndScorer(Long tmplId, Long scorer);

@@ -233,15 +233,14 @@ public class RatingServiceImpl implements RatingService{
 			}
 		}
 		//所有投票项
+		List<Map<String, Object>> scorers = new ArrayList<Map<String,Object>>();
 		List<RatingTemplateOptionMapping> options = this.templateOptionMappingLogic.findByTmplId(tmplId);
-		if (null != voteVos && voteVos.isEmpty()) {//未进行投票时，默认提供全部待投票用户
-			List<Map<String, Object>> initSocres = this.initAllVoters(rt.getCode(), options, user);
-			rstMap.put("total", initSocres.size());
-			rstMap.put("rows", initSocres);
-		}else {
-			rstMap.put("total", voteVos.size());
-			rstMap.put("rows", this.generateRatingVoteJsonDatasource(voteVos, options));
+		if (null != voteVos && !voteVos.isEmpty()) {//未进行投票时，默认提供全部待投票用户
+			scorers.addAll(this.generateRatingVoteJsonDatasource(voteVos, options));
 		}
+		this.initAllVoters(rt.getCode(), options, user,scorers);
+		rstMap.put("total", scorers.size());
+		rstMap.put("rows", scorers);
 		
 		return rstMap;
 	}
@@ -252,8 +251,11 @@ public class RatingServiceImpl implements RatingService{
 	 * @param options
 	 * @return
 	 */
-	private List<Map<String, Object>> initAllVoters(String code, List<RatingTemplateOptionMapping> options, User currentUser){
-		List<Map<String, Object>> rst = new ArrayList<Map<String, Object>>();
+	private void initAllVoters(String code, List<RatingTemplateOptionMapping> options, User currentUser,List<Map<String, Object>> scorers){
+		Set<String> exists = new HashSet<String>();
+		for (Map<String, Object> scorer : scorers) {
+			exists.add(scorer.get("scorerId").toString());
+		}
 		List<TmplScoerVO> scoers = RatingSuppTmplScoerUtil.getTemplateScores(code);
 		for (TmplScoerVO scoer : scoers) {
 			//1. 查询总体组
@@ -265,7 +267,7 @@ public class RatingServiceImpl implements RatingService{
 			}
 			if (null != users && !users.isEmpty()) {
 				for (User user : users) {
-					if(currentUser.getId().equals(user.getId())){
+					if(currentUser.getId().equals(user.getId()) || exists.contains(user.getId().toString())){
 						continue;
 					}
 					Map<String, Object> tmpMap = new HashMap<String, Object>();
@@ -274,11 +276,10 @@ public class RatingServiceImpl implements RatingService{
 					for (RatingTemplateOptionMapping option : options) {
 						tmpMap.put("option_" + option.getOptionId(), "");
 					}
-					rst.add(tmpMap);
+					scorers.add(tmpMap);
 				}
 			}
 		}
-		return rst;
 	}
 	
 	/**
@@ -377,6 +378,7 @@ public class RatingServiceImpl implements RatingService{
 		for (RatingTemplate template : templates) {
 			RatingTemplateVo rtVo = new RatingTemplateVo();
 			rtVo.setId(template.getId());
+			rtVo.setCode(template.getCode());
 			rtVo.setName(template.getName());
 			templateVos.add(rtVo);
 		}

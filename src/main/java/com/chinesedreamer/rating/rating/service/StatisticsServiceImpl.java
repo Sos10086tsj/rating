@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.rating.constant.WeightConstant;
@@ -108,7 +109,12 @@ public class StatisticsServiceImpl implements StatisticsService{
 	 */
 	private void statisticsA(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
 		
-		List<Map<String, String>> scores = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> scores = null;
+		if (null != vo && null != vo.getScores() && !vo.getScores().isEmpty()) {
+			scores = vo.getScores();
+		}else {
+			scores = new ArrayList<Map<String, String>>();
+		}	
 		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
 		
 		//2. 根据每个用户计算得分
@@ -174,7 +180,16 @@ public class StatisticsServiceImpl implements StatisticsService{
 				Float value = rate * ( (innerValue / innerNum) * innerRate + (outerValue / outerNum) * outerRate );
 				score.put("option_" + optionKey, this.formatScore(value,config));
 			}
-			
+			for (Map<String, String> exist : scores) {
+				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
+					for (String existKey : score.keySet()) {
+						if (!existKey.equals("user_id") && !existKey.equals("name")) {
+							score.put(existKey, score.get(existKey) + exist.get(existKey));
+						}
+					}
+					scores.remove(exist);
+				}
+			}
 			scores.add(score);
 		}
 
@@ -188,7 +203,12 @@ public class StatisticsServiceImpl implements StatisticsService{
 	 * @param template
 	 */
 	private void statisticsB(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
-		List<Map<String, String>> scores = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> scores = null;
+		if (null != vo && null != vo.getScores() && !vo.getScores().isEmpty()) {
+			scores = vo.getScores();
+		}else {
+			scores = new ArrayList<Map<String, String>>();
+		}	
 		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
 
 		//2. 根据每个用户计算得分
@@ -274,6 +294,16 @@ public class StatisticsServiceImpl implements StatisticsService{
 				Float value = rate * ( (innerValue / innerNum) * innerRate + (outerValue / outerNum) * outerRate + (zongtiValue / zongtiNum) * zongtiRate);
 				score.put("option_" + optionKey, this.formatScore(value,config));
 			}
+			for (Map<String, String> exist : scores) {
+				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
+					for (String existKey : score.keySet()) {
+						if (!existKey.equals("user_id") && !existKey.equals("name")) {
+							score.put(existKey, score.get(existKey) + exist.get(existKey));
+						}
+					}
+					scores.remove(exist);
+				}
+			}
 			scores.add(score);
 		}
 
@@ -287,7 +317,12 @@ public class StatisticsServiceImpl implements StatisticsService{
 	 * @param template
 	 */
 	private void statisticsC(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
-		List<Map<String, String>> scores = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> scores = null;
+		if (null != vo && null != vo.getScores() && !vo.getScores().isEmpty()) {
+			scores = vo.getScores();
+		}else {
+			scores = new ArrayList<Map<String, String>>();
+		}	
 		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
@@ -357,6 +392,16 @@ public class StatisticsServiceImpl implements StatisticsService{
 				Float value = rate * ( (leaderValue / leaderNum) * leaderRate + (zongtiValue / zongtiNum) * zongtiRate);
 				score.put("option_" + optionKey, this.formatScore(value,config));
 			}
+			for (Map<String, String> exist : scores) {
+				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
+					for (String existKey : score.keySet()) {
+						if (!existKey.equals("user_id") && !existKey.equals("name")) {
+							score.put(existKey, score.get(existKey) + exist.get(existKey));
+						}
+					}
+					scores.remove(exist);
+				}
+			}
 			scores.add(score);
 		}
 
@@ -370,7 +415,12 @@ public class StatisticsServiceImpl implements StatisticsService{
 	 * @param template
 	 */
 	private void statisticsD(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
-		List<Map<String, String>> scores = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> scores = null;
+		if (null != vo && null != vo.getScores() && !vo.getScores().isEmpty()) {
+			scores = vo.getScores();
+		}else {
+			scores = new ArrayList<Map<String, String>>();
+		}	
 		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
@@ -421,6 +471,16 @@ public class StatisticsServiceImpl implements StatisticsService{
 				Float value = rate * ( (zuyuanValue / zuyuanNum) * zuyuanRate);
 				score.put("option_" + optionKey, this.formatScore(value,config));
 			}
+			for (Map<String, String> exist : scores) {
+				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
+					for (String existKey : score.keySet()) {
+						if (!existKey.equals("user_id") && !existKey.equals("name")) {
+							score.put(existKey, score.get(existKey) + exist.get(existKey));
+						}
+					}
+					scores.remove(exist);
+				}
+			}
 			scores.add(score);
 		}
 
@@ -466,6 +526,17 @@ public class StatisticsServiceImpl implements StatisticsService{
 			Map<String, String> score = new HashMap<String, String>();
 			score.put("name", this.userLogic.findOne(key).getName());
 			score.put("user_id", key.toString());
+			boolean duplicate = false;
+			Map<String, String> exist = null;
+			for (Map<String, String> rst : rstMap) {
+				if (rst.get("user_id").equals(score.get("user_id"))) {//重复
+					duplicate = true;
+					exist = rst;
+					break;
+				}
+			}
+			rstMap.remove(exist);
+			
 			for (RatingScoreView scoreView : tmp) {
 				Long optionKey = scoreView.getOptionId();
 				if (scoreView.getVoterGroupId().equals(scoreView.getScorerGroup())) {
@@ -473,7 +544,13 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}else {
 					score.put("source", "外组");
 				}
-				score.put("option_" + optionKey, scoreView.getScore().toString());
+				if (duplicate) {
+					score.put("option_" + optionKey, 
+							String.valueOf((scoreView.getScore() + Integer.parseInt(exist.get("option_" + optionKey)))));
+				}else {
+					score.put("option_" + optionKey, scoreView.getScore().toString());
+				}
+				
 			}
 			rstMap.add(score);
 		}
@@ -485,6 +562,16 @@ public class StatisticsServiceImpl implements StatisticsService{
 			Map<String, String> score = new HashMap<String, String>();
 			score.put("name", this.userLogic.findOne(key).getName());
 			score.put("user_id", key.toString());
+			boolean duplicate = false;
+			Map<String, String> exist = null;
+			for (Map<String, String> rst : rstMap) {
+				if (rst.get("user_id").equals(score.get("user_id"))) {//重复
+					duplicate = true;
+					exist = rst;
+					break;
+				}
+			}
+			rstMap.remove(exist);
 			for (RatingScoreView scoreView : tmp) {
 				Long optionKey = scoreView.getOptionId();
 				UserGroup voterGroup = this.userGroupLogic.findOne(scoreView.getVoterGroupId());
@@ -498,7 +585,12 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}else if (voterGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {
 					score.put("source", "总体组");
 				}
-				score.put("option_" + optionKey, scoreView.getScore().toString());
+				if (duplicate) {
+					score.put("option_" + optionKey, 
+							String.valueOf((scoreView.getScore() + Integer.parseInt(exist.get("option_" + optionKey)))));
+				}else {
+					score.put("option_" + optionKey, scoreView.getScore().toString());
+				}
 			}
 			rstMap.add(score);
 		}
@@ -510,6 +602,16 @@ public class StatisticsServiceImpl implements StatisticsService{
 			Map<String, String> score = new HashMap<String, String>();
 			score.put("name", this.userLogic.findOne(key).getName());
 			score.put("user_id", key.toString());
+			boolean duplicate = false;
+			Map<String, String> exist = null;
+			for (Map<String, String> rst : rstMap) {
+				if (rst.get("user_id").equals(score.get("user_id"))) {//重复
+					duplicate = true;
+					exist = rst;
+					break;
+				}
+			}
+			rstMap.remove(exist);
 			for (RatingScoreView scoreView : tmp) {
 				Long optionKey = scoreView.getOptionId();
 				UserGroup voterGroup = this.userGroupLogic.findOne(scoreView.getVoterGroupId());
@@ -518,7 +620,12 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}else if (voterGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {
 					score.put("source", "总体组");
 				}
-				score.put("option_" + optionKey, scoreView.getScore().toString());
+				if (duplicate) {
+					score.put("option_" + optionKey, 
+							String.valueOf((scoreView.getScore() + Integer.parseInt(exist.get("option_" + optionKey)))));
+				}else {
+					score.put("option_" + optionKey, scoreView.getScore().toString());
+				}
 			}
 			rstMap.add(score);
 		}
@@ -530,12 +637,27 @@ public class StatisticsServiceImpl implements StatisticsService{
 			Map<String, String> score = new HashMap<String, String>();
 			score.put("name", this.userLogic.findOne(key).getName());
 			score.put("user_id", key.toString());
+			boolean duplicate = false;
+			Map<String, String> exist = null;
+			for (Map<String, String> rst : rstMap) {
+				if (rst.get("user_id").equals(score.get("user_id"))) {//重复
+					duplicate = true;
+					exist = rst;
+					break;
+				}
+			}
+			rstMap.remove(exist);
 			for (RatingScoreView scoreView : tmp) {
 				Long optionKey = scoreView.getOptionId();
 				if (scoreView.getVoterPositionId().equals(UserPositionType.TEAM_MATE.getValue())) {//组远
 					score.put("source", "本组");
 				}
-				score.put("option_" + optionKey, scoreView.getScore().toString());
+				if (duplicate) {
+					score.put("option_" + optionKey, 
+							String.valueOf((scoreView.getScore() + Integer.parseInt(exist.get("option_" + optionKey)))));
+				}else {
+					score.put("option_" + optionKey, scoreView.getScore().toString());
+				}
 			}
 			rstMap.add(score);
 		}
@@ -548,5 +670,99 @@ public class StatisticsServiceImpl implements StatisticsService{
 		Integer format = Integer.parseInt(config.getPropertyValue());
 		Float finalScore = (float)(Math.round(score*format))/format;
 		return finalScore.toString();
+	}
+
+	/********** 统计时，A、B，C、D一起统计 ******/
+	@Override
+	public RptVo generateReport(String tmplIds) {
+		List<RatingTemplate> tmpls = new ArrayList<RatingTemplate>();
+		String[] ids = tmplIds.split(",");
+		for (String id : ids) {
+			if (StringUtils.isNotEmpty(id)) {
+				tmpls.add(this.templateLogic.findOne(Long.parseLong(id)));
+			}
+		}
+		RptVo vo = new RptVo();
+		Rating rating  = this.ratingLogic.findOne(tmpls.get(0).getRatingId());
+		vo.setName(rating.getName());
+		vo.setFrom(rating.getEffFrom());
+		vo.setTo(rating.getEffTo());
+		vo.setStatus(rating.getStatus().toString());
+		this.getRptScores(vo, tmpls);
+		return vo;
+	}
+	
+	private void getRptScores(RptVo vo,List<RatingTemplate> templates){
+		for (RatingTemplate template : templates) {
+			List<RatingScoreView> scoreViews = this.scoreViewLogic.findByTmplId(template.getId());
+			String code = template.getCode();
+			
+			Map<Long, List<RatingScoreView>> scoreViewMap = new HashMap<Long, List<RatingScoreView>>();
+			//1. 分离得分用户
+			for (RatingScoreView scoreView : scoreViews) {
+				List<RatingScoreView> tmp = null;
+				if (scoreViewMap.containsKey(scoreView.getScorer())) {
+					tmp = scoreViewMap.get(scoreView.getScorer());
+				}else {
+					tmp = new ArrayList<RatingScoreView>();
+				}
+				tmp.add(scoreView);
+				scoreViewMap.put(scoreView.getScorer(), tmp);
+			}
+			
+			if (code.equals("A")) {//A卷
+				this.statisticsA(vo, scoreViewMap, template);
+			}else if (code.equals("B")) {//B卷
+				this.statisticsB(vo, scoreViewMap, template);
+			}else if (code.equals("C")) {//C卷
+				this.statisticsC(vo, scoreViewMap, template);
+			}else if (code.equals("D")) {//D卷
+				this.statisticsD(vo, scoreViewMap, template);
+			}
+		}
+	}
+
+	@Override
+	public List<Map<String, String>> userDetails(String tmplIds, Long user) {
+		List<Map<String, String>> rstMap = new ArrayList<Map<String,String>>();
+		
+		List<RatingTemplate> tmpls = new ArrayList<RatingTemplate>();
+		String[] ids = tmplIds.split(",");
+		for (String id : ids) {
+			if (StringUtils.isNotEmpty(id)) {
+				tmpls.add(this.templateLogic.findOne(Long.parseLong(id)));
+			}
+		}
+		for (String id : ids) {
+			Long tmplId = Long.parseLong(id);
+			RatingTemplate template = this.templateLogic.findOne(tmplId);
+			List<RatingScoreView> scoreViews = this.scoreViewLogic.findByTmplIdAndScorer(tmplId, user);
+			String code = template.getCode();
+			Map<Long, List<RatingScoreView>> scoreViewMap = new HashMap<Long, List<RatingScoreView>>();
+			//1. 根据投票用户分离
+			for (RatingScoreView scoreView : scoreViews) {
+				List<RatingScoreView> tmp = null;
+				if (scoreViewMap.containsKey(scoreView.getVoterId())) {
+					tmp = scoreViewMap.get(scoreView.getVoterId());
+				}else {
+					tmp = new ArrayList<RatingScoreView>();
+				}
+				tmp.add(scoreView);
+				scoreViewMap.put(scoreView.getVoterId(), tmp);
+			}
+			
+			if (code.equals("A")) {//A卷
+				this.userDetailA(rstMap, scoreViewMap, template);
+			}else if (code.equals("B")) {//B卷
+				this.userDetailB(rstMap, scoreViewMap, template);
+			}else if (code.equals("C")) {//C卷
+				this.userDetailC(rstMap, scoreViewMap, template);
+			}else if (code.equals("D")) {//D卷
+				this.userDetailD(rstMap, scoreViewMap, template);
+			}
+		}
+		
+		
+		return rstMap;
 	}
 }

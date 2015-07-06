@@ -14,4 +14,5 @@ import com.chinesedreamer.rating.rating.model.RatingScoreView;
 public interface RatingScoreViewRepository extends BaseRepository<RatingScoreView, Long>{
 	public List<RatingScoreView> findByTmplId(Long tmplId);
 	public List<RatingScoreView> findByTmplIdAndScorer(Long tmplId, Long scorer);
+	public List<RatingScoreView> findByTmplIdIn(List<Long> tmplIds);
 }
