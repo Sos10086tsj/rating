@@ -17,6 +17,9 @@ import com.chinesedreamer.rating.rating.logic.RatingScoreViewLogic;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.model.RatingScoreView;
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
+import com.chinesedreamer.rating.system.config.ConfigConstant;
+import com.chinesedreamer.rating.system.config.logic.ConfigLogic;
+import com.chinesedreamer.rating.system.config.model.Config;
 import com.chinesedreamer.rating.system.group.UserGroupLevel;
 import com.chinesedreamer.rating.system.group.logic.UserGroupLogic;
 import com.chinesedreamer.rating.system.group.model.UserGroup;
@@ -53,6 +56,8 @@ public class StatisticsServiceImpl implements StatisticsService{
 	private UserGroupLogic userGroupLogic;
 	@Resource
 	private RatingSuppOptionLogic suppOptionLogic;
+	@Resource
+	private ConfigLogic configLogic;
 
 	@Override
 	public RptVo generateReport(Long tmplId) {
@@ -104,6 +109,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 	private void statisticsA(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
 		
 		List<Map<String, String>> scores = new ArrayList<Map<String, String>>();
+		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
 		
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
@@ -166,7 +172,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 				int innerNum = innerVoter.isEmpty() ? 1 : innerVoter.size();
 				int outerNum = outerVoter.isEmpty() ? 1 : outerVoter.size();
 				Float value = rate * ( (innerValue / innerNum) * innerRate + (outerValue / outerNum) * outerRate );
-				score.put("option_" + optionKey, value.toString());
+				score.put("option_" + optionKey, this.formatScore(value,config));
 			}
 			
 			scores.add(score);
@@ -183,6 +189,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 	 */
 	private void statisticsB(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
 		List<Map<String, String>> scores = new ArrayList<Map<String, String>>();
+		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
 
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
@@ -265,7 +272,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 				int outerNum = outerVoter.isEmpty() ? 1 : outerVoter.size();
 				int zongtiNum = zongtiVoter.isEmpty() ? 1 : zongtiVoter.size();
 				Float value = rate * ( (innerValue / innerNum) * innerRate + (outerValue / outerNum) * outerRate + (zongtiValue / zongtiNum) * zongtiRate);
-				score.put("option_" + optionKey, value.toString());
+				score.put("option_" + optionKey, this.formatScore(value,config));
 			}
 			scores.add(score);
 		}
@@ -281,7 +288,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 	 */
 	private void statisticsC(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
 		List<Map<String, String>> scores = new ArrayList<Map<String, String>>();
-
+		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
 			List<RatingScoreView> tmp = scoreViewMap.get(key);
@@ -348,7 +355,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 				int leaderNum = leaderVoter.isEmpty() ? 1 : leaderVoter.size();
 				int zongtiNum = zongtiVoter.isEmpty() ? 1 : zongtiVoter.size();
 				Float value = rate * ( (leaderValue / leaderNum) * leaderRate + (zongtiValue / zongtiNum) * zongtiRate);
-				score.put("option_" + optionKey, value.toString());
+				score.put("option_" + optionKey, this.formatScore(value,config));
 			}
 			scores.add(score);
 		}
@@ -364,7 +371,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 	 */
 	private void statisticsD(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
 		List<Map<String, String>> scores = new ArrayList<Map<String, String>>();
-
+		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
 			List<RatingScoreView> tmp = scoreViewMap.get(key);
@@ -412,7 +419,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}
 				int zuyuanNum = zuyuanVoter.isEmpty() ? 1 : zuyuanVoter.size();
 				Float value = rate * ( (zuyuanValue / zuyuanNum) * zuyuanRate);
-				score.put("option_" + optionKey, value.toString());
+				score.put("option_" + optionKey, this.formatScore(value,config));
 			}
 			scores.add(score);
 		}
@@ -532,5 +539,14 @@ public class StatisticsServiceImpl implements StatisticsService{
 			}
 			rstMap.add(score);
 		}
+	}
+	
+	private String formatScore(Float score, Config config) {
+		if (null == config) {
+			return score.toString();
+		}
+		Integer format = Integer.parseInt(config.getPropertyValue());
+		Float finalScore = (float)(Math.round(score*format))/format;
+		return finalScore.toString();
 	}
 }
