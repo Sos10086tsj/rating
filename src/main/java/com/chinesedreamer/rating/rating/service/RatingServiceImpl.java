@@ -79,6 +79,9 @@ public class RatingServiceImpl implements RatingService{
 	
 	@Override
 	public void saveRating(RatingCreateVo vo) {
+		if (null == vo.getTemplateIds() || vo.getTemplateIds().length == 0) {
+			return;
+		}
 		//1. 保存投票事件信息
 		Rating rating = new Rating();
 		rating.setName(vo.getName());
@@ -232,7 +235,7 @@ public class RatingServiceImpl implements RatingService{
 		//所有投票项
 		List<RatingTemplateOptionMapping> options = this.templateOptionMappingLogic.findByTmplId(tmplId);
 		if (null != voteVos && voteVos.isEmpty()) {//未进行投票时，默认提供全部待投票用户
-			List<Map<String, Object>> initSocres = this.initAllVoters(rt.getCode(), options);
+			List<Map<String, Object>> initSocres = this.initAllVoters(rt.getCode(), options, user);
 			rstMap.put("total", initSocres.size());
 			rstMap.put("rows", initSocres);
 		}else {
@@ -249,7 +252,7 @@ public class RatingServiceImpl implements RatingService{
 	 * @param options
 	 * @return
 	 */
-	private List<Map<String, Object>> initAllVoters(String code, List<RatingTemplateOptionMapping> options){
+	private List<Map<String, Object>> initAllVoters(String code, List<RatingTemplateOptionMapping> options, User currentUser){
 		List<Map<String, Object>> rst = new ArrayList<Map<String, Object>>();
 		List<TmplScoerVO> scoers = RatingSuppTmplScoerUtil.getTemplateScores(code);
 		for (TmplScoerVO scoer : scoers) {
@@ -262,6 +265,9 @@ public class RatingServiceImpl implements RatingService{
 			}
 			if (null != users && !users.isEmpty()) {
 				for (User user : users) {
+					if(currentUser.getId().equals(user.getId())){
+						continue;
+					}
 					Map<String, Object> tmpMap = new HashMap<String, Object>();
 					tmpMap.put("scorerId", user.getId());
 					tmpMap.put("scorerName", user.getName());

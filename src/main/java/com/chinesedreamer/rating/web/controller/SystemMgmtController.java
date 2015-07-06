@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.chinesedreamer.rating.common.vo.SelectVo;
+import com.chinesedreamer.rating.rating.service.RatingService;
 import com.chinesedreamer.rating.system.group.UserGroupLevel;
 import com.chinesedreamer.rating.system.group.service.UserGroupServcie;
 import com.chinesedreamer.rating.system.user.UserPositionType;
@@ -26,6 +27,8 @@ import com.chinesedreamer.rating.system.user.UserPositionType;
 public class SystemMgmtController {
 	@Resource
 	private UserGroupServcie userGroupServcie;
+	@Resource
+	private RatingService ratingService;
 	
 	/**
 	 * 鐢ㄦ埛绠＄悊
@@ -46,6 +49,7 @@ public class SystemMgmtController {
 	
 	@RequestMapping(value = "rating",method = RequestMethod.GET)
 	public String mgmtRating(Model model){
+		model.addAttribute("suppTemplates", this.ratingService.getAllTemplates());
 		return "systemMgmt/ratingMgmt/ratingMgmt";
 	}
 	

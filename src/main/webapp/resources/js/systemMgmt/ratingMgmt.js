@@ -1,8 +1,14 @@
 rating.ratingmgmt = {
-	//跳转新建页
+	//创建投票
 	newRating : function(){
-		window.location.href = ctx + '/system/rating/create';
-//		window.open(ctx + '/system/rating/create' , '_blank');
+//		$('#js_rating_mgmt_edit').form('clear');
+//		$(".js_templateIds").each(function(){
+//			$(this).attr("checked", "checked");
+//		});
+		$("#js_rating_name").val("");
+		$("#js_rating_eff_from").val("");
+		$("#js_rating_eff_to").val("");
+		$('#js_rating_mgmt_dlg').dialog('open').dialog('setTitle','新建投票');
 	},
 	//修改用户
 	editRating : function(){
@@ -14,7 +20,8 @@ rating.ratingmgmt = {
 		}
 	},
 	saveRating : function(){
-		 $('#fm').form('submit',{
+		 $('#js_rating_mgmt_edit').form('submit',{
+		 	url: ctx + '/system/rating/create',
 		 	onSubmit: function(){
             	return $(this).form('validate');
             },
@@ -26,8 +33,8 @@ rating.ratingmgmt = {
             		 	msg: result.errorMsg
             		 });
             	}else{
-            		$('#dlg').dialog('close');
-            		$('#dg').datagrid('reload');
+            		$('#js_rating_mgmt_dlg').dialog('close');
+            		$('#js_rating_mgmt_dg').datagrid('reload');
             	}
             }
 		 });

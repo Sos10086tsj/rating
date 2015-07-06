@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.chinesedreamer.rating.common.vo.OptionTitle;
+import com.chinesedreamer.rating.common.vo.ResponseVo;
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.service.RatingService;
@@ -66,22 +67,24 @@ public class RatingController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "system/rating/create",method = RequestMethod.GET)
-	public String showCreateRating(Model model){
-		model.addAttribute("m", new RatingCreateVo());
-		model.addAttribute("suppTemplates", this.ratingService.getAllTemplates());
-		return "systemMgmt/ratingMgmt/create";
-	}
+//	@RequestMapping(value = "system/rating/create",method = RequestMethod.GET)
+//	public String showCreateRating(Model model){
+//		model.addAttribute("m", new RatingCreateVo());
+//		model.addAttribute("suppTemplates", this.ratingService.getAllTemplates());
+//		return "systemMgmt/ratingMgmt/create";
+//	}
 	
 	/**
 	 * 新建投票提交
 	 * @param request
 	 * @return
 	 */
+	@ResponseBody
 	@RequestMapping(value = "system/rating/create",method = RequestMethod.POST)
-	public String createRating(RatingCreateVo vo){
+	public ResponseVo createRating(RatingCreateVo vo){
+		ResponseVo rst = new ResponseVo();
 		this.ratingService.saveRating(vo);
-		return "redirect:/system/rating";
+		return rst;
 	}
 	
 	/********* 用户投票部分 **************/
@@ -248,6 +251,7 @@ public class RatingController {
 		model.addAttribute("gridWidth", totalWidth);
 		return "statistics/userDetail";
 	}
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "rating/statistics/detail/{tmplId}/{userId}",method = {RequestMethod.GET,RequestMethod.POST})

@@ -34,5 +34,5 @@
 </div>
 <div id="dlg-buttons">
 	<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="rating.groupmgmt.saveGroup()" style="width:90px">保存</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#js_group_edit_dg').dialog('close')" style="width:90px">取消</a>
 </div>

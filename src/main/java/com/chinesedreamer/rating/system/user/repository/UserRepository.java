@@ -54,9 +54,9 @@ public interface UserRepository extends BaseRepository<User, Long>{
 	
 	public List<User> findByStatusAndNameLike(UserStatus status, String name);
 	
-	@Query("select u from User u inner join Usergroup ug on u.userGroup where ug.userGroup.level = :level ")
+	@Query("select u from User u inner join u.userGroup ug where ug.level = :level ")
 	public List<User> findByGroupLevel(@Param("level") UserGroupLevel level);
 	
-	@Query("select u from User u inner join Usergroup ug on u.userGroup where ug.userGroup.level = :level and u.positionId = :positionId")
+	@Query("select u from User u inner join u.userGroup ug where ug.level = :level and u.positionId = :positionId")
 	public List<User> findByGroupLevelAndPosition(@Param("level")UserGroupLevel level,@Param("positionId")Integer positionId);
 }

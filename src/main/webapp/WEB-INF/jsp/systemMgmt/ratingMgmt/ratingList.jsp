@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<table 	id="dg" 
+<table 	id="js_rating_mgmt_dg" 
 		title="投票主题" 
 		class="easyui-datagrid" 
 		style="width:900px; height: 400px; padding-left: 200px;" 
@@ -13,7 +13,7 @@
         
         <thead>
         	<tr>
-        		<th field="id"  width="50">ID#</th>  
+        		<!--<th field="id"  width="50">ID#</th>  -->
         		<th field="name"  width="50">主题</th>
         		<th field="effFrom" formatter="rating.dateFormat" width="50">开始时间</th>
         		<th field="effTo" formatter="rating.dateFormat" width="50">结束时间</th>

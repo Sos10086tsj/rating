@@ -11,6 +11,8 @@
 	<!-- table 维护用户 -->
 	<%@include file="ratingList.jsp"%>
 	
+	<%@include file="ratingEdit.jsp"%>
+	
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
 <script type="text/javascript" src="${ctx}/resources/js/systemMgmt/ratingMgmt.js"></script>
