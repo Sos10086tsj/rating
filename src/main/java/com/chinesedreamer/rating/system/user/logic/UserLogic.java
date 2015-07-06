@@ -3,6 +3,7 @@ package com.chinesedreamer.rating.system.user.logic;
 import java.util.List;
 
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogic;
+import com.chinesedreamer.rating.system.group.UserGroupLevel;
 import com.chinesedreamer.rating.system.user.UserStatus;
 import com.chinesedreamer.rating.system.user.model.User;
 
@@ -54,4 +55,8 @@ public interface UserLogic extends BaseLogic<User, Long>{
 	 * @return
 	 */
 	public List<User> findByStatusAndNameLike(UserStatus status, String name);
+	
+	public List<User> findByGroupLevel(UserGroupLevel level);
+	
+	public List<User> findByGroupLevelAndPosition(UserGroupLevel level,Integer positionId);
 }

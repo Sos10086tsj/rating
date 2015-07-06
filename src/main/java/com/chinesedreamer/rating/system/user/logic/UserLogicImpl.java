@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogicImpl;
+import com.chinesedreamer.rating.system.group.UserGroupLevel;
 import com.chinesedreamer.rating.system.user.UserStatus;
 import com.chinesedreamer.rating.system.user.model.User;
 import com.chinesedreamer.rating.system.user.repository.UserRepository;
@@ -52,6 +53,17 @@ public class UserLogicImpl extends BaseLogicImpl<User, Long> implements UserLogi
 	@Override
 	public List<User> findByStatusAndNameLike(UserStatus status, String name) {
 		return this.repository.findByStatusAndNameLike(status, "%"+name+"%");
+	}
+
+	@Override
+	public List<User> findByGroupLevel(UserGroupLevel level) {
+		return this.repository.findByGroupLevel(level);
+	}
+
+	@Override
+	public List<User> findByGroupLevelAndPosition(UserGroupLevel level,
+			Integer positionId) {
+		return this.repository.findByGroupLevelAndPosition(level, positionId);
 	}
 
 }

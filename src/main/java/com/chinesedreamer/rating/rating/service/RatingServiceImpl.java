@@ -44,6 +44,8 @@ import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
 import com.chinesedreamer.rating.template.model.RatingTemplate;
 import com.chinesedreamer.rating.template.model.RatingTemplateOptionMapping;
 import com.chinesedreamer.rating.template.model.RatingTemplateVoter;
+import com.chinesedreamer.rating.template.util.RatingSuppTmplScoerUtil;
+import com.chinesedreamer.rating.template.util.TmplScoerVO;
 import com.chinesedreamer.rating.util.DateUtil;
 
 /**
@@ -229,9 +231,48 @@ public class RatingServiceImpl implements RatingService{
 		}
 		//所有投票项
 		List<RatingTemplateOptionMapping> options = this.templateOptionMappingLogic.findByTmplId(tmplId);
-		rstMap.put("total", voteVos.size());
-		rstMap.put("rows", this.generateRatingVoteJsonDatasource(voteVos, options));
+		if (null != voteVos && voteVos.isEmpty()) {//未进行投票时，默认提供全部待投票用户
+			List<Map<String, Object>> initSocres = this.initAllVoters(rt.getCode(), options);
+			rstMap.put("total", initSocres.size());
+			rstMap.put("rows", initSocres);
+		}else {
+			rstMap.put("total", voteVos.size());
+			rstMap.put("rows", this.generateRatingVoteJsonDatasource(voteVos, options));
+		}
+		
 		return rstMap;
+	}
+	
+	/**
+	 * 初始化所有投票人
+	 * @param code
+	 * @param options
+	 * @return
+	 */
+	private List<Map<String, Object>> initAllVoters(String code, List<RatingTemplateOptionMapping> options){
+		List<Map<String, Object>> rst = new ArrayList<Map<String, Object>>();
+		List<TmplScoerVO> scoers = RatingSuppTmplScoerUtil.getTemplateScores(code);
+		for (TmplScoerVO scoer : scoers) {
+			//1. 查询总体组
+			List<User> users = null;
+			if (scoer.getGroup().equals(UserGroupLevel.ZONGTI)) {
+				users = this.userLogic.findByGroupLevel(UserGroupLevel.ZONGTI);
+			}else if (scoer.getGroup().equals(UserGroupLevel.PUTONG)) {//2. 非总体组
+				users = this.userLogic.findByGroupLevelAndPosition(UserGroupLevel.PUTONG, scoer.getPosition().getValue());
+			}
+			if (null != users && !users.isEmpty()) {
+				for (User user : users) {
+					Map<String, Object> tmpMap = new HashMap<String, Object>();
+					tmpMap.put("scorerId", user.getId());
+					tmpMap.put("scorerName", user.getName());
+					for (RatingTemplateOptionMapping option : options) {
+						tmpMap.put("option_" + option.getOptionId(), "");
+					}
+					rst.add(tmpMap);
+				}
+			}
+		}
+		return rst;
 	}
 	
 	/**

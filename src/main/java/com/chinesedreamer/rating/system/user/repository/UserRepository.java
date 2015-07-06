@@ -2,7 +2,11 @@ package com.chinesedreamer.rating.system.user.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import com.chinesedreamer.rating.base.jpa.repository.BaseRepository;
+import com.chinesedreamer.rating.system.group.UserGroupLevel;
 import com.chinesedreamer.rating.system.user.UserStatus;
 import com.chinesedreamer.rating.system.user.model.User;
 
@@ -49,4 +53,10 @@ public interface UserRepository extends BaseRepository<User, Long>{
 	public List<User> findByStatusOrderByIdAsc(UserStatus status);
 	
 	public List<User> findByStatusAndNameLike(UserStatus status, String name);
+	
+	@Query("select u from User u inner join Usergroup ug on u.userGroup where ug.userGroup.level = :level ")
+	public List<User> findByGroupLevel(@Param("level") UserGroupLevel level);
+	
+	@Query("select u from User u inner join Usergroup ug on u.userGroup where ug.userGroup.level = :level and u.positionId = :positionId")
+	public List<User> findByGroupLevelAndPosition(@Param("level")UserGroupLevel level,@Param("positionId")Integer positionId);
 }
