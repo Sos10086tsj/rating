@@ -14,18 +14,31 @@ var rating = {
 	
 	//增加tab方法
 	addTab :function(title, url){
-		var tabs = parent.$('#js_tabs', parent.document);
+//		var tabs = parent.$('#js_tabs', parent.document);
+//		if (tabs.tabs('exists', title)){
+//        	tabs.tabs('select', title);
+//        	rating.refreshTab({tabTitle:title,url:url});
+//    	} else {
+//        	var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+//        	tabs.tabs('add',{
+//            	title:title,
+//            	content:content,
+//            	closable:true
+//        	});
+//    	}
+    	
+    	var tabs = parent.$('#js_tabs', parent.document);
 		if (tabs.tabs('exists', title)){
-        	tabs.tabs('select', title);
-        	rating.refreshTab({tabTitle:title,url:url});
-    	} else {
-        	var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+        	//tabs.tabs('select', title);
+        	//rating.refreshTab({tabTitle:title,url:url});
+			tabs.tabs('close', title); 
+    	}
+    	var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
         	tabs.tabs('add',{
             	title:title,
             	content:content,
             	closable:true
-        	});
-    	}
+        });
 	},
 	//刷新
 	refreshTab: function(cfg){  
