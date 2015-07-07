@@ -17,6 +17,14 @@ rating.userrating = {
 				link += single;
 			}
 		}
+		
+		//个人明细
+		var personUrl = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('我的得分','" 
+		 + ctx + "/rating/statistics/" + rec.id 
+		+  "/" + $("#js_vote_user_id_hidden").val()  + "')\">我的得分</a>        ";
+		
+		link += personUrl;
+		
 		return link;
 	},
 	

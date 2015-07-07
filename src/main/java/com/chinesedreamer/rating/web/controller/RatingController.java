@@ -95,6 +95,8 @@ public class RatingController {
 	 */
 	@RequestMapping(value = "rating",method = RequestMethod.GET)
 	public String rating(Model model){
+		model.addAttribute("currentUser", this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername()).getId());
+		
 		return "rating/rating";
 	}
 	
@@ -134,6 +136,7 @@ public class RatingController {
 		model.addAttribute("usersJson", JSON.toJSONString(users).replace("\"", "'"));
 		model.addAttribute("scores", JSON.toJSONString(this.ratingService.getAllScores()).replace("\"", "'"));
 		model.addAttribute("optionsJson", JSON.toJSONString(options));
+		
 		return "rating/ratingVote";
 	}
 	
@@ -233,13 +236,16 @@ public class RatingController {
 	public String showStatisticsDetail(Model model,@PathVariable("tmplIds")String tmplIds){
 		model.addAttribute("tmplIds", tmplIds);
 		String[] ids = tmplIds.split(",");
-		List<OptionTitle> options = this.ratingService.getTmplOptions(Long.parseLong(ids[0]));//A卷字段比B卷少
+		List<OptionTitle> options_1 = this.ratingService.getTmplOptions(Long.parseLong(ids[0]));//A卷字段比B卷少
+		List<OptionTitle> options_2 = this.ratingService.getTmplOptions(Long.parseLong(ids[1]));
+		List<OptionTitle> options = options_1.size() > options_2.size() ? options_1 : options_2;
 		Integer totalWidth = 120;
 		for (OptionTitle optionTitle : options) {
 			totalWidth += optionTitle.getWidth();
 		}
 		model.addAttribute("options", options);
 		model.addAttribute("gridWidth", totalWidth);
+		model.addAttribute("ratingId", this.ratingService.getByTmplId(Long.parseLong(ids[0])).getId());
 		return "statistics/detail";
 	}
 	@ResponseBody
@@ -294,13 +300,11 @@ public class RatingController {
 	 * @param userId
 	 * @return
 	 */
-	@RequestMapping(value = "rating/statistics/{tmplIds}/{userId}",method = RequestMethod.GET)
-	public String showUserStatisticsDetail(Model model,@PathVariable("tmplIds")String tmplIds,
+	@RequestMapping(value = "rating/statistics/{ratingId}/{userId}",method = RequestMethod.GET)
+	public String showUserStatisticsDetail(Model model,@PathVariable("ratingId")Long ratingId,
 			@PathVariable("userId")Long userId){
-		model.addAttribute("tmplIds", tmplIds);
 		model.addAttribute("userId", userId);
-		String[] ids = tmplIds.split(",");
-		List<OptionTitle> options = this.ratingService.getTmplOptions(Long.parseLong(ids[1]));//A卷字段比B卷少
+		List<OptionTitle> options = this.ratingService.getUserRartingOption(userId, ratingId);
 		Integer totalWidth = 120;
 		for (OptionTitle optionTitle : options) {
 			totalWidth += optionTitle.getWidth();
@@ -312,19 +316,29 @@ public class RatingController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value = "rating/statistics/detail/{tmplIds}/{userId}",method = RequestMethod.POST)
-	public Map<String, Object> getUserStatisticsDetail(Model model,@PathVariable("tmplIds")String tmplIds,
+	@RequestMapping(value = "rating/statistics/detail/{ratingId}/{userId}",method = RequestMethod.POST)
+	public Map<String, Object> getUserStatisticsDetail(Model model,@PathVariable("ratingId")Long ratingId,
 			@PathVariable("userId")Long userId){
 		Map<String, Object> rstMap = new HashMap<String, Object>();
-		List<Map<String, String>> vos = this.statisticsService.userDetails(tmplIds, userId);
+		List<Map<String, String>> vos = this.statisticsService.userDetailsByRatingId(ratingId, userId);
 		rstMap.put("total", vos.size());
 		rstMap.put("rows", vos);
 		return rstMap;
 	}
 	
-	/***图表***/
-	@RequestMapping(value = "rating/statistics/chart/demo",method = RequestMethod.GET)
-	public String chart(Model model){
+	
+	/**
+	 * 统计图表
+	 * @param model
+	 * @param ratingId
+	 * @return
+	 */
+	@RequestMapping(value = "rating/statistics/chart/{ratingId}",method = RequestMethod.GET)
+	public String chart(Model model,@PathVariable("ratingId")Long ratingId){
+		Rating rating = this.ratingService.findOne(ratingId);
+		model.addAttribute("title", rating.getName());
+		double[] data = new double[]{34.4, 21.8, 20.1, 20, 19.6, 19.5, 19.1, 18.4, 18,17.3};
+		model.addAttribute("data", JSON.toJSONString(data));
 		return "statistics/chart";
 	}
 }

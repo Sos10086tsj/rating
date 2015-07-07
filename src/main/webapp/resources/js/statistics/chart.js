@@ -50,13 +50,13 @@ rating.chart = {
 	},
 	
 	initHistogramChart : function(){
-		$('#container').highcharts({
+		$('#js_chart').highcharts({
         chart: {
             type: 'column',
             margin: [ 50, 50, 100, 80]
         },
         title: {
-            text: '投票统计'
+            text: js_chart_title
         },
         xAxis: {
             categories: [
@@ -90,19 +90,21 @@ rating.chart = {
             enabled: false
         },
         tooltip: {
-            pointFormat: '人数'
+            pointFormat: '分'
         },
+        credits: {                                                         
+            enabled: false                                                 
+        },   
         series: [{
             name: 'Population',
-            data: [34.4, 21.8, 20.1, 20, 19.6, 19.5, 19.1, 18.4, 18,
-                17.3],
+            data: eval(js_chart_data),
             dataLabels: {
                 enabled: true,
-                rotation: -90,
-                color: '#FFFFFF',
-                align: 'right',
-                x: 4,
-                y: 10,
+//                rotation: -90,
+//                color: '#FFFFFF',
+//                align: 'right',
+//                x: 4,
+//                y: 10,
                 style: {
                     fontSize: '13px',
                     fontFamily: 'Verdana, sans-serif',
@@ -174,6 +176,6 @@ rating.chart = {
 
 $(function(){
 	//rating.chart.initPieChart();
-	//rating.chart.initHistogramChart();
-	rating.chart.initBarChart();
+	rating.chart.initHistogramChart();
+//	rating.chart.initBarChart();
 });

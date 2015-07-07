@@ -13,6 +13,7 @@ import com.chinesedreamer.rating.template.model.RatingTemplate;
  * @version beta
  */
 public interface RatingTemplateLogic extends BaseLogic<RatingTemplate, Long>{
+	public RatingTemplate findByRatingIdAndCode(Long ratingId, String code);
 	public List<RatingTemplate> findByRatingId(Long ratingId);
 	/**
 	 * 为投票事件创建相应的模板

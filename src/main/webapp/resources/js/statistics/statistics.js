@@ -18,17 +18,18 @@ rating.statistics = {
 //				+ vote.name + symble + "</a>        ";
 //				link += single;
 			}
-			var symble = "(查看)";
-			var abUrl = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('组员投票结果','"
+			//var symble = "(查看)";
+			var symble = "";
+			var abUrl = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('组员结果','"
 			+ ctx + "/rating/statistics/detail/" + ab + "')\">" 
-			+ '组员投票结果' + symble + "</a>        ";
-			var cdUrl = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('组长/总体组投票结果','"
+			+ '组员结果' + symble + "</a>                ";
+			var cdUrl = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('组长/总体组结果','"
 			+ ctx + "/rating/statistics/detail/" + cd + "')\">" 
-			+ '组长/总体组投票结果' + symble + "</a>        ";
+			+ '组长/总体组结果' + symble + "</a>                ";
 			
-			var chart = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('饼图','"
-			+ ctx + "/rating/statistics/chart/demo')\">" 
-			+ '饼图' + symble + "</a>        ";
+			var chart = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('统计图','"
+			+ ctx + "/rating/statistics/chart/" + rec.id + "')\">" 
+			+ '统计图' + symble + "</a>                ";
 			
 			
 			link = abUrl + cdUrl + chart;
@@ -41,7 +42,7 @@ rating.statistics = {
 //		console.info("rec:"+rec);
 //		console.info("index:"+index);
 		var link = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('投票明细--" 
-		+ value + "','" + ctx + "/rating/statistics/" + $("#js_statistics_detail_tmpl_id_hidden").val() 
+		+ value + "','" + ctx + "/rating/statistics/" + $("#js_statistics_user_rating_id_hidden").val() 
 		+  "/" + rec.user_id  + "')\">" + value + "</a>        ";
 		return link;
 	}

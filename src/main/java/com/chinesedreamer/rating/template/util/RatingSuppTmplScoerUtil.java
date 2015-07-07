@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.chinesedreamer.rating.system.group.UserGroupLevel;
 import com.chinesedreamer.rating.system.user.UserPositionType;
+import com.chinesedreamer.rating.system.user.model.User;
 
 /**
  * Description: 
@@ -24,12 +25,12 @@ public class RatingSuppTmplScoerUtil {
 	 */
 	public static List<TmplScoerVO> getTemplateScores(String code){
 		List<TmplScoerVO> scoers = new ArrayList<TmplScoerVO>();
-		if (code.equals("A") || code.equals("D")) {
+		if (code.equals("A") || code.equals("B")) {
 			TmplScoerVO vo = new TmplScoerVO();
 			vo.setPosition(UserPositionType.TEAM_MATE);
 			vo.setGroup(UserGroupLevel.PUTONG);
 			scoers.add(vo);
-		}else if (code.equals("B") || code.equals("C")) {
+		}else if (code.equals("C") || code.equals("D")) {
 			TmplScoerVO vo1 = new TmplScoerVO();
 			vo1.setPosition(UserPositionType.LEADER);
 			vo1.setGroup(UserGroupLevel.PUTONG);
@@ -40,5 +41,22 @@ public class RatingSuppTmplScoerUtil {
 			scoers.add(vo2);
 		}
 		return scoers;
+	}
+	
+	public static List<String> getTmplCodeByUser(User user){
+		List<String> codes = new ArrayList<String>();
+		if (user.getUserGroup().getLevel().equals(UserGroupLevel.ZONGTI)) {//总体组
+			codes.add("C");
+			codes.add("D");
+		}else {
+			if (user.getPositionId().equals(UserPositionType.LEADER.getValue())) {//组长
+				codes.add("C");
+				codes.add("D");
+			}else {
+				codes.add("A");
+				codes.add("B");
+			}
+		}
+		return codes;
 	}
 }

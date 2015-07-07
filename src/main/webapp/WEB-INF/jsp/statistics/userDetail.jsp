@@ -13,7 +13,7 @@
 		class="easyui-datagrid" 
 		style="width:${gridWidth + 40}px; height: 600px; padding-left: 200px;"
 		data-options="
-		url:'${ctx }/rating/statistics/detail/${tmplIds}/${userId}',
+		url:'${ctx }/rating/statistics/detail/${ratingId}/${userId}',
 		pagination:true ,
         rownumbers:true,
         fitcolumns:true,

@@ -13,4 +13,5 @@ import com.chinesedreamer.rating.template.model.RatingTemplate;
  */
 public interface RatingTemplateRepository extends BaseRepository<RatingTemplate, Long>{
 	public List<RatingTemplate> findByRatingId(Long ratingId);
+	public RatingTemplate findByRatingIdAndCode(Long ratingId, String code);
 }

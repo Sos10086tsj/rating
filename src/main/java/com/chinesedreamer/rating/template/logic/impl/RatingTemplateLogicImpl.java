@@ -93,4 +93,9 @@ public class RatingTemplateLogicImpl extends BaseLogicImpl<RatingTemplate, Long>
 		}
 	}
 
+	@Override
+	public RatingTemplate findByRatingIdAndCode(Long ratingId, String code) {
+		return this.repository.findByRatingIdAndCode(ratingId, code);
+	}
+
 }

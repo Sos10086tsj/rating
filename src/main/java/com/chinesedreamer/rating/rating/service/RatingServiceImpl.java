@@ -387,5 +387,27 @@ public class RatingServiceImpl implements RatingService{
 		
 		return vo;
 	}
+	@Override
+	public Rating findOne(Long id) {
+		return this.logic.findOne(id);
+	}
+	@Override
+	public Rating getByTmplId(Long tmplId) {
+		RatingTemplate rt = this.templateLogic.findOne(tmplId);
+		return this.logic.findOne(rt.getRatingId());
+	}
+	@Override
+	public List<OptionTitle> getUserRartingOption(Long userId, Long ratingId) {
+		List<String> codes = RatingSuppTmplScoerUtil.getTmplCodeByUser(this.userLogic.findOne(userId));
+		List<OptionTitle> options = new ArrayList<OptionTitle>();
+		for (String code : codes) {
+			RatingTemplate template = this.templateLogic.findByRatingIdAndCode(ratingId, code);
+			List<OptionTitle> tmp = this.getTmplOptions(template.getId());
+			if (tmp.size() > options.size()) {
+				options = tmp;
+			}
+		}
+		return options;
+	}
 	
 }

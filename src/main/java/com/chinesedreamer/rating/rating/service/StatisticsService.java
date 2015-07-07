@@ -26,5 +26,5 @@ public interface StatisticsService {
 	 */
 	public List<Map<String, String>> userDetails(Long tmplId,Long user);
 	
-	public List<Map<String, String>> userDetails(String tmplIds,Long user);
+	public List<Map<String, String>> userDetailsByRatingId(Long ratingId,Long user);
 }

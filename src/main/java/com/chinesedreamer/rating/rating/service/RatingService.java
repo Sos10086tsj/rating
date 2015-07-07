@@ -18,6 +18,8 @@ import com.chinesedreamer.rating.system.user.model.User;
  * @version beta
  */
 public interface RatingService {
+	
+	public Rating findOne(Long id);
 	/**
 	 * 保存
 	 * @param vo
@@ -81,4 +83,19 @@ public interface RatingService {
 	 * @return
 	 */
 	public List<RatingUserVo> getStatisticsRatings(User user);
+	
+	/**
+	 * 查找模板归属的投票事件
+	 * @param tmplId
+	 * @return
+	 */
+	public Rating getByTmplId(Long tmplId);
+	
+	/**
+	 * 获取用户某项投票的抬头
+	 * @param userId
+	 * @param ratingId
+	 * @return
+	 */
+	public List<OptionTitle> getUserRartingOption(Long userId, Long ratingId);
 }

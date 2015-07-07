@@ -33,6 +33,7 @@ import com.chinesedreamer.rating.template.logic.RatingTmplOptionWeightLogic;
 import com.chinesedreamer.rating.template.model.RatingSuppOption;
 import com.chinesedreamer.rating.template.model.RatingTemplate;
 import com.chinesedreamer.rating.template.model.RatingTmplOptionWeight;
+import com.chinesedreamer.rating.template.util.RatingSuppTmplScoerUtil;
 
 /** 
  * Description: 
@@ -143,7 +144,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (innerMap.containsKey(optionKey)) {
 						value = innerMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue();
+					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
 					innerMap.put(optionKey, value);
 				}else {
 					outerVoter.add(scoreView.getVoterId());
@@ -152,7 +153,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (outerMap.containsKey(optionKey)) {
 						value = outerMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue();
+					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
 					outerMap.put(optionKey, value);
 				}
 			}
@@ -184,7 +185,10 @@ public class StatisticsServiceImpl implements StatisticsService{
 				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
 					for (String existKey : score.keySet()) {
 						if (!existKey.equals("user_id") && !existKey.equals("name")) {
-							score.put(existKey, score.get(existKey) + exist.get(existKey));
+							Float v1 = Float.parseFloat(score.get(existKey));
+							Float v2 = Float.parseFloat(exist.get(existKey));
+							Float v = v1+v2;
+							score.put(existKey, v.toString());
 						}
 					}
 					scores.remove(exist);
@@ -242,7 +246,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (innerMap.containsKey(optionKey)) {
 						value = innerMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue();
+					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
 					innerMap.put(optionKey, value);
 				}else if(!scoreView.getVoterGroupId().equals(scoreView.getScorerGroup()) && scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())){
 					outerVoter.add(scoreView.getVoterId());
@@ -251,7 +255,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (outerMap.containsKey(optionKey)) {
 						value = outerMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue();
+					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
 					outerMap.put(optionKey, value);
 				}else if (voterGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {
 					zongtiVoter.add(scoreView.getVoterId());
@@ -260,7 +264,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (zongtiMap.containsKey(optionKey)) {
 						value = zongtiMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue();
+					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
 					zongtiMap.put(optionKey, value);
 				}
 			}
@@ -298,7 +302,10 @@ public class StatisticsServiceImpl implements StatisticsService{
 				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
 					for (String existKey : score.keySet()) {
 						if (!existKey.equals("user_id") && !existKey.equals("name")) {
-							score.put(existKey, score.get(existKey) + exist.get(existKey));
+							Float v1 = Float.parseFloat(score.get(existKey));
+							Float v2 = Float.parseFloat(exist.get(existKey));
+							Float v = v1+v2;
+							score.put(existKey, v.toString());
 						}
 					}
 					scores.remove(exist);
@@ -351,7 +358,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (leaderMap.containsKey(optionKey)) {
 						value = leaderMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue();
+					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100 ;
 					leaderMap.put(optionKey, value);
 				}else if (voterGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {
 					zongtiVoter.add(scoreView.getVoterId());
@@ -360,7 +367,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (zongtiMap.containsKey(optionKey)) {
 						value = zongtiMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue();
+					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
 					zongtiMap.put(optionKey, value);
 				}
 			}
@@ -396,7 +403,10 @@ public class StatisticsServiceImpl implements StatisticsService{
 				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
 					for (String existKey : score.keySet()) {
 						if (!existKey.equals("user_id") && !existKey.equals("name")) {
-							score.put(existKey, score.get(existKey) + exist.get(existKey));
+							Float v1 = Float.parseFloat(score.get(existKey));
+							Float v2 = Float.parseFloat(exist.get(existKey));
+							Float v = v1+v2;
+							score.put(existKey, v.toString());
 						}
 					}
 					scores.remove(exist);
@@ -446,7 +456,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (zuyuanMap.containsKey(optionKey)) {
 						value = zuyuanMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue();
+					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
 					zuyuanMap.put(optionKey, value);
 				}
 			}
@@ -475,7 +485,10 @@ public class StatisticsServiceImpl implements StatisticsService{
 				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
 					for (String existKey : score.keySet()) {
 						if (!existKey.equals("user_id") && !existKey.equals("name")) {
-							score.put(existKey, score.get(existKey) + exist.get(existKey));
+							Float v1 = Float.parseFloat(score.get(existKey));
+							Float v2 = Float.parseFloat(exist.get(existKey));
+							Float v = v1+v2;
+							score.put(existKey, v.toString());
 						}
 					}
 					scores.remove(exist);
@@ -546,7 +559,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}
 				if (duplicate) {
 					score.put("option_" + optionKey, 
-							String.valueOf((scoreView.getScore() + Integer.parseInt(exist.get("option_" + optionKey)))));
+							String.valueOf((scoreView.getScore() + Float.parseFloat(exist.get("option_" + optionKey)))));
 				}else {
 					score.put("option_" + optionKey, scoreView.getScore().toString());
 				}
@@ -587,7 +600,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}
 				if (duplicate) {
 					score.put("option_" + optionKey, 
-							String.valueOf((scoreView.getScore() + Integer.parseInt(exist.get("option_" + optionKey)))));
+							String.valueOf((scoreView.getScore() + Float.parseFloat(exist.get("option_" + optionKey)))));
 				}else {
 					score.put("option_" + optionKey, scoreView.getScore().toString());
 				}
@@ -622,7 +635,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}
 				if (duplicate) {
 					score.put("option_" + optionKey, 
-							String.valueOf((scoreView.getScore() + Integer.parseInt(exist.get("option_" + optionKey)))));
+							String.valueOf((scoreView.getScore() + Float.parseFloat(exist.get("option_" + optionKey)))));
 				}else {
 					score.put("option_" + optionKey, scoreView.getScore().toString());
 				}
@@ -654,7 +667,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}
 				if (duplicate) {
 					score.put("option_" + optionKey, 
-							String.valueOf((scoreView.getScore() + Integer.parseInt(exist.get("option_" + optionKey)))));
+							String.valueOf((scoreView.getScore() + Float.parseFloat(exist.get("option_" + optionKey)))));
 				}else {
 					score.put("option_" + optionKey, scoreView.getScore().toString());
 				}
@@ -723,18 +736,15 @@ public class StatisticsServiceImpl implements StatisticsService{
 	}
 
 	@Override
-	public List<Map<String, String>> userDetails(String tmplIds, Long user) {
+	public List<Map<String, String>> userDetailsByRatingId(Long ratingId,Long user) {
 		List<Map<String, String>> rstMap = new ArrayList<Map<String,String>>();
-		
 		List<RatingTemplate> tmpls = new ArrayList<RatingTemplate>();
-		String[] ids = tmplIds.split(",");
-		for (String id : ids) {
-			if (StringUtils.isNotEmpty(id)) {
-				tmpls.add(this.templateLogic.findOne(Long.parseLong(id)));
-			}
+		List<String> codes = RatingSuppTmplScoerUtil.getTmplCodeByUser(this.userLogic.findOne(user));
+		for (String code : codes) {
+			tmpls.add(this.templateLogic.findByRatingIdAndCode(ratingId, code));
 		}
-		for (String id : ids) {
-			Long tmplId = Long.parseLong(id);
+		for (RatingTemplate tmpl : tmpls) {
+			Long tmplId = tmpl.getId();
 			RatingTemplate template = this.templateLogic.findOne(tmplId);
 			List<RatingScoreView> scoreViews = this.scoreViewLogic.findByTmplIdAndScorer(tmplId, user);
 			String code = template.getCode();

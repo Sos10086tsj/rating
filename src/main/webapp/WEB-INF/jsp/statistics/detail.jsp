@@ -29,7 +29,7 @@
         	</tr>
         </thead>
 	</table>
-<input id="js_statistics_detail_tmpl_id_hidden" type="hidden" value="${tmplIds}">
+<input id="js_statistics_user_rating_id_hidden" type="hidden" value="${ratingId}">
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
 <script type="text/javascript" src="${ctx}/resources/js/statistics/statistics.js"></script>
