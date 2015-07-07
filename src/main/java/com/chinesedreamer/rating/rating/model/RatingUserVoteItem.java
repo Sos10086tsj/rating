@@ -41,4 +41,7 @@ public @Getter @Setter class RatingUserVoteItem extends BaseEntity<Long>{
 	
 	@Column(name = "scorer_position")
 	private Integer scorerPosition;//得分人所在职位
+	
+	@Column(name = "score")
+	private Float score;
 }

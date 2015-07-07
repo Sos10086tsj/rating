@@ -8,6 +8,9 @@
 <title>评分考核系统</title>
 </head>
 <body>
+	<div>
+		<label>表现突出（5分）	表现较好（4分）	表现一般（3分）	表现较差（2分）	表现很差（1分）	表现稽查（0分）</label>
+	</div>
 	<table 	id="js_rating_vote_dg" 
 		title="投票：${votePage.ratingName }-${votePage.tmplName }" 
 		class="easyui-datagrid" 
@@ -45,7 +48,7 @@
 							}
 						}">姓名</th>
         		<c:forEach items="${options }" var="item">
-        			<th data-options="field:'${item.value }',width:${item.width },
+        			<%--<th data-options="field:'${item.value }',width:${item.width },
         				formatter:function(value,row){
 							var datasource = eval(${scores });
         					for(var i=0; i < datasource.length ; i++){
@@ -63,10 +66,9 @@
 								panelHeight:'auto',
 								required:true
 							}
-						}">${item.label }</th>
-        			<%--<th class="js_score_option" field="${item.value }" formatter="rating.userrating.scoreFormat" width="50"
-        			editor="{'type':'combobox','options':{valueField:'value',textField:'label',required:true,data='eval(${options})'}"
-        			>${item.label }</th> --%>
+						}">${item.label }</th> --%>
+						<th field="${item.value }" width="${item.width }" 
+						editor="{type:'numberbox',options:{required:true,precision:1,min:0,max:5}}" >${item.label }</th>
         		</c:forEach>
         	</tr>
         </thead>

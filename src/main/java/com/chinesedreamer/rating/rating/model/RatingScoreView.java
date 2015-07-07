@@ -49,5 +49,5 @@ public @Getter @Setter class RatingScoreView extends BaseEntity<Long>{
 	private Long optionId;//得分项
 	
 	@Column
-	private Integer score;//得分
+	private Float score;//得分
 }

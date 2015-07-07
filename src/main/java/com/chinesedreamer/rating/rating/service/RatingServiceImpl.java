@@ -274,7 +274,7 @@ public class RatingServiceImpl implements RatingService{
 					tmpMap.put("scorerId", user.getId());
 					tmpMap.put("scorerName", user.getName());
 					for (RatingTemplateOptionMapping option : options) {
-						tmpMap.put("option_" + option.getOptionId(), "");
+						tmpMap.put("option_" + option.getOptionId(), "4");
 					}
 					scorers.add(tmpMap);
 				}
@@ -343,7 +343,8 @@ public class RatingServiceImpl implements RatingService{
 					}
 					vi.setUserVoteId(vote.getId());
 					vi.setOptionId(option.getOptionId());
-					vi.setScoreId(voteRow.getLong("option_" + option.getOptionId()));
+					//vi.setScoreId(voteRow.getLong("option_" + option.getOptionId()));
+					vi.setScore(voteRow.getFloat("option_" + option.getOptionId()));
 					vi.setScorer(scorerId);
 					User scorer = this.userLogic.findOne(scorerId);
 					vi.setScorerGroup(scorer.getGroupId());
