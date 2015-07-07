@@ -321,4 +321,10 @@ public class RatingController {
 		rstMap.put("rows", vos);
 		return rstMap;
 	}
+	
+	/***图表***/
+	@RequestMapping(value = "rating/statistics/chart/demo",method = RequestMethod.GET)
+	public String chart(Model model){
+		return "statistics/chart";
+	}
 }

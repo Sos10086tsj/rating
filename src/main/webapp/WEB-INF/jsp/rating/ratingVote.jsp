@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div>
-		<label>表现突出（5分）	表现较好（4分）	表现一般（3分）	表现较差（2分）	表现很差（1分）	表现稽查（0分）</label>
+		<label>表现突出（5分）	表现较好（4分）	表现一般（3分）	表现较差（2分）	表现很差（1分）	表现极差（0分）</label>
 	</div>
 	<table 	id="js_rating_vote_dg" 
 		title="投票：${votePage.ratingName }-${votePage.tmplName }" 

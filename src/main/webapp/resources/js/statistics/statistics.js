@@ -25,7 +25,13 @@ rating.statistics = {
 			var cdUrl = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('组长/总体组投票结果','"
 			+ ctx + "/rating/statistics/detail/" + cd + "')\">" 
 			+ '组长/总体组投票结果' + symble + "</a>        ";
-			link = abUrl + cdUrl;
+			
+			var chart = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('饼图','"
+			+ ctx + "/rating/statistics/chart/demo')\">" 
+			+ '饼图' + symble + "</a>        ";
+			
+			
+			link = abUrl + cdUrl + chart;
 		}
 		return link;
 	},
