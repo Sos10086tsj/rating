@@ -22,7 +22,7 @@
         
         <thead>
         	<tr>
-        		<th data-options="field:'source',width:120">来源</th>
+        		<th data-options="field:'source',width:120,hidden:true">来源</th> 
         		<c:forEach items="${options }" var="item">
         			<th data-options="field:'${item.value }',width:${item.width }">${item.label }</th>
         		</c:forEach>

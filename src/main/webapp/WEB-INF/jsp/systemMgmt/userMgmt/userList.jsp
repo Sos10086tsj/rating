@@ -13,7 +13,7 @@
         
         <thead>
         	<tr>
-        		<th field="id"  width="50">ID#</th>  
+        		<th field="id" hidden="true">ID#</th>  
         		<th field="username"  width="50">用户名</th>
         		<th field="name"  width="50">姓名</th>
         		<th field="groupId"  hidden="true">组Id</th>

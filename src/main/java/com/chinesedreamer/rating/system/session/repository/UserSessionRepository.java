@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.system.session.repository;
 
+import java.util.List;
+
 import com.chinesedreamer.rating.base.jpa.repository.BaseRepository;
 import com.chinesedreamer.rating.system.session.model.UserSession;
 
@@ -12,5 +14,5 @@ import com.chinesedreamer.rating.system.session.model.UserSession;
  */
 public interface UserSessionRepository extends BaseRepository<UserSession, Long>{
 	public UserSession findByUsername(String username);
-	public UserSession findBySessionId(String sessionId);
+	public List<UserSession> findBySessionIdOrderByCreateDateDesc(String sessionId);
 }

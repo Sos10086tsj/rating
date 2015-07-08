@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.system.session.logic;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -64,7 +66,8 @@ public class UserSessionLogicImpl extends BaseCacheAspect implements UserSession
 
 	@Override
 	public UserSession findBySessionId(String sessionId) {
-		return this.repository.findBySessionId(sessionId);
+		List<UserSession> userSessions = this.repository.findBySessionIdOrderByCreateDateDesc(sessionId);
+		return userSessions.isEmpty() ? null : userSessions.get(0);
 	}
 
 	@Override
@@ -85,8 +88,10 @@ public class UserSessionLogicImpl extends BaseCacheAspect implements UserSession
 	@Override
 	public void clear(UserSession userSession) {
 		this.evict(userSessionPrefix + userSession.getSessionId());
-		UserSession saved = this.repository.findBySessionId(userSession.getSessionId());
-		this.repository.delete(saved);
+		List<UserSession> userSessions = this.repository.findBySessionIdOrderByCreateDateDesc(userSession.getSessionId());
+		for (UserSession session : userSessions) {
+			this.repository.delete(session);
+		}
 	}
 
 }

@@ -9,7 +9,7 @@
 </head>
 <body>
 	<table 	id="dg" 
-		title="定性指标基础信息" 
+		title="参与投票" 
 		class="easyui-datagrid" 
 		style="width:900px; height: 400px; padding-left: 200px;" 
 		url="${ctx }/rating/list" 

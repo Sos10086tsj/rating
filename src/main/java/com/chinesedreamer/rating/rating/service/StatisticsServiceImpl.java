@@ -136,7 +136,6 @@ public class StatisticsServiceImpl implements StatisticsService{
 			
 			//获取总分与投票人数
 			for (RatingScoreView scoreView : tmp) {
-				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), scoreView.getOptionId());
 				if (scoreView.getVoterGroupId().equals(scoreView.getScorerGroup())) {
 					innerVoter.add(scoreView.getVoterId());
 					Long optionKey = scoreView.getOptionId();
@@ -144,7 +143,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (innerMap.containsKey(optionKey)) {
 						value = innerMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
+					value+= scoreView.getScore() ;
 					innerMap.put(optionKey, value);
 				}else {
 					outerVoter.add(scoreView.getVoterId());
@@ -153,12 +152,16 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (outerMap.containsKey(optionKey)) {
 						value = outerMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
+					value+= scoreView.getScore() ;
 					outerMap.put(optionKey, value);
 				}
 			}
 			
+			Float total = 0.00000f;
+			
 			for (Long optionKey : innerMap.keySet()) {
+				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), optionKey);
+				
 				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionKey);
 				Float innerValue = innerMap.get(optionKey);
 				innerValue = (null == innerValue ? 0 : innerValue);
@@ -178,9 +181,12 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}
 				int innerNum = innerVoter.isEmpty() ? 1 : innerVoter.size();
 				int outerNum = outerVoter.isEmpty() ? 1 : outerVoter.size();
-				Float value = rate * ( (innerValue / innerNum) * innerRate + (outerValue / outerNum) * outerRate );
+				Float value = (innerValue / innerNum) * innerRate + (outerValue / outerNum) * outerRate ;
 				score.put("option_" + optionKey, this.formatScore(value,config));
+				
+				total += weight.getWeight().floatValue() / 100 * value * rate;
 			}
+			score.put("total", this.formatScore(total,config));
 			for (Map<String, String> exist : scores) {
 				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
 					for (String existKey : score.keySet()) {
@@ -235,7 +241,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 			
 			//获取总分与投票人数
 			for (RatingScoreView scoreView : tmp) {
-				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), scoreView.getOptionId());
+				
 				UserGroup voterGroup = this.userGroupLogic.findOne(scoreView.getVoterGroupId());
 				if (scoreView.getVoterGroupId().equals(scoreView.getScorerGroup()) 
 						&&
@@ -246,7 +252,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (innerMap.containsKey(optionKey)) {
 						value = innerMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
+					value+= scoreView.getScore() ;
 					innerMap.put(optionKey, value);
 				}else if(!scoreView.getVoterGroupId().equals(scoreView.getScorerGroup()) && scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())){
 					outerVoter.add(scoreView.getVoterId());
@@ -255,7 +261,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (outerMap.containsKey(optionKey)) {
 						value = outerMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
+					value+= scoreView.getScore() ;
 					outerMap.put(optionKey, value);
 				}else if (voterGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {
 					zongtiVoter.add(scoreView.getVoterId());
@@ -264,12 +270,15 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (zongtiMap.containsKey(optionKey)) {
 						value = zongtiMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
+					value+= scoreView.getScore() ;
 					zongtiMap.put(optionKey, value);
 				}
 			}
 			
+			Float total = 0.00000f;
 			for (Long optionKey : innerMap.keySet()) {
+				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), optionKey);
+				
 				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionKey);
 				Float innerValue = innerMap.get(optionKey);
 				innerValue = (null == innerValue ? 0 : innerValue);
@@ -295,9 +304,11 @@ public class StatisticsServiceImpl implements StatisticsService{
 				int innerNum = innerVoter.isEmpty() ? 1 : innerVoter.size();
 				int outerNum = outerVoter.isEmpty() ? 1 : outerVoter.size();
 				int zongtiNum = zongtiVoter.isEmpty() ? 1 : zongtiVoter.size();
-				Float value = rate * ( (innerValue / innerNum) * innerRate + (outerValue / outerNum) * outerRate + (zongtiValue / zongtiNum) * zongtiRate);
+				Float value =  (innerValue / innerNum) * innerRate + (outerValue / outerNum) * outerRate + (zongtiValue / zongtiNum) * zongtiRate;
 				score.put("option_" + optionKey, this.formatScore(value,config));
+				total += rate * weight.getWeight().floatValue() / 100 * value;
 			}
+			score.put("total", this.formatScore(total,config));
 			for (Map<String, String> exist : scores) {
 				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
 					for (String existKey : score.keySet()) {
@@ -349,7 +360,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 			
 			//获取总分与投票人数
 			for (RatingScoreView scoreView : tmp) {
-				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), scoreView.getOptionId());
+				
 				UserGroup voterGroup = this.userGroupLogic.findOne(scoreView.getVoterGroupId());
 				if (scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())) {//组长
 					leaderVoter.add(scoreView.getVoterId());
@@ -358,7 +369,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (leaderMap.containsKey(optionKey)) {
 						value = leaderMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100 ;
+					value+= scoreView.getScore() ;
 					leaderMap.put(optionKey, value);
 				}else if (voterGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {
 					zongtiVoter.add(scoreView.getVoterId());
@@ -367,12 +378,14 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (zongtiMap.containsKey(optionKey)) {
 						value = zongtiMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
+					value+= scoreView.getScore() ;
 					zongtiMap.put(optionKey, value);
 				}
 			}
-			
+			Float total = 0.00000f;
 			for (Long optionKey : leaderMap.keySet()) {
+				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), optionKey);
+				
 				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionKey);
 				Float leaderValue = leaderMap.get(optionKey);
 				leaderValue = (null == leaderValue ? 0 : leaderValue);
@@ -396,9 +409,11 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}
 				int leaderNum = leaderVoter.isEmpty() ? 1 : leaderVoter.size();
 				int zongtiNum = zongtiVoter.isEmpty() ? 1 : zongtiVoter.size();
-				Float value = rate * ( (leaderValue / leaderNum) * leaderRate + (zongtiValue / zongtiNum) * zongtiRate);
+				Float value =  (leaderValue / leaderNum) * leaderRate + (zongtiValue / zongtiNum) * zongtiRate;
 				score.put("option_" + optionKey, this.formatScore(value,config));
+				total += rate * weight.getWeight().floatValue() / 100 * value;
 			}
+			score.put("total", this.formatScore(total,config));
 			for (Map<String, String> exist : scores) {
 				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
 					for (String existKey : score.keySet()) {
@@ -448,7 +463,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 			
 			//获取总分与投票人数
 			for (RatingScoreView scoreView : tmp) {
-				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), scoreView.getOptionId());
+				
 				if (scoreView.getVoterPositionId().equals(UserPositionType.TEAM_MATE.getValue())) {//组远
 					zuyuanVoter.add(scoreView.getVoterId());
 					Long optionKey = scoreView.getOptionId();
@@ -456,12 +471,14 @@ public class StatisticsServiceImpl implements StatisticsService{
 					if (zuyuanMap.containsKey(optionKey)) {
 						value = zuyuanMap.get(optionKey);
 					}
-					value+= scoreView.getScore() * weight.getWeight().floatValue() / 100;
+					value+= scoreView.getScore() ;
 					zuyuanMap.put(optionKey, value);
 				}
 			}
-			
+			Float total = 0.00000f;
 			for (Long optionKey : zuyuanMap.keySet()) {
+				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), optionKey);
+				
 				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionKey);
 				Float zuyuanValue = zuyuanMap.get(optionKey);
 				zuyuanValue = (null == zuyuanValue ? 0 : zuyuanValue);
@@ -478,9 +495,11 @@ public class StatisticsServiceImpl implements StatisticsService{
 					rate = WeightConstant.D_WCRWQK_PERCENTF;
 				}
 				int zuyuanNum = zuyuanVoter.isEmpty() ? 1 : zuyuanVoter.size();
-				Float value = rate * ( (zuyuanValue / zuyuanNum) * zuyuanRate);
+				Float value =   (zuyuanValue / zuyuanNum) * zuyuanRate;
 				score.put("option_" + optionKey, this.formatScore(value,config));
+				total += rate * weight.getWeight().floatValue() / 100 * value;
 			}
+			score.put("total", this.formatScore(total,config));
 			for (Map<String, String> exist : scores) {
 				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
 					for (String existKey : score.keySet()) {
