@@ -549,7 +549,6 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}
 			}
 			rstMap.remove(exist);
-			
 			for (RatingScoreView scoreView : tmp) {
 				Long optionKey = scoreView.getOptionId();
 				if (scoreView.getVoterGroupId().equals(scoreView.getScorerGroup())) {
@@ -563,7 +562,6 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}else {
 					score.put("option_" + optionKey, scoreView.getScore().toString());
 				}
-				
 			}
 			rstMap.add(score);
 		}

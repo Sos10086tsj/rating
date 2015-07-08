@@ -9,7 +9,8 @@
 </head>
 <body>
 	<div>
-		<label>表现突出（5分）	表现较好（4分）	表现一般（3分）	表现较差（2分）	表现很差（1分）	表现极差（0分）</label>
+		<div style="text-align:center;font-size:16px;line-height:16px;height:16px;color:red;margin-bottom: 10px;">请逐行为每个人员进行投票，每项0.0~5.0分。“本地保存”后再“提交”</div>
+		<div style="text-align:center;font-size:16px;line-height:16px;height:16px;color:red;margin-bottom: 10px;">得分项：●表现突出(5分)●表现较好(4分)●表现一般(3分)●表现较差(2分)●表现很差(1分)●表现极差(0分)</div>
 	</div>
 	<table 	id="js_rating_vote_dg" 
 		title="投票：${votePage.ratingName }-${votePage.tmplName }" 
@@ -27,6 +28,9 @@
         
         <thead>
         	<tr>
+        		<th field="scorerId"  hidden="true">ID</th>  
+        		<th field="scorerName">类别ID</th>
+        	<%--
         		<th data-options="field:'scorerId',width:120,
         				formatter:function(value,row){
         					var datasource = eval(${usersJson });
@@ -46,7 +50,7 @@
 								panelHeight:'auto',
 								required:true
 							}
-						}">姓名</th>
+						}">姓名</th> --%>
         		<c:forEach items="${options }" var="item">
         			<%--<th data-options="field:'${item.value }',width:${item.width },
         				formatter:function(value,row){
@@ -74,8 +78,8 @@
         </thead>
 	</table>
 	<div id="js_rating_vote_tb" style="height:auto">
-		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="rating.userrating.addVote()">增加</a>
-		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="rating.userrating.removeVote()">删除</a>
+		<%--<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="rating.userrating.addVote()">增加</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="rating.userrating.removeVote()">删除</a> --%>
 		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="rating.userrating.accept()">本地保存</a>
 		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="rating.userrating.vote()">提交</a>
 	</div>

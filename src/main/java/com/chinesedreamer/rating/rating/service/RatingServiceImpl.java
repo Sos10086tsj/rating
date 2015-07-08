@@ -267,7 +267,7 @@ public class RatingServiceImpl implements RatingService{
 			}
 			if (null != users && !users.isEmpty()) {
 				for (User user : users) {
-					if(currentUser.getId().equals(user.getId()) || exists.contains(user.getId().toString())){
+					if(exists.contains(user.getId().toString())){
 						continue;
 					}
 					Map<String, Object> tmpMap = new HashMap<String, Object>();

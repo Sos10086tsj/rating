@@ -19,9 +19,11 @@ rating.userrating = {
 		}
 		
 		//个人明细
+		/*
 		var personUrl = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('我的得分','" 
 		 + ctx + "/rating/statistics/" + rec.id 
-		+  "/" + $("#js_vote_user_id_hidden").val()  + "')\">我的得分</a>        ";
+		+  "/" + $("#js_vote_user_id_hidden").val()  + "')\">我的得分</a>        ";*/
+		var personUrl = "<a href=\"javascript:void(0)\">我的得分(未开启)</a>";
 		
 		link += personUrl;
 		
