@@ -10,6 +10,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.chinesedreamer.rating.base.exception.category.BizException;
+import com.chinesedreamer.rating.system.session.exception.SessionOverdueException;
 
 /** 
  * Description: 统一处理异常
@@ -25,14 +26,15 @@ public class RatingExceptionHandler implements HandlerExceptionResolver{
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex) {
-		ModelAndView view = new ModelAndView("exception");
+		ModelAndView view = null;
 		String errorMessage = "";
 		logger.error("{}",ex);
-		if (ex instanceof BizException) {
-			//errorMessage = ex.getMessage();
-			errorMessage = "<a herf='login'>超时，请重新登录</a>";
-		}else {
+		if(ex instanceof SessionOverdueException){
+			errorMessage = "超时，请重新登录！";
+			view = new ModelAndView("login");
+		}else if (ex instanceof BizException) {
 			errorMessage = "系统异常，请联系管理员！";
+			view = new ModelAndView("exception");
 		}
 		view.addObject("errorMessage", errorMessage);
 		return view;
