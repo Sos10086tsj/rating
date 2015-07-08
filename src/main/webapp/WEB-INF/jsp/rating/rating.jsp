@@ -13,7 +13,7 @@
 		class="easyui-datagrid" 
 		style="width:900px; height: 400px; padding-left: 200px;" 
 		url="${ctx }/rating/list" 
-		pagination="true"  
+		pagination="false" 
         rownumbers="true" 
         fitcolumns="true" 
         singleselect="true">

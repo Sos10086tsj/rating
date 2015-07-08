@@ -15,11 +15,11 @@
 	<table 	id="js_rating_vote_dg" 
 		title="投票：${votePage.ratingName }-${votePage.tmplName }" 
 		class="easyui-datagrid" 
-		style="width:${gridWidth + 40}px; height: 600px; padding-left: 200px;"
+		style="width:${gridWidth + 40}px; height: 900px; padding-left: 400px;"
 		data-options="
 		url:'${ctx }/rating/vote/user/${votePage.tmplId}',
 		toolbar:'#js_rating_vote_tb',
-		pagination:true ,
+		pagination:false ,
         rownumbers:true,
         fitcolumns:true,
         singleselect:true,
@@ -29,7 +29,7 @@
         <thead>
         	<tr>
         		<th field="scorerId"  hidden="true">ID</th>  
-        		<th field="scorerName">类别ID</th>
+        		<th field="scorerName">人员</th>
         	<%--
         		<th data-options="field:'scorerId',width:120,
         				formatter:function(value,row){

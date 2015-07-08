@@ -80,6 +80,9 @@ public class UserServiceImpl implements UserService{
 	public ResponseVo login(String username, String password) throws UserFrozenException,UserNotExistException,PasswordIncorrectException{
 		this.logger.info("user:{} passwor:{} try to login.", username, password);
 		User user = this.logic.findByUsernameAndStatus(username, UserStatus.ACTIVE);
+		if (null == user) {
+			user = this.logic.findByUsernameAndStatus(username, UserStatus.DEFAULT);//超级用户
+		}
 		if(null == user){
 			BizException ex = null;
 			if (null == this.logic.findByUsernameAndStatus(username, UserStatus.INACTIVE)) {
@@ -111,6 +114,9 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<Menu> getUserMenus(String username) {
 		User user = this.logic.findByUsernameAndStatus(username, UserStatus.ACTIVE);
+		if (null == user) {
+			user = this.logic.findByUsernameAndStatus(username, UserStatus.DEFAULT);//超级用户
+		}
 		//1. 鎵惧埌鐢ㄦ埛鎷ユ湁鐨勮锟
 		List<UserRoleMapping> userRoleMappings = this.userRoleMappingLogic.findByUserId(user.getId());
 		//2. 鏍规嵁role鎵惧埌鎵�湁鐨勬潈闄�
@@ -175,7 +181,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<UserVo> getAllUsers() {
 		List<UserVo> vos = new ArrayList<UserVo>();
-		List<User> users = this.logic.findAll();
+		List<User> users = this.logic.findUsers(UserStatus.ACTIVE);
 		for (User user : users) {
 			vos.add(this.conver2Vo(user));
 		}
@@ -184,14 +190,18 @@ public class UserServiceImpl implements UserService{
 	private UserVo conver2Vo(User user) {
 		UserVo vo = new UserVo();
 		vo.setUsername(user.getUsername());
-		vo.setGroupId(user.getUserGroup().getId().toString());
-		vo.setGroupName(user.getUserGroup().getName());
+		if(null != user.getGroupId()){
+			vo.setGroupId(user.getUserGroup().getId().toString());
+			vo.setGroupName(user.getUserGroup().getName());
+		}
+		if (null != user.getPositionId()) {
+			UserPositionType position = UserPositionType.get(user.getPositionId());
+			vo.setPositionId(position.getValue().toString());
+			vo.setPositionName(position.getLabel());
+		}
 		vo.setId(user.getId());
 		vo.setName(user.getName());
 		vo.setPhone(user.getPhone());
-		UserPositionType position = UserPositionType.get(user.getPositionId());
-		vo.setPositionId(position.getValue().toString());
-		vo.setPositionName(position.getLabel());
 		vo.setStatus(user.getStatus().toString());
 		return vo;
 	}
@@ -240,7 +250,7 @@ public class UserServiceImpl implements UserService{
 		List<SelectVo> vos = new ArrayList<SelectVo>();
 		List<User> users = new ArrayList<User>();
 		if (StringUtils.isEmpty(name)) {
-			users = this.logic.findAll();
+			users = this.logic.findUsers(UserStatus.ACTIVE);
 		}else {
 			users = this.logic.findByStatusAndNameLike(UserStatus.ACTIVE, name.trim());
 		}

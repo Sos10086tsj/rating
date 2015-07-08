@@ -6,7 +6,7 @@
 		style="width:900px; height: 400px; padding-left: 200px;" 
 		url="${ctx }/system/rating/list" 
 		toolbar="#toolbar" 
-		pagination="true"  
+		pagination="false"  
         rownumbers="true" 
         fitcolumns="true" 
         singleselect="true">

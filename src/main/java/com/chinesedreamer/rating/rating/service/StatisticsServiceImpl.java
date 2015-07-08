@@ -187,18 +187,23 @@ public class StatisticsServiceImpl implements StatisticsService{
 				total += weight.getWeight().floatValue() / 100 * value * rate;
 			}
 			score.put("total", this.formatScore(total,config));
+			List<Map<String, String>> removes = new ArrayList<Map<String,String>>();
 			for (Map<String, String> exist : scores) {
 				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
 					for (String existKey : score.keySet()) {
 						if (!existKey.equals("user_id") && !existKey.equals("name")) {
 							Float v1 = Float.parseFloat(score.get(existKey));
-							Float v2 = Float.parseFloat(exist.get(existKey));
+							Float v2 = exist.containsKey(existKey) ? Float.parseFloat(exist.get(existKey)) : 0.0f;
 							Float v = v1+v2;
 							score.put(existKey, v.toString());
 						}
 					}
-					scores.remove(exist);
+					removes.add(exist);
+					//scores.remove(exist);
 				}
+			}
+			for (Map<String, String> map : removes) {
+				scores.remove(map);
 			}
 			scores.add(score);
 		}
@@ -309,18 +314,23 @@ public class StatisticsServiceImpl implements StatisticsService{
 				total += rate * weight.getWeight().floatValue() / 100 * value;
 			}
 			score.put("total", this.formatScore(total,config));
+			List<Map<String, String>> removes = new ArrayList<Map<String,String>>();
 			for (Map<String, String> exist : scores) {
 				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
 					for (String existKey : score.keySet()) {
 						if (!existKey.equals("user_id") && !existKey.equals("name")) {
 							Float v1 = Float.parseFloat(score.get(existKey));
-							Float v2 = Float.parseFloat(exist.get(existKey));
+							Float v2 = exist.containsKey(existKey) ? Float.parseFloat(exist.get(existKey)) : 0.0f;
 							Float v = v1+v2;
 							score.put(existKey, v.toString());
 						}
 					}
-					scores.remove(exist);
+					removes.add(exist);
+					//scores.remove(exist);
 				}
+			}
+			for (Map<String, String> map : removes) {
+				scores.remove(map);
 			}
 			scores.add(score);
 		}
@@ -414,18 +424,23 @@ public class StatisticsServiceImpl implements StatisticsService{
 				total += rate * weight.getWeight().floatValue() / 100 * value;
 			}
 			score.put("total", this.formatScore(total,config));
+			List<Map<String, String>> removes = new ArrayList<Map<String,String>>();
 			for (Map<String, String> exist : scores) {
 				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
 					for (String existKey : score.keySet()) {
 						if (!existKey.equals("user_id") && !existKey.equals("name")) {
 							Float v1 = Float.parseFloat(score.get(existKey));
-							Float v2 = Float.parseFloat(exist.get(existKey));
+							Float v2 = exist.containsKey(existKey) ? Float.parseFloat(exist.get(existKey)) : 0.0f;
 							Float v = v1+v2;
 							score.put(existKey, v.toString());
 						}
 					}
-					scores.remove(exist);
+					removes.add(exist);
+					//scores.remove(exist);
 				}
+			}
+			for (Map<String, String> map : removes) {
+				scores.remove(map);
 			}
 			scores.add(score);
 		}
@@ -500,18 +515,23 @@ public class StatisticsServiceImpl implements StatisticsService{
 				total += rate * weight.getWeight().floatValue() / 100 * value;
 			}
 			score.put("total", this.formatScore(total,config));
+			List<Map<String, String>> removes = new ArrayList<Map<String,String>>();
 			for (Map<String, String> exist : scores) {
 				if (exist.get("user_id").equals(score.get("user_id"))) {//存在
 					for (String existKey : score.keySet()) {
 						if (!existKey.equals("user_id") && !existKey.equals("name")) {
 							Float v1 = Float.parseFloat(score.get(existKey));
-							Float v2 = Float.parseFloat(exist.get(existKey));
+							Float v2 = exist.containsKey(existKey) ? Float.parseFloat(exist.get(existKey)) : 0.0f;
 							Float v = v1+v2;
 							score.put(existKey, v.toString());
 						}
 					}
-					scores.remove(exist);
+					removes.add(exist);
+					//scores.remove(exist);
 				}
+			}
+			for (Map<String, String> map : removes) {
+				scores.remove(map);
 			}
 			scores.add(score);
 		}

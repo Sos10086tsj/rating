@@ -14,7 +14,7 @@
 		style="width:${gridWidth + 40}px; height: 600px; padding-left: 200px;"
 		data-options="
 		url:'${ctx }/rating/statistics/${tmplIds}',
-		pagination:true ,
+		pagination:false ,
         rownumbers:true,
         fitcolumns:true,
         singleselect:true"
@@ -22,7 +22,8 @@
         
         <thead>
         	<tr>
-        		<th data-options="field:'name',width:120" formatter="rating.statistics.detailNameFormat">姓名</th>
+        		<th data-options="field:'name',width:120" formatter="rating.statistics.detailNameFormat">人员</th>
+        		<th field="total" width="50">总分</th>
         		<c:forEach items="${options }" var="item">
         			<th data-options="field:'${item.value }',width:${item.width }">${item.label }</th>
         		</c:forEach>

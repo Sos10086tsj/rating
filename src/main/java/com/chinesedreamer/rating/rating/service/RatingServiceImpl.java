@@ -194,7 +194,7 @@ public class RatingServiceImpl implements RatingService{
 			Map<Long, RatingUserVoteItem> voteVoMap = voteVo.getVoteItems();
 			for (RatingTemplateOptionMapping option : options) {
 				if (voteVoMap.keySet().contains(option.getOptionId())) {
-					item.put("option_" + option.getOptionId(), voteVoMap.get(option.getOptionId()).getScoreId());
+					item.put("option_" + option.getOptionId(), voteVoMap.get(option.getOptionId()).getScore());
 				}
 //				else{
 //					item.put("option_" + option.getId(), "-1");

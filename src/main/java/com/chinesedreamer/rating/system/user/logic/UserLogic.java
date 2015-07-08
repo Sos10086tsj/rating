@@ -46,7 +46,7 @@ public interface UserLogic extends BaseLogic<User, Long>{
 	 */
 	public List<User> findByGroupIdAndPositionIdAndStatus(Long groupId,Long positionId, UserStatus status);
 	
-	public List<User> findAll();
+	public List<User> findUsers(UserStatus status);
 	
 	/**
 	 * 模糊查询有效用户
