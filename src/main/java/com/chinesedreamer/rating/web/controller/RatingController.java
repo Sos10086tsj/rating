@@ -337,8 +337,8 @@ public class RatingController {
 	public String chart(Model model,@PathVariable("ratingId")Long ratingId){
 		Rating rating = this.ratingService.findOne(ratingId);
 		model.addAttribute("title", rating.getName());
-		double[] data = new double[]{34.4, 21.8, 20.1, 20, 19.6, 19.5, 19.1, 18.4, 18,17.3};
-		model.addAttribute("data", JSON.toJSONString(data));
+		//double[] data = new double[]{34.4, 21.8, 20.1, 20, 19.6, 19.5, 19.1, 18.4, 18,17.3};
+		model.addAttribute("data", JSON.toJSONString(this.statisticsService.generateChart(ratingId)));
 		return "statistics/chart";
 	}
 }

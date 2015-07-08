@@ -84,7 +84,8 @@ rating.chart = {
             min: 0,
             title: {
                 text: '人数'
-            }
+            },
+              allowDecimals:false 
         },
         legend: {
             enabled: false

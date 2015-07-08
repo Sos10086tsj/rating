@@ -27,4 +27,11 @@ public interface StatisticsService {
 	public List<Map<String, String>> userDetails(Long tmplId,Long user);
 	
 	public List<Map<String, String>> userDetailsByRatingId(Long ratingId,Long user);
+	
+	/**
+	 * 生成图表
+	 * @param ratingId
+	 * @return
+	 */
+	public int[] generateChart(Long ratingId);
 }

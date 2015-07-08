@@ -195,7 +195,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 							Float v1 = Float.parseFloat(score.get(existKey));
 							Float v2 = exist.containsKey(existKey) ? Float.parseFloat(exist.get(existKey)) : 0.0f;
 							Float v = v1+v2;
-							score.put(existKey, v.toString());
+							score.put(existKey, this.formatScore(v,config));
 						}
 					}
 					removes.add(exist);
@@ -322,7 +322,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 							Float v1 = Float.parseFloat(score.get(existKey));
 							Float v2 = exist.containsKey(existKey) ? Float.parseFloat(exist.get(existKey)) : 0.0f;
 							Float v = v1+v2;
-							score.put(existKey, v.toString());
+							score.put(existKey, this.formatScore(v,config));
 						}
 					}
 					removes.add(exist);
@@ -363,10 +363,8 @@ public class StatisticsServiceImpl implements StatisticsService{
 			score.put("user_id", key.toString());
 			
 			Set<Long> leaderVoter = new HashSet<Long>();
-			Set<Long> zongtiVoter = new HashSet<Long>();
 			
-			Map<Long, Float> leaderMap = new HashMap<Long, Float>();
-			Map<Long, Float> zongtiMap = new HashMap<Long, Float>();
+			Map<Long, Float> leaderMap = new HashMap<Long, Float>();//总体组、组长投票一起统计
 			
 			//获取总分与投票人数
 			for (RatingScoreView scoreView : tmp) {
@@ -382,14 +380,14 @@ public class StatisticsServiceImpl implements StatisticsService{
 					value+= scoreView.getScore() ;
 					leaderMap.put(optionKey, value);
 				}else if (voterGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {
-					zongtiVoter.add(scoreView.getVoterId());
+					leaderVoter.add(scoreView.getVoterId());
 					Long optionKey = scoreView.getOptionId();
 					Float value = 0.0000f;
-					if (zongtiMap.containsKey(optionKey)) {
-						value = zongtiMap.get(optionKey);
+					if (leaderMap.containsKey(optionKey)) {
+						value = leaderMap.get(optionKey);
 					}
 					value+= scoreView.getScore() ;
-					zongtiMap.put(optionKey, value);
+					leaderMap.put(optionKey, value);
 				}
 			}
 			Float total = 0.00000f;
@@ -399,27 +397,20 @@ public class StatisticsServiceImpl implements StatisticsService{
 				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionKey);
 				Float leaderValue = leaderMap.get(optionKey);
 				leaderValue = (null == leaderValue ? 0 : leaderValue);
-				Float zongtiValue = zongtiMap.get(optionKey);
-				zongtiValue = (null == zongtiValue ? 0 : zongtiValue);
 				float leaderRate = 1.0f;
-				float zongtiRate = 1.0f;
 				float rate = 1.0f;
 				if (suppOption.getCategory().equals(OptionCategory.WCRWQK)) {
 					leaderRate = WeightConstant.C_WCRWQK_LEADER_PERCENTF;
-					zongtiRate = WeightConstant.C_WCRWQK_ZONGTI_PERCENTF;
 					rate = WeightConstant.C_WCRWQK_PERCENTF;
 				}else if (suppOption.getCategory().equals(OptionCategory.ZZNL)) {
 					leaderRate = WeightConstant.C_ZZNL_LEADER_PERCENTF;
-					zongtiRate = WeightConstant.C_ZZNL_ZONGTI_PERCENTF;
 					rate = WeightConstant.C_ZZNL_PERCENTF;
 				}else if (suppOption.getCategory().equals(OptionCategory.ZHNL)) {
 					leaderRate = WeightConstant.C_ZHNL_LEADER_PERCENTF;
-					zongtiRate = WeightConstant.C_ZHNL_ZONGTI_PERCENTF;
 					rate = WeightConstant.C_ZHNL_PERCENTF;
 				}
 				int leaderNum = leaderVoter.isEmpty() ? 1 : leaderVoter.size();
-				int zongtiNum = zongtiVoter.isEmpty() ? 1 : zongtiVoter.size();
-				Float value =  (leaderValue / leaderNum) * leaderRate + (zongtiValue / zongtiNum) * zongtiRate;
+				Float value =  (leaderValue / leaderNum) * leaderRate ;
 				score.put("option_" + optionKey, this.formatScore(value,config));
 				total += rate * weight.getWeight().floatValue() / 100 * value;
 			}
@@ -432,7 +423,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 							Float v1 = Float.parseFloat(score.get(existKey));
 							Float v2 = exist.containsKey(existKey) ? Float.parseFloat(exist.get(existKey)) : 0.0f;
 							Float v = v1+v2;
-							score.put(existKey, v.toString());
+							score.put(existKey, this.formatScore(v,config));
 						}
 					}
 					removes.add(exist);
@@ -523,7 +514,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 							Float v1 = Float.parseFloat(score.get(existKey));
 							Float v2 = exist.containsKey(existKey) ? Float.parseFloat(exist.get(existKey)) : 0.0f;
 							Float v = v1+v2;
-							score.put(existKey, v.toString());
+							score.put(existKey, this.formatScore(v,config));
 						}
 					}
 					removes.add(exist);
@@ -811,5 +802,54 @@ public class StatisticsServiceImpl implements StatisticsService{
 		
 		
 		return rstMap;
+	}
+
+	@Override
+	public int[] generateChart(Long ratingId) {
+		List<RatingTemplate> templates = this.templateLogic.findByRatingId(ratingId);
+		StringBuffer ab = new StringBuffer();
+		StringBuffer cd = new StringBuffer();
+		for (RatingTemplate template : templates) {
+			if (template.getCode().equals("A")) {
+				ab.append(template.getId())
+				.append(",");
+			}else if (template.getCode().equals("B")) {
+				ab.append(template.getId())
+				.append(",");
+			}else if (template.getCode().equals("C")) {
+				cd.append(template.getId())
+				.append(",");
+			}else if (template.getCode().equals("D")) {
+				cd.append(template.getId())
+				.append(",");
+			}
+		}
+		RptVo abRpt = this.generateReport(ab.toString());
+		RptVo cdRpt = this.generateReport(cd.toString());
+		int[] data = new int[]{0,0,0,0,0,0,0,0,0,0};
+		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
+		for (Map<String, String> score : abRpt.getScores()) {
+			Float total = Float.parseFloat(score.get("total"));
+			int index = this.getIndex(total, config);
+			int tmp = data[index];
+			tmp ++;
+			data[index] = tmp;
+		}
+		for (Map<String, String> score : cdRpt.getScores()) {
+			Float total = Float.parseFloat(score.get("total"));
+			int index = this.getIndex(total, config);
+			int tmp = data[index];
+			tmp ++;
+			data[index] = tmp;
+		}
+		return data;
+	}
+	
+	private int getIndex(Float total, Config config) {
+		Integer format = Integer.parseInt(config.getPropertyValue());
+		int value = (int)(format * total);
+		int percent = 5 * format / 10;
+		int index = value / percent;
+		return index == 10 ? 9 : index;
 	}
 }
