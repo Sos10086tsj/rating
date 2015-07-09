@@ -99,14 +99,27 @@ rating.userrating = {
 			items.push(item);
 		}
 		//console.log("data:" + JSON.stringify(items));
-		$.post(ctx + '/rating/userVote/' + $("#js_tmpl_id_hidden").html(),{"votes":JSON.stringify(items)}, 
-			function(data, textStatus, jqXHR){
+		$.ajax({ 
+			type: 'POST',  
+			url:ctx + '/rating/userVote/' + $("#js_tmpl_id_hidden").html(),
+			data: {votes : JSON.stringify(items)},
+			beforeSend : rating.ajax.loading(),
+			success: function(robj){ 
+				rating.ajax.stopLoading();
 				$.messager.alert({
 						title:'提示',
 						msg:'保存成功'
 				});
 			}
-		);
+		});
+//		$.post(ctx + '/rating/userVote/' + $("#js_tmpl_id_hidden").html(),{"votes":JSON.stringify(items)}, 
+//			function(data, textStatus, jqXHR){
+//				$.messager.alert({
+//						title:'提示',
+//						msg:'保存成功'
+//				});
+//			}
+//		);
 	}
 };
 
