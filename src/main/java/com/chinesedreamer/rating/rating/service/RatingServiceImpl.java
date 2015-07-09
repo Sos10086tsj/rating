@@ -276,7 +276,7 @@ public class RatingServiceImpl implements RatingService{
 					tmpMap.put("scorerName", user.getName());
 					tmpMap.put("group", user.getUserGroup().getName());
 					for (RatingTemplateOptionMapping option : options) {
-						tmpMap.put("option_" + option.getOptionId(), "4");
+						tmpMap.put("option_" + option.getOptionId(), "4.0");
 					}
 					scorers.add(tmpMap);
 				}
