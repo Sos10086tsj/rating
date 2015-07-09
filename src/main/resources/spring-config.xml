@@ -23,15 +23,6 @@
 	</bean>
 	<bean id="userSessionService" class="com.chinesedreamer.rating.system.session.service.UserSessionServiceImpl"></bean>
 	<bean id="userService" class="com.chinesedreamer.rating.system.user.service.UserServiceImpl"></bean>
-	
-	<bean id="ratingFilter" class="com.chinesedreamer.rating.web.filter.RatingFilter" >
-		<property name="userSessionService"> 
-			<ref bean="userSessionService"/>  
-    	</property>
-    	<property name="userService"> 
-			<ref bean="userService"/>  
-    	</property>
-	</bean>
           
     <bean id="propertyConfigurer"  
     	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">    

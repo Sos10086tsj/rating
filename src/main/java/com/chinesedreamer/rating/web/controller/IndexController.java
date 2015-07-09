@@ -47,6 +47,7 @@ public class IndexController {
 		
 		model.addAttribute("menus", this.userService.getUserMenus(username));
 		model.addAttribute("profile", this.userService.showUserProfile(username));
+		model.addAttribute("currentUser", this.userService.getUser(username).getName());
 		
 		return "index";
 	}
