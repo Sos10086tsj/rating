@@ -11,6 +11,14 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.chinesedreamer.rating.system.session.service.UserSessionService;
+import com.chinesedreamer.rating.system.user.service.UserService;
+
 /**
  * Description: 
  * @author Paris
@@ -18,6 +26,11 @@ import javax.servlet.http.HttpSession;
  * @version beta
  */
 public class RatingFilter implements Filter{
+	
+	@Autowired
+	private @Getter @Setter UserSessionService userSessionService;
+	@Autowired
+	private @Getter @Setter UserService userService;
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -33,7 +46,8 @@ public class RatingFilter implements Filter{
 		HttpSession session = req.getSession();
 		String ctx = req.getContextPath();
 		session.setAttribute("ctx", (null == ctx  ? "" : ctx) );
-		
+		String currentUser = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername()).getName();
+		session.setAttribute("currentUser", currentUser);
 		chain.doFilter(request, response);
 	}
 

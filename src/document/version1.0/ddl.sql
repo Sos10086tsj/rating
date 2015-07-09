@@ -287,6 +287,6 @@ rating.rating_user_vote ruv,
 rating.rating_user_vote_item ruvm
 where 1=1
 and ruv.tmpl_id = rt.id
-and ruvm.user_vote_id = ruv.id
+and ruvm.user_vote_id = ruv.id;
 
 commit;
