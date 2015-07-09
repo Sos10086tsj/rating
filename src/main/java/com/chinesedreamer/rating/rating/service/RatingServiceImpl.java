@@ -339,7 +339,7 @@ public class RatingServiceImpl implements RatingService{
 			Long scorerId = voteRow.getLong("scorerId");
 			for (RatingTemplateOptionMapping option : options) {
 				if (null != voteRow.getLong("option_" + option.getOptionId())) {
-					RatingUserVoteItem vi = this.ratingUserVoteItemLogic.findByUserVoteIdAndOptionIdAndScorer(vote.getId(), option.getId(),scorerId);
+					RatingUserVoteItem vi = this.ratingUserVoteItemLogic.findByUserVoteIdAndOptionIdAndScorer(vote.getId(), option.getOptionId(),scorerId);
 					if (null == vi) {
 						vi = new RatingUserVoteItem();
 					}

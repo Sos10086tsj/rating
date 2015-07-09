@@ -17,6 +17,20 @@ rating.menu = {
 	},
 	
 	submitProfile:function(){
+		//验证密码
+		var pass = $("#js_profile_pass").val();
+		var passConfirm = $("#js_profile_pass_confirm").val();
+		if(pass.length > 0){
+			var msg = "";
+			if(!(passConfirm.length > 0 && passConfirm == pass)){
+				msg = "确认密码未填或者不一致";
+				$.messager.alert({
+            		title: '提示',
+            		msg: msg
+            	});
+            	return;
+			}
+		}
 		$('#js_user_profile_edit').form('submit',{
 		 	onSubmit: function(){
             	return $(this).form('validate');
@@ -25,7 +39,7 @@ rating.menu = {
             	var result = eval('('+result+')');
             	if (result.errorMsg){
             		 $.messager.alert({
-            		 	title: 'Error',
+            		 	title: '提示',
             		 	msg: result.errorMsg
             		 });
             	}else{

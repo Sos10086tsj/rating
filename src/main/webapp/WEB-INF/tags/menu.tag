@@ -72,7 +72,7 @@
 				<label>新密码</label>
 			</div>
         	<div>
-        		<input type="password" name="newPassword" class="easyui-textbox user_edit_input js_pass_clear" value="">
+        		<input id="js_profile_pass" type="password" name="newPassword" class="easyui-textbox user_edit_input js_pass_clear" value="">
         	</div>
        	</div>
        	<div class="break_line"></div>
@@ -81,7 +81,7 @@
 				<label>确认新密码</label>
 			</div>
         	<div>
-        		<input type="password" name="confirmNewPassword" class="easyui-textbox user_edit_input js_pass_clear"  value="">
+        		<input id="js_profile_pass_confirm" type="password" name="confirmNewPassword" class="easyui-textbox user_edit_input js_pass_clear"  value="">
         	</div>
        	</div>
        	<div class="break_line"></div>
