@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -52,6 +53,9 @@ public class SessionFilter implements Filter{
 						|| uri.equals("/login")) 
 						&& !isStaticResourceRequest(uri)) {
 			this.userSessionService.validateSession();
+			String currentUser = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername()).getName();
+			HttpSession session = httpServletRequest.getSession();
+			session.setAttribute("currentUser", currentUser);
 		}
 		chain.doFilter(request, response);
 	}

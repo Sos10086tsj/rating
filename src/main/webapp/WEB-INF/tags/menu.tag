@@ -20,7 +20,7 @@
 </div>
 <div>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true" 
-	onclick="rating.menu.logout()">退出</a>
+	onclick="rating.menu.logout()">${currentUser }!退出</a>
 </div>
 <!-- 个人信息部分 -->
 <div id="js_usr_profile_update" class="easyui-dialog" style="width:400px;height:320px;padding:10px 20px;"
