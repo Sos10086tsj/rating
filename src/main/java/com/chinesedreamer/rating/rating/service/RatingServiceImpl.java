@@ -191,6 +191,7 @@ public class RatingServiceImpl implements RatingService{
 			Map<String, Object> item = new HashMap<String, Object>();
 			item.put("scorerId", voteVo.getUserId());
 			item.put("scorerName", voteVo.getUserName());
+			item.put("group", this.userLogic.findOne(voteVo.getUserId()).getUserGroup().getName());
 			Map<Long, RatingUserVoteItem> voteVoMap = voteVo.getVoteItems();
 			for (RatingTemplateOptionMapping option : options) {
 				if (voteVoMap.keySet().contains(option.getOptionId())) {
@@ -273,6 +274,7 @@ public class RatingServiceImpl implements RatingService{
 					Map<String, Object> tmpMap = new HashMap<String, Object>();
 					tmpMap.put("scorerId", user.getId());
 					tmpMap.put("scorerName", user.getName());
+					tmpMap.put("group", user.getUserGroup().getName());
 					for (RatingTemplateOptionMapping option : options) {
 						tmpMap.put("option_" + option.getOptionId(), "4");
 					}

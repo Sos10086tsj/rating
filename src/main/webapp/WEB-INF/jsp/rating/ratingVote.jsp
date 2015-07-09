@@ -15,7 +15,7 @@
 	<table 	id="js_rating_vote_dg" 
 		title="投票：${votePage.ratingName }-${votePage.tmplName }" 
 		class="easyui-datagrid" 
-		style="width:${gridWidth + 40}px; height: 900px; padding-left: 400px;"
+		style="width:${gridWidth + 40}px; height: 900px; padding-left: 200px;"
 		data-options="
 		url:'${ctx }/rating/vote/user/${votePage.tmplId}',
 		toolbar:'#js_rating_vote_tb',
@@ -29,7 +29,8 @@
         <thead>
         	<tr>
         		<th field="scorerId"  hidden="true">ID</th>  
-        		<th field="scorerName">人员</th>
+        		<th field="scorerName" width="60">人员</th>
+        		<th field="group" width="60">所在组</th>
         	<%--
         		<th data-options="field:'scorerId',width:120,
         				formatter:function(value,row){
