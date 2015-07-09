@@ -103,12 +103,20 @@ rating.userrating = {
 			type: 'POST',  
 			url:ctx + '/rating/userVote/' + $("#js_tmpl_id_hidden").html(),
 			data: {votes : JSON.stringify(items)},
+			timeout : 600000,
 			beforeSend : rating.ajax.loading(),
 			success: function(robj){ 
 				rating.ajax.stopLoading();
 				$.messager.alert({
 						title:'提示',
 						msg:'保存成功'
+				});
+			},
+			failure: function(error){
+				rating.ajax.stopLoading();
+				$.messager.alert({
+						title:'提示',
+						msg:'保存失败，请重试'
 				});
 			}
 		});

@@ -338,7 +338,7 @@ public class RatingServiceImpl implements RatingService{
 			JSONObject voteRow = (JSONObject)object;
 			Long scorerId = voteRow.getLong("scorerId");
 			for (RatingTemplateOptionMapping option : options) {
-				if (null != voteRow.getLong("option_" + option.getOptionId())) {
+				if (null != voteRow.getFloat("option_" + option.getOptionId())) {
 					RatingUserVoteItem vi = this.ratingUserVoteItemLogic.findByUserVoteIdAndOptionIdAndScorer(vote.getId(), option.getOptionId(),scorerId);
 					if (null == vi) {
 						vi = new RatingUserVoteItem();
