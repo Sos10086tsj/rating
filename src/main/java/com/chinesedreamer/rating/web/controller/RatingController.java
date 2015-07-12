@@ -24,6 +24,7 @@ import com.chinesedreamer.rating.rating.service.RatingService;
 import com.chinesedreamer.rating.rating.service.StatisticsService;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
+import com.chinesedreamer.rating.rating.vo.RatingVo;
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
 import com.chinesedreamer.rating.system.session.service.UserSessionService;
 import com.chinesedreamer.rating.system.user.model.User;
@@ -56,7 +57,7 @@ public class RatingController {
 	@RequestMapping(value = "system/rating/list")
 	public Map<String, Object> getRatingList(Model model){
 		Map<String, Object> rstMap = new HashMap<String, Object>();
-		List<Rating> vos = this.ratingService.findAll();
+		List<RatingVo> vos = this.ratingService.getAllRatings();
 		rstMap.put("total", vos.size());
 		rstMap.put("rows", vos);
 		return rstMap;
@@ -340,5 +341,32 @@ public class RatingController {
 		//double[] data = new double[]{34.4, 21.8, 20.1, 20, 19.6, 19.5, 19.1, 18.4, 18,17.3};
 		model.addAttribute("data", JSON.toJSONString(this.statisticsService.generateChart(ratingId)));
 		return "statistics/chart";
+	}
+	
+	/**
+	 * 查看模板权重信息
+	 * @param model
+	 * @param templateId
+	 * @return
+	 */
+	@RequestMapping(value = "rating/template/weight/{templateId}",method = RequestMethod.GET)
+	public String showTmplWeight(Model model,@PathVariable("templateId")Long templateId){
+		model.addAttribute("templateId", templateId);
+		return "systemMgmt/ratingMgmt/ratingTmplWeight";
+	}
+	/**
+	 * 查看模板权重
+	 * @param model
+	 * @param templateId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "rating/template/weight/detail/{templateId}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> tmplWeight(Model model,@PathVariable("templateId")Long templateId){
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		//List<Map<String, String>> vos = this.statisticsService.userDetailsByRatingId(ratingId, userId);
+		rstMap.put("total", vos.size());
+		rstMap.put("rows", vos);
+		return rstMap;
 	}
 }

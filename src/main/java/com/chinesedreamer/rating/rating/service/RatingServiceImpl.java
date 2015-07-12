@@ -31,6 +31,7 @@ import com.chinesedreamer.rating.rating.vo.RatingPageVo;
 import com.chinesedreamer.rating.rating.vo.RatingTemplateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVoteVo;
+import com.chinesedreamer.rating.rating.vo.RatingVo;
 import com.chinesedreamer.rating.system.group.UserGroupLevel;
 import com.chinesedreamer.rating.system.group.logic.UserGroupLogic;
 import com.chinesedreamer.rating.system.group.model.UserGroup;
@@ -98,9 +99,30 @@ public class RatingServiceImpl implements RatingService{
 		this.templateLogic.copySuppTemplateToRating(rating, vo.getTemplateIds());
 	}
 	@Override
-	public List<Rating> findAll() {
-		return this.logic.findAll();
+	public List<RatingVo> getAllRatings() {
+		//20150712 add template associated templates
+		List<RatingVo> vos = new ArrayList<RatingVo>();
+		List<Rating> ratings = this.logic.findAll();
+		for (Rating rating : ratings) {
+			vos.add(this.convert2RatingVo(rating));
+		}
+		return vos;
 	}
+	private RatingVo convert2RatingVo(Rating rating) {
+		RatingVo vo = new RatingVo();
+		vo.setId(rating.getId());
+		vo.setName(rating.getName());
+		vo.setEffFrom(rating.getEffFrom());
+		vo.setEffTo(rating.getEffTo());
+		List<RatingTemplate> templates = this.templateLogic.findByRatingId(rating.getId());
+		List<SelectVo> vos = new ArrayList<SelectVo>();
+		for (RatingTemplate template : templates) {
+			vos.add(new SelectVo(template.getId().toString(), template.getName()));
+		}
+		vo.setTemplates(vos);
+		return vo;
+	}
+	
 	@Override
 	public List<SelectVo> getAllTemplates() {
 		List<SelectVo> vos = new ArrayList<SelectVo>();

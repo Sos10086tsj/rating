@@ -9,6 +9,7 @@ import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingPageVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
+import com.chinesedreamer.rating.rating.vo.RatingVo;
 import com.chinesedreamer.rating.system.user.model.User;
 
 /**
@@ -26,7 +27,7 @@ public interface RatingService {
 	 */
 	public void saveRating(RatingCreateVo vo);
 	
-	public List<Rating> findAll();
+	public List<RatingVo> getAllRatings();
 	
 	/**
 	 * 获取所有可用的模板，如A、B、C、D卷
@@ -98,4 +99,6 @@ public interface RatingService {
 	 * @return
 	 */
 	public List<OptionTitle> getUserRartingOption(Long userId, Long ratingId);
+	
+	public 
 }

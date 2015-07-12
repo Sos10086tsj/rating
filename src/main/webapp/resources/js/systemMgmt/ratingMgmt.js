@@ -38,6 +38,21 @@ rating.ratingmgmt = {
             	}
             }
 		 });
+	},
+	
+	//rating已有模板format
+	templateFormat:function(value, rec, index){
+		var link = "";
+		var symble = "(权重)";
+		if(value && value.length > 0){
+			for(var i = 0; i < value.length; i++){
+				var template = value[i];
+				var single  = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('" + template.name + "-权重','" + ctx + "/rating/template/weight/" + template.id + "')\">" 
+				+ template.name + symble + "</a>        ";
+				link += single;
+			}
+		}
+		return link;
 	}
 };
 
