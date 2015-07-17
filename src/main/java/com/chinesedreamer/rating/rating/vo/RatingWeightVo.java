@@ -12,8 +12,9 @@ import lombok.Setter;
  * Copyright:   Copyright (c)2015
  */
 public @Getter @Setter class RatingWeightVo {
+	private String categoryCode;
+	private String category;
 	private Long id;
 	private String name;
 	private BigDecimal weight;
-	
 }

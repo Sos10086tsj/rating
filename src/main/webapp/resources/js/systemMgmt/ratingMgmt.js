@@ -47,12 +47,21 @@ rating.ratingmgmt = {
 		if(value && value.length > 0){
 			for(var i = 0; i < value.length; i++){
 				var template = value[i];
-				var single  = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('" + template.name + "-权重','" + ctx + "/rating/template/weight/" + template.id + "')\">" 
-				+ template.name + symble + "</a>        ";
+				var single  = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('" + template.label + "-权重','" + ctx + "/rating/template/weight/" + template.value + "')\">" 
+				+ template.label + symble + "</a>        ";
 				link += single;
 			}
 		}
 		return link;
+	},
+	
+	//权重维护
+	groupRowFormat:function(value,rows){
+		var percent = 0;
+		for(var i = 0; i < rows.length; i++){
+			percent += rows[i].weight;
+		}
+		return rows[0].category + '（' + percent + "%" + '）';
 	}
 };
 

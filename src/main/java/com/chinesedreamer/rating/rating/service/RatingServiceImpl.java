@@ -32,6 +32,7 @@ import com.chinesedreamer.rating.rating.vo.RatingTemplateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVoteVo;
 import com.chinesedreamer.rating.rating.vo.RatingVo;
+import com.chinesedreamer.rating.rating.vo.RatingWeightVo;
 import com.chinesedreamer.rating.system.group.UserGroupLevel;
 import com.chinesedreamer.rating.system.group.logic.UserGroupLogic;
 import com.chinesedreamer.rating.system.group.model.UserGroup;
@@ -41,6 +42,7 @@ import com.chinesedreamer.rating.template.logic.RatingSuppTemplateLogic;
 import com.chinesedreamer.rating.template.logic.RatingTemplateLogic;
 import com.chinesedreamer.rating.template.logic.RatingTemplateOptionMappingLogic;
 import com.chinesedreamer.rating.template.logic.RatingTemplateVoterLogic;
+import com.chinesedreamer.rating.template.logic.RatingTmplOptionWeightLogic;
 import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
 import com.chinesedreamer.rating.template.model.RatingTemplate;
 import com.chinesedreamer.rating.template.model.RatingTemplateOptionMapping;
@@ -77,6 +79,8 @@ public class RatingServiceImpl implements RatingService{
 	private RatingScoreLogic scoreLogic;
 	@Resource
 	private UserGroupLogic userGroupLogic;
+	@Resource
+	private RatingTmplOptionWeightLogic optionWeightLogic;
 	
 	@Override
 	public void saveRating(RatingCreateVo vo) {
@@ -432,6 +436,21 @@ public class RatingServiceImpl implements RatingService{
 			}
 		}
 		return options;
+	}
+	@Override
+	public List<RatingWeightVo> getRatingTmplWeightVos(Long templateId) {
+		List<RatingWeightVo> weightVos = new ArrayList<RatingWeightVo>();
+		List<RatingTemplateOptionMapping> templateOptionMappings = this.templateOptionMappingLogic.findByTmplId(templateId);
+		for (RatingTemplateOptionMapping optionMapping : templateOptionMappings) {
+			RatingWeightVo vo = new RatingWeightVo();
+			vo.setId(optionMapping.getOptionId());
+			vo.setName(optionMapping.getOption().getName());
+			vo.setWeight(this.optionWeightLogic.findByTmplIdAndOptionId(optionMapping.getTmplId(), optionMapping.getOptionId()).getWeight());
+			vo.setCategory(optionMapping.getOption().getCategory().getLabel());
+			vo.setCategoryCode(optionMapping.getOption().getCategory().getCode());
+			weightVos.add(vo);
+		}
+		return weightVos;
 	}
 	
 }

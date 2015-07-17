@@ -18,7 +18,7 @@
         		<th field="effFrom" formatter="rating.dateFormat" width="50">开始时间</th>
         		<th field="effTo" formatter="rating.dateFormat" width="50">结束时间</th>
         		<!-- <th field="status"  width="50">状态</th> -->
-        		<th field="templates" formatter="rating.dateFormat" width="50">结束时间</th>
+        		<th field="templates" formatter="rating.ratingmgmt.templateFormat" width="50">权重管理</th>
         	</tr>
         </thead>
 </table>

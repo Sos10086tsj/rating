@@ -25,6 +25,7 @@ import com.chinesedreamer.rating.rating.service.StatisticsService;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
 import com.chinesedreamer.rating.rating.vo.RatingVo;
+import com.chinesedreamer.rating.rating.vo.RatingWeightVo;
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
 import com.chinesedreamer.rating.system.session.service.UserSessionService;
 import com.chinesedreamer.rating.system.user.model.User;
@@ -364,7 +365,7 @@ public class RatingController {
 	@RequestMapping(value = "rating/template/weight/detail/{templateId}",method = {RequestMethod.GET,RequestMethod.POST})
 	public Map<String, Object> tmplWeight(Model model,@PathVariable("templateId")Long templateId){
 		Map<String, Object> rstMap = new HashMap<String, Object>();
-		//List<Map<String, String>> vos = this.statisticsService.userDetailsByRatingId(ratingId, userId);
+		List<RatingWeightVo> vos = this.ratingService.getRatingTmplWeightVos(templateId);
 		rstMap.put("total", vos.size());
 		rstMap.put("rows", vos);
 		return rstMap;

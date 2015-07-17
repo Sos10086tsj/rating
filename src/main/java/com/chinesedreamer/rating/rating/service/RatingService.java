@@ -10,6 +10,7 @@ import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingPageVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
 import com.chinesedreamer.rating.rating.vo.RatingVo;
+import com.chinesedreamer.rating.rating.vo.RatingWeightVo;
 import com.chinesedreamer.rating.system.user.model.User;
 
 /**
@@ -100,5 +101,10 @@ public interface RatingService {
 	 */
 	public List<OptionTitle> getUserRartingOption(Long userId, Long ratingId);
 	
-	public 
+	/**
+	 * 获取权重数据
+	 * @param templateId
+	 * @return
+	 */
+	public List<RatingWeightVo> getRatingTmplWeightVos(Long templateId);
 }
