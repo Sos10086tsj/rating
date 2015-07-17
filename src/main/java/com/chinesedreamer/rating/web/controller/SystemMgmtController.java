@@ -14,6 +14,7 @@ import com.chinesedreamer.rating.rating.service.RatingService;
 import com.chinesedreamer.rating.system.group.UserGroupLevel;
 import com.chinesedreamer.rating.system.group.service.UserGroupServcie;
 import com.chinesedreamer.rating.system.user.UserPositionType;
+import com.chinesedreamer.rating.template.OptionCategory;
 
 /** 
  * Description: 
@@ -62,5 +63,16 @@ public class SystemMgmtController {
 	public String mgmtGroup(Model model){
 		model.addAttribute("levels", UserGroupLevel.initGroupLevels());
 		return "systemMgmt/group/group";
+	}
+	
+	/**
+	 * 得分项管理
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "option",method = RequestMethod.GET)
+	public String mgmtOption(Model model){
+		model.addAttribute("categories", OptionCategory.values());
+		return "systemMgmt/option/option";
 	}
 }
