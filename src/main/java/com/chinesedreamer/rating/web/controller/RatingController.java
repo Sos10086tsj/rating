@@ -370,4 +370,14 @@ public class RatingController {
 		rstMap.put("rows", vos);
 		return rstMap;
 	}
+
+	@ResponseBody
+	@RequestMapping(value = "rating/weight/update",method = RequestMethod.POST)
+	public ResponseVo updateWeigth(HttpServletRequest request){
+		ResponseVo vo = new ResponseVo();
+		String tmplIdParam = request.getParameter("tmplId");
+		String optionsParam = request.getParameter("options");
+		this.ratingService.updateTmplWeight(Long.parseLong(tmplIdParam), optionsParam.trim());
+		return vo;
+	}
 }

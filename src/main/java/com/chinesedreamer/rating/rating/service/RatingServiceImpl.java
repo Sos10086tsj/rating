@@ -38,6 +38,8 @@ import com.chinesedreamer.rating.system.group.logic.UserGroupLogic;
 import com.chinesedreamer.rating.system.group.model.UserGroup;
 import com.chinesedreamer.rating.system.user.logic.UserLogic;
 import com.chinesedreamer.rating.system.user.model.User;
+import com.chinesedreamer.rating.template.OptionCategory;
+import com.chinesedreamer.rating.template.logic.RatingSuppOptionLogic;
 import com.chinesedreamer.rating.template.logic.RatingSuppTemplateLogic;
 import com.chinesedreamer.rating.template.logic.RatingTemplateLogic;
 import com.chinesedreamer.rating.template.logic.RatingTemplateOptionMappingLogic;
@@ -47,6 +49,7 @@ import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
 import com.chinesedreamer.rating.template.model.RatingTemplate;
 import com.chinesedreamer.rating.template.model.RatingTemplateOptionMapping;
 import com.chinesedreamer.rating.template.model.RatingTemplateVoter;
+import com.chinesedreamer.rating.template.model.RatingTmplOptionWeight;
 import com.chinesedreamer.rating.template.util.RatingSuppTmplScoerUtil;
 import com.chinesedreamer.rating.template.util.TmplScoerVO;
 import com.chinesedreamer.rating.util.DateUtil;
@@ -81,6 +84,8 @@ public class RatingServiceImpl implements RatingService{
 	private UserGroupLogic userGroupLogic;
 	@Resource
 	private RatingTmplOptionWeightLogic optionWeightLogic;
+	@Resource
+	private RatingSuppOptionLogic suppOptionLogic;
 	
 	@Override
 	public void saveRating(RatingCreateVo vo) {
@@ -440,6 +445,8 @@ public class RatingServiceImpl implements RatingService{
 	@Override
 	public List<RatingWeightVo> getRatingTmplWeightVos(Long templateId) {
 		List<RatingWeightVo> weightVos = new ArrayList<RatingWeightVo>();
+		Set<OptionCategory> categories = new HashSet<OptionCategory>();
+		Set<Long> selected = new HashSet<Long>();
 		List<RatingTemplateOptionMapping> templateOptionMappings = this.templateOptionMappingLogic.findByTmplId(templateId);
 		for (RatingTemplateOptionMapping optionMapping : templateOptionMappings) {
 			RatingWeightVo vo = new RatingWeightVo();
@@ -448,9 +455,37 @@ public class RatingServiceImpl implements RatingService{
 			vo.setWeight(this.optionWeightLogic.findByTmplIdAndOptionId(optionMapping.getTmplId(), optionMapping.getOptionId()).getWeight());
 			vo.setCategory(optionMapping.getOption().getCategory().getLabel());
 			vo.setCategoryCode(optionMapping.getOption().getCategory().getCode());
+			
 			weightVos.add(vo);
+			categories.add(optionMapping.getOption().getCategory());
+			selected.add(optionMapping.getOptionId());
 		}
+		//不能在创建后变更权重，应该在模板选择时就确定了得分项
+//		for (OptionCategory category : categories) {
+//			List<RatingSuppOption> options = this.suppOptionLogic.findByCategoryOrderBySeqAsc(category);
+//			for (RatingSuppOption option : options) {
+//				if (!selected.contains(option.getId())) {
+//					RatingWeightVo vo = new RatingWeightVo();
+//					vo.setId(option.getId());
+//					vo.setName(option.getName());
+//					vo.setWeight(new BigDecimal("0"));
+//					vo.setCategory(category.getLabel());
+//					vo.setCategoryCode(category.getCode());
+//					weightVos.add(vo);
+//				}
+//			}
+//		}
 		return weightVos;
 	}
-	
+	@Override
+	public void updateTmplWeight(Long templateId, String options) {
+		JSONArray jsonArray = JSONArray.parseArray(options);
+		for (Object object : jsonArray) {
+			JSONObject option = (JSONObject)object;
+			RatingTmplOptionWeight weight = this.optionWeightLogic.findByTmplIdAndOptionId(templateId, option.getLong("id"));
+			weight.setWeight(option.getBigDecimal("weight"));
+			this.optionWeightLogic.update(weight);
+		}
+	}
+
 }

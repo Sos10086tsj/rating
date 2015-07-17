@@ -107,4 +107,11 @@ public interface RatingService {
 	 * @return
 	 */
 	public List<RatingWeightVo> getRatingTmplWeightVos(Long templateId);
+	
+	/**
+	 * 更新权重
+	 * @param templateId
+	 * @param options
+	 */
+	public void updateTmplWeight(Long templateId, String options);
 }
