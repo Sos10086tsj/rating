@@ -75,4 +75,15 @@ public class SystemMgmtController {
 		model.addAttribute("categories", OptionCategory.values());
 		return "systemMgmt/option/option";
 	}
+	
+	/**
+	 * 模板管理
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "template",method = RequestMethod.GET)
+	public String mgmtTemplate(Model model){
+		model.addAttribute("categories", OptionCategory.values());
+		return "systemMgmt/template/template";
+	}
 }
