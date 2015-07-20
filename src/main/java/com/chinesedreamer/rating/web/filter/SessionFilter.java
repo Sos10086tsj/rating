@@ -28,7 +28,7 @@ import com.chinesedreamer.rating.system.user.service.UserService;
  * @version beta
  */
 public class SessionFilter implements Filter{
-	private static final String[] ignoreUri = new String[]{".css",".js",".jpg",".png",".gif",".json"};
+	private static final String[] ignoreUri = new String[]{".css",".js",".jpg",".png",".gif",".json",".ico"};
 	@Autowired
 	private @Getter @Setter UserSessionService userSessionService;
 	@Autowired

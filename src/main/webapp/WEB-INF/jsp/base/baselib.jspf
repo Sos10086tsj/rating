@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/jsp/base/taglibs.jsp" %>
-<link rel="icon" type="image/gif" href="${ctx }/resources/images/chichi.ico">
+<link rel="icon" type="image/gif" href="${ctx }/resources/images/logo.ico">
 <link rel="stylesheet" type="text/css" href="${ctx }/resources/css/common.css">
 <!-- jQuery -->
 <script type="text/javascript" src="${ctx}/resources/components/jQuery/jquery.min.js"></script>

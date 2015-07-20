@@ -8,28 +8,30 @@
 <title>评分考核系统</title>
 </head>
 <body >
-	<div style="margin:0 auto;margin-top:200px;width:350px;">
-	<div class="easyui-panel" title="用户登录" style="width:350px; ">
+	<div style="margin:0 auto;margin-top:200px;width:450px;height:200px;">
+	<div class="easyui-panel" title="用户登录" style="width:450px;height:200px;">
 		<div style="padding:10px 60px 20px 60px;">
 			<form id="js_login_form" method="post" name="js_login_form" action="${ctx }/login" onkeydown="rating.login.keyDown(event);">
 				<div><font color="#FF0000">${errorMessage }</font></div>
 				<table cellpadding="5">			
-					<tr>
-                    	<td>用户名</td>
-                    	<td><input class="easyui-textbox" type="text" name="username" data-options="required:true,iconCls:'icon-man',iconWidth:38"></input></td>
+					<tr style="font-size:16px;">
+                    	<td >用户名</td>
+                    	<td><input class="easyui-textbox" type="text" name="username" data-options="required:true,iconCls:'icon-man',iconWidth:38,width:200"></input></td>
                 	</tr>
-                	<tr>
+                	<tr style="font-size:16px;">
                     	<td>密码</td>
-                    	<td><input class="easyui-textbox" type="password" name="password" data-options="required:true,iconCls:'icon-lock',iconWidth:38"></input></td>
+                    	<td><input class="easyui-textbox" type="password" name="password" data-options="required:true,iconCls:'icon-lock',iconWidth:38,width:200"></input></td>
                 	</tr>
 				</table>
-				<%--<input type="text" style="display:none;" onkeydown="rating.login.keyDown(e);"/> --%>
 			</form>
-			<div style="float:right;margin-right:5px;padding:10px">
+			<div style="float:right;margin-right:50px;padding:10px;margin-top:15px;">
             	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="rating.login.login()">登录</a>
         	</div>
 		</div>
 	</div>
+	</div>
+	<div style="margin:200px auto;text-align:center;font-size:12px;">
+		<label>Copyright © 2015 宁波光之瞳光电科技有限公司. All rights reserved.</label>
 	</div>
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
