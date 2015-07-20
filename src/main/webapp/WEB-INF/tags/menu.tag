@@ -28,7 +28,7 @@
 <!-- 个人信息部分 -->
 <div id="js_usr_profile_update" class="easyui-dialog" style="width:400px;height:320px;padding:10px 20px;"
 	closed="true" buttons="#js_usr_profile_update-buttons">
-	<div class="ftitle">修改个人信息</div>
+	<div class="ftitle div_title">修改个人信息</div>
 	<form id="js_user_profile_edit" method="post" action="${ctx }/system/user/updateProfile">
 		<div class="break_line"></div>
 		<div class="fitem">
@@ -45,7 +45,7 @@
 				<label>姓名</label>
 			</div>
 			<div>
-				<input name="name" class="easyui-textbox user_edit_input" required="true" value="${profile.name }">
+				<input name="name" class="easyui-textbox user_edit_input" data-options="width:250" required="true" value="${profile.name }">
 			</div>
 		</div>
 		<div class="break_line"></div>
@@ -54,7 +54,7 @@
 				<label>联系电话</label>
 			</div>
         	<div>
-        		<input name="phone" class="easyui-textbox user_edit_input" value="${profile.phone }">
+        		<input name="phone" class="easyui-textbox user_edit_input" data-options="width:250" value="${profile.phone }">
         	</div>
        	</div>
        	<div class="break_line"></div>
@@ -63,7 +63,7 @@
 				<label>旧密码</label>
 			</div>
         	<div>
-        		<input name="oldPassword" class="easyui-textbox user_edit_input js_pass_clear" required="true" value="">
+        		<input name="oldPassword" class="easyui-textbox user_edit_input js_pass_clear" data-options="width:250" required="true" value="">
         	</div>
        	</div>
        	<div class="break_line"></div>
@@ -72,7 +72,7 @@
 				<label>新密码</label>
 			</div>
         	<div>
-        		<input id="js_profile_pass" type="password" name="newPassword" class="easyui-textbox user_edit_input js_pass_clear" value="">
+        		<input id="js_profile_pass" type="password" name="newPassword" data-options="width:250" class="easyui-textbox user_edit_input js_pass_clear" value="">
         	</div>
        	</div>
        	<div class="break_line"></div>
@@ -81,7 +81,7 @@
 				<label>确认新密码</label>
 			</div>
         	<div>
-        		<input id="js_profile_pass_confirm" type="password" name="confirmNewPassword" class="easyui-textbox user_edit_input js_pass_clear"  value="">
+        		<input id="js_profile_pass_confirm" type="password" name="confirmNewPassword" class="easyui-textbox user_edit_input js_pass_clear" data-options="width:250"  value="">
         	</div>
        	</div>
        	<div class="break_line"></div>
