@@ -18,7 +18,7 @@
 
 		<div class="fitem">
 			<div class="user_edit_label float_left">
-				<label>组</label>
+				<label>类别</label>
 			</div>
 			<div>
 				<select name="level" class="easyui-combobox user_edit_input" data-options="panelHeight:'auto',required:true,width:250">

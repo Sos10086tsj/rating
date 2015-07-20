@@ -103,7 +103,9 @@ $(function(){
 	//菜单点击事件
 	$('#js_menu_tree').tree({
 		onClick: function(node){
-			rating.addTab(node.attributes.title,node.attributes.url);
+			if(node.attributes && node.attributes != undefined){
+				rating.addTab(node.attributes.title,node.attributes.url);
+			}
 		}
 	});
 	

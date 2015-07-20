@@ -873,14 +873,23 @@ public class StatisticsServiceImpl implements StatisticsService{
 	@Override
 	public File getRptExcel(Long ratingId) {
 		List<RatingTemplate> rts = this.templateLogic.findByRatingId(ratingId);
+		StringBuffer abIdsBuffer = new StringBuffer("");
+		StringBuffer cdIdsBuffer = new StringBuffer("");
 		List<ExcelRptVo> datasource = new ArrayList<ExcelRptVo>();
 		for (RatingTemplate rt : rts) {
-			ExcelRptVo excelRptVo = new ExcelRptVo();
-			excelRptVo.setCode(rt.getCode());
-			excelRptVo.setRptVo(this.generateReport(rt.getId()));
-			datasource.add(excelRptVo);
+			if (rt.getCode().equals("A") || rt.getCode().equals("B")) {
+				abIdsBuffer.append(rt.getId())
+				.append(",");
+			}else if (rt.getCode().equals("C") || rt.getCode().equals("D")) {
+				cdIdsBuffer.append(rt.getId())
+				.append(",");
+			}
 		}
-		this.reorderDatasource(datasource);
+		this.addExcelRptVo(abIdsBuffer, "组员统计", datasource);
+		this.addExcelRptVo(cdIdsBuffer, "总体组-组长统计", datasource);
+		
+		
+		//this.reorderDatasource(datasource);
 		//创建excel
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		PropertiesUtils propertiesUtils = new PropertiesUtils("config.properties");
@@ -892,7 +901,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 		Rating rating = this.ratingLogic.findOne(ratingId);
 		File outputFile = new File(folder + "/" + rating.getName() + System.currentTimeMillis() + ".xls");
 		for (ExcelRptVo excelRptVo : datasource) {
-			//TODO 排序
+			
 			HSSFSheet sheet = workbook.createSheet(excelRptVo.getCode());
 			List<Map<String, String>> scores = excelRptVo.getRptVo().getScores();
 			if (null == scores || scores.size() == 0) {
@@ -996,5 +1005,16 @@ public class StatisticsServiceImpl implements StatisticsService{
 		//根据A、B、C、D的顺序排序
 		Collections.sort(ds, new ExcelRptVoComparator());
 		return ds;
+	}
+	
+	private void addExcelRptVo(StringBuffer buffer, String name,List<ExcelRptVo> datasource){
+		String ids = buffer.toString();
+		if (StringUtils.isNotEmpty(ids) && ids.endsWith(",")) {
+			ids = ids.substring(0, ids.length() - 1);
+		}
+		ExcelRptVo excelRptVo = new ExcelRptVo();
+		excelRptVo.setCode(name);
+		excelRptVo.setRptVo(this.generateReport(ids));
+		datasource.add(excelRptVo);
 	}
 }

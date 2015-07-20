@@ -1,9 +1,7 @@
 rating.usermgmt = {
 	//创建用户
 	newUser : function(){
-		$("#js_username").textbox({
-				'disabled': false
-			});
+		$('#js_username').textbox('readonly',false);
 		$("#js_pass_remind").show();
 		$('#js_user_edit').form('clear');
 		$("#js_hidden_url").val(ctx + '/system/user/create');
@@ -14,10 +12,7 @@ rating.usermgmt = {
 	editUser : function(){
 		var row = $('#dg').datagrid('getSelected');
 		if (row){
-			$("#js_username").textbox({
-				//'disabled': true
-				'readonly':true
-			});
+			$("#js_username").textbox('readonly',true);
 			$("#js_pass_remind").hide();
 			$('#js_user_edit').form('load',row);
 			$("#js_hidden_url").val(ctx + '/system/user/update');
