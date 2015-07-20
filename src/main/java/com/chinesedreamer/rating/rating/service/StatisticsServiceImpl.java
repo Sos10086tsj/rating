@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +15,8 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -23,11 +26,13 @@ import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.common.io.ConfigPropertiesConstant;
 import com.chinesedreamer.rating.common.io.PropertiesUtils;
+import com.chinesedreamer.rating.rating.comparator.ExcelRptVoComparator;
 import com.chinesedreamer.rating.rating.constant.WeightConstant;
 import com.chinesedreamer.rating.rating.logic.RatingLogic;
 import com.chinesedreamer.rating.rating.logic.RatingScoreViewLogic;
 import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.model.RatingScoreView;
+import com.chinesedreamer.rating.rating.vo.rpt.ExcelRptVo;
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
 import com.chinesedreamer.rating.system.config.ConfigConstant;
 import com.chinesedreamer.rating.system.config.logic.ConfigLogic;
@@ -868,10 +873,14 @@ public class StatisticsServiceImpl implements StatisticsService{
 	@Override
 	public File getRptExcel(Long ratingId) {
 		List<RatingTemplate> rts = this.templateLogic.findByRatingId(ratingId);
-		Map<String, RptVo> datasource = new HashMap<String, RptVo>();
+		List<ExcelRptVo> datasource = new ArrayList<ExcelRptVo>();
 		for (RatingTemplate rt : rts) {
-			datasource.put(rt.getCode(), this.generateReport(rt.getId()));
+			ExcelRptVo excelRptVo = new ExcelRptVo();
+			excelRptVo.setCode(rt.getCode());
+			excelRptVo.setRptVo(this.generateReport(rt.getId()));
+			datasource.add(excelRptVo);
 		}
+		this.reorderDatasource(datasource);
 		//创建excel
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		PropertiesUtils propertiesUtils = new PropertiesUtils("config.properties");
@@ -882,11 +891,10 @@ public class StatisticsServiceImpl implements StatisticsService{
 		}
 		Rating rating = this.ratingLogic.findOne(ratingId);
 		File outputFile = new File(folder + "/" + rating.getName() + System.currentTimeMillis() + ".xls");
-		for (String key : datasource.keySet()) {
+		for (ExcelRptVo excelRptVo : datasource) {
 			//TODO 排序
-			HSSFSheet sheet = workbook.createSheet(key);
-			RptVo vo = datasource.get(key);
-			List<Map<String, String>> scores = vo.getScores();
+			HSSFSheet sheet = workbook.createSheet(excelRptVo.getCode());
+			List<Map<String, String>> scores = excelRptVo.getRptVo().getScores();
 			if (null == scores || scores.size() == 0) {
 				continue;
 			}
@@ -903,23 +911,38 @@ public class StatisticsServiceImpl implements StatisticsService{
 			//title行
 			HSSFRow titleRow = sheet.createRow(rowI); 
 			titleRow.setHeightInPoints(20.25f);
+			
+			HSSFCellStyle titleCellStylel = workbook.createCellStyle();
+			titleCellStylel.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			HSSFFont titleFont = workbook.createFont();
+			titleFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+			titleCellStylel.setFont(titleFont);
+			
 			//名字列
 			HSSFCell nameCell = titleRow.createCell(columnI);
+			nameCell.setCellStyle(titleCellStylel);
 			nameCell.setCellValue("人员");
+			sheet.setColumnWidth(columnI, "人员".getBytes().length*256);
 			columnI++;
 			//总分列
 			HSSFCell totalCell = titleRow.createCell(columnI);
+			totalCell.setCellStyle(titleCellStylel);
 			totalCell.setCellValue("总分");
+			sheet.setColumnWidth(columnI, "总分".getBytes().length*256);
 			columnI++;
 			//title得分项
 			for (Long optionId : optionIds) {
 				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionId);
 				HSSFCell titleOptionCell = titleRow.createCell(columnI);
+				titleOptionCell.setCellStyle(titleCellStylel);
 				titleOptionCell.setCellValue(suppOption.getName());
+				sheet.setColumnWidth(columnI, suppOption.getName().getBytes().length*256);
 				columnI++;
 			}
 			//数据行
 			rowI ++ ;
+			HSSFCellStyle dataCellStylel = workbook.createCellStyle();
+			dataCellStylel.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 			for (int i = 0; i < scores.size(); i++) {
 				columnI = 0;
 				HSSFRow dataRow = sheet.createRow(rowI);
@@ -927,19 +950,20 @@ public class StatisticsServiceImpl implements StatisticsService{
 				
 				//名字
 				HSSFCell dataNameCell = dataRow.createCell(columnI);
+				dataNameCell.setCellStyle(dataCellStylel);
 				dataNameCell.setCellValue(score.get("name"));
 				columnI++;
 				//总分
 				HSSFCell dataTotalCell = dataRow.createCell(columnI);
+				dataTotalCell.setCellStyle(dataCellStylel);
 				dataTotalCell.setCellValue(score.get("total"));
 				columnI++;
 				//得分项
-				for (String scoreKey : score.keySet()) {
-					if (scoreKey.startsWith("option_")) {
-						HSSFCell dataCell = dataRow.createCell(columnI);
-						dataCell.setCellValue(score.get(scoreKey));
-						columnI++;
-					}
+				for (Long optionId : optionIds) {
+					HSSFCell dataCell = dataRow.createCell(columnI);
+					dataCell.setCellStyle(dataCellStylel);
+					dataCell.setCellValue(score.get("option_" + optionId));
+					columnI++;
 				}
 				rowI ++ ;
 			}
@@ -966,5 +990,11 @@ public class StatisticsServiceImpl implements StatisticsService{
 			}
 		}
 		return outputFile;
+	}
+	
+	private List<ExcelRptVo> reorderDatasource(List<ExcelRptVo> ds){
+		//根据A、B、C、D的顺序排序
+		Collections.sort(ds, new ExcelRptVoComparator());
+		return ds;
 	}
 }
