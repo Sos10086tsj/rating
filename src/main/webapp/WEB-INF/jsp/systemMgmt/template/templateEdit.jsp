@@ -10,7 +10,7 @@
 <body>
 
 <table id="js_mgmt_tmpl_edit_dg" class="easyui-datagrid"
-	title="权重管理" style="width: 900px; height: 600px; padding-left: 200px;"
+	title="模板得分项管理" padding-left: 200px;"
 	data-options="
                 singleSelect:true,
                 rownumbers:true,

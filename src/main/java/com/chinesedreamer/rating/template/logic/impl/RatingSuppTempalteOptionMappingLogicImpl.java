@@ -26,5 +26,10 @@ public class RatingSuppTempalteOptionMappingLogicImpl extends BaseLogicImpl<Rati
 			Long suppTmplId) {
 		return this.repository.findBySuppTmplId(suppTmplId);
 	}
+	@Override
+	public RatingSuppTemplateOptionMapping findBySuppTmplIdAndOptionId(
+			Long suppTmplId, Long optionId) {
+		return this.repository.findBySuppTmplIdAndOptionId(suppTmplId, optionId);
+	}
 
 }

@@ -8,7 +8,7 @@
 <title>评分考核系统</title>
 </head>
 <body>
-<div id="js_chart" style="width:900px;height:400px;"></div>
+<div id="js_chart"></div>
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
 <script type="text/javascript" src="${ctx}/resources/components/highcharts/highcharts.js"></script>

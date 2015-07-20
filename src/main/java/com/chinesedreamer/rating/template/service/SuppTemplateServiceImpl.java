@@ -80,12 +80,20 @@ public class SuppTemplateServiceImpl implements SuppTemplateService{
 	}
 	@Override
 	public void addOption2SuppTmpl(Long tmplId, Long optionId, BigDecimal weight) {
-		RatingSuppTemplateOptionMapping optionMapping = new RatingSuppTemplateOptionMapping();
-		optionMapping.setOptionId(optionId);
-		optionMapping.setSuppTmplId(tmplId);
-		optionMapping = this.suppTemplateOptionMappingLogic.save(optionMapping);
 		
-		RatingSuppTmplOptionWeight optionWeight = new RatingSuppTmplOptionWeight();
+		
+		RatingSuppTemplateOptionMapping optionMapping = this.suppTemplateOptionMappingLogic.findBySuppTmplIdAndOptionId(tmplId, optionId);
+		if (null == optionMapping) {
+			optionMapping = new RatingSuppTemplateOptionMapping();
+			optionMapping.setOptionId(optionId);
+			optionMapping.setSuppTmplId(tmplId);
+			optionMapping = this.suppTemplateOptionMappingLogic.save(optionMapping);
+		}
+		
+		RatingSuppTmplOptionWeight optionWeight = this.suppTmplOptionWeightLogic.findBySuppTmplIdAndSuppOptionId(tmplId, optionId);
+		if (null == optionWeight) {
+			optionWeight = new RatingSuppTmplOptionWeight();
+		}	
 		optionWeight.setSuppOptionId(optionId);
 		optionWeight.setSuppTmplId(tmplId);
 		optionWeight.setWeight(weight);

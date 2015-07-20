@@ -11,7 +11,7 @@
 	<table 	id="js_statistics_rating_dg" 
 		title="投票统计" 
 		class="easyui-datagrid" 
-		style="width:900px; height: 400px; padding-left: 200px;" 
+		style="padding-left: 200px;" 
 		url="${ctx }/rating/statistics/list" 
 		pagination="false" 
         rownumbers="true" 

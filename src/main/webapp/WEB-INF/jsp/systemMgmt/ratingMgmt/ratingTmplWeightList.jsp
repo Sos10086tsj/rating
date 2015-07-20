@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <table id="js_rating_weight_mgmt_dg" class="easyui-datagrid"
-	title="权重管理" style="width: 900px; height: 600px; padding-left: 200px;"
+	title="投票主题权重管理"  padding-left: 200px;"
 	data-options="
                 singleSelect:true,
                 rownumbers:true,
@@ -18,7 +18,7 @@
 			<th field="categoryCode" hidden="true">类型</th>
 			<th field="category" hidden="true">类型名称</th>
 			<th field="id" hidden="true">ID#</th>
-			<th field="name" width="250" >得分项</th>
+			<th field="name" width="100" >得分项</th>
 			<th field="weight"
 				editor="{type:'numberbox',options:{required:true,precision:2,min:0,max:100}}"
 				width="50">权重（%）</th>

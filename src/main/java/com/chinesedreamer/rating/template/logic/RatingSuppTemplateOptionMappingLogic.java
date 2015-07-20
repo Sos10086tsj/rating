@@ -13,4 +13,5 @@ import com.chinesedreamer.rating.template.model.RatingSuppTemplateOptionMapping;
  */
 public interface RatingSuppTemplateOptionMappingLogic extends BaseLogic<RatingSuppTemplateOptionMapping, Long>{
 	public List<RatingSuppTemplateOptionMapping> findBySuppTmplId(Long suppTmplId);
+	public RatingSuppTemplateOptionMapping findBySuppTmplIdAndOptionId(Long suppTmplId, Long optionId);
 }

@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/jsp/base/baselib.jspf" %>
-<div id="js_mgmt_supp_tmpl_add_dg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
+<div id="js_mgmt_supp_tmpl_add_dg" class="easyui-dialog" style="width:400px;height:250px;padding:10px 20px"
 	closed="true" buttons="#js_mgmt_supp_tmpl_add_dlg-buttons">
-	<div class="ftitle">添加得分项</div>
+	<div class="ftitle div_title">添加得分项</div>
 	<form id="js_mgmt_supp_tmpl_add_form" method="post" action="${ctx }/system/template/suppadd/${tmplId}">
 		<div class="break_line"></div>
-		<div class="fitem">
+		<div class="fitem" style="margin-top:20px;">
 			<div class="user_edit_label float_left">
 				<label>得分项</label>
 			</div>
 			<div>
-				<select name="optionId" class="easyui-combobox user_edit_input" data-options="panelHeight:'auto',required:true">
+				<select name="optionId" class="easyui-combobox user_edit_input" data-options="panelHeight:'auto',required:true,width:250">
 					<c:forEach items="${ options}" var="item">
 						<option value="${item.id }">${item.name }</option>
 					</c:forEach>
@@ -24,7 +24,7 @@
 				<label >权重</label>
 			</div>
 			<div>
-				<input name="weight" type="text" class="easyui-numberbox user_edit_input" value="100" data-options="required:true,precision:2,min:0,max:100">
+				<input name="weight" type="text" class="easyui-numberbox user_edit_input" value="100" data-options="required:true,precision:2,min:0,max:100,width:250">
 			</div>
 		</div>
 		<div class="break_line"></div>

@@ -15,7 +15,7 @@
 	<table 	id="js_rating_vote_dg" 
 		title="投票：${votePage.ratingName }-${votePage.tmplName }" 
 		class="easyui-datagrid" 
-		style="width:${gridWidth + 40}px; height: 900px; padding-left: 200px;"
+		style="padding-left: 200px;"
 		data-options="
 		url:'${ctx }/rating/vote/user/${votePage.tmplId}',
 		toolbar:'#js_rating_vote_tb',

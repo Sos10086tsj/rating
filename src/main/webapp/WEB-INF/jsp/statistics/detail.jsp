@@ -11,7 +11,7 @@
 	<table 	id="js_statistics_detail_dg" 
 		title="投票：${rptVo.name}" 
 		class="easyui-datagrid" 
-		style="width:${gridWidth + 40}px; height: 600px; padding-left: 200px;"
+		style="padding-left: 200px;"
 		data-options="
 		url:'${ctx }/rating/statistics/${tmplIds}',
 		pagination:false ,
