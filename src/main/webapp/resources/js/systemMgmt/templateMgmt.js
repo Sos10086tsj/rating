@@ -1,12 +1,96 @@
 rating.templatemgmt = {
-	//得分项分组显示
-	groupRowFormat:function(value,rows){
+	//supp模板列表页操作按钮
+	listOprFormat : function(value, rec, index){
+		var link = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('" + value + "-管理','" + ctx + "/system/template/showedit/" + rec.id + "')\">" 
+				+ value + "-管理</a>        ";
+		return link;
+	},
+	//跳转某个模板时的option group
+	editGroupRowFormat : function(value,rows){
 		var percent = 0;
 		for(var i = 0; i < rows.length; i++){
-			percent ++;
+			percent += parseFloat(rows[i].weight);
 		}
-		var title = rows[0].categoryName + '（' + percent + '）';
+		var title = rows[0].categoryName + '（' + percent + "%" + '）';
 		return title;
+	},
+	//双击行进入编辑状态
+	optionEditIndex : null,
+	onSuppTmplDbClickRow : function(index){
+		if (rating.templatemgmt.optionEditIndex != index){
+			if (rating.templatemgmt.endOptionEditing()){
+				$('#js_mgmt_tmpl_edit_dg').datagrid('selectRow', index).datagrid('beginEdit', index);
+					rating.templatemgmt.optionEditIndex = index;
+			} else {
+				$('#js_mgmt_tmpl_edit_dg').datagrid('selectRow', rating.templatemgmt.optionEditIndex);
+			}
+		}
+	},
+	//结束编辑
+	endOptionEditing:	function (){
+		if (rating.templatemgmt.optionEditIndex == undefined){
+			return true;
+		}
+		if ($('#js_mgmt_tmpl_edit_dg').datagrid('validateRow', rating.templatemgmt.optionEditIndex)){
+			$('#js_mgmt_tmpl_edit_dg').datagrid('endEdit', rating.templatemgmt.optionEditIndex);
+			rating.templatemgmt.optionEditIndex = undefined;
+			return true;
+		} else {
+			return false;
+		}
+	},
+	//本地保存
+	acceptOption:function(){
+		if (rating.templatemgmt.optionEditIndex){
+			$("#js_mgmt_tmpl_edit_dg").datagrid('acceptChanges');
+		}
+	},
+	//删除得分项
+	removeOption: function(){
+		if (rating.templatemgmt.optionEditIndex == undefined){
+			return;
+		};
+		var row = $('#js_mgmt_tmpl_edit_dg').datagrid('getRowIndex',rating.templatemgmt.optionEditIndex);
+		$('#js_mgmt_tmpl_edit_dg').datagrid('cancelEdit', rating.templatemgmt.optionEditIndex).datagrid('deleteRow', rating.templatemgmt.optionEditIndex);
+		rating.templatemgmt.optionEditIndex = undefined;
+	},
+	//提交编辑结果
+	submitOption:function(){
+		rating.templatemgmt.endOptionEditing();
+		var dg = $("#js_mgmt_tmpl_edit_dg");
+		dg.datagrid('acceptChanges');
+		var rows = dg.datagrid("getRows");
+		var items = new Array();
+		for(var i=0;i<rows.length;i++){
+			var rowData = rows[i];
+			var item = {
+				id:rowData.id,
+				weight:rowData.weight
+			};
+			items.push(item);
+		}
+		$.ajax({ 
+			type: 'POST',  
+			url:ctx + '/system/template/suppupdate/' + glb_supp_tmpl_id,
+			data: {
+				options : JSON.stringify(items)
+			},
+			timeout : 600000,
+			beforeSend : rating.ajax.loading(),
+			success: function(robj){ 
+				rating.ajax.stopLoading();
+				$.messager.confirm('提示', '保存成功', function(r){
+					dg.datagrid('reload');
+				});
+			},
+			failure: function(error){
+				rating.ajax.stopLoading();
+				$.messager.alert({
+						title:'提示',
+						msg:'保存失败，请重试'
+				});
+			}
+		});
 	}
 };
 

@@ -1,39 +1,50 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
 <%@include file="/WEB-INF/jsp/base/baselib.jspf" %>
-<div id="js_option_edit_dg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
-	closed="true" buttons="#dlg-buttons">
-	<div class="ftitle">新增/修改得分项</div>
-	<form id="js_option_edit_form" method="post" action="${ctx }/system/option/update">
-		<div class="break_line"></div>
-		<div class="fitem">
-			<div class="user_edit_label float_left">
-				<label >得分项</label>
-			</div>
-			<div>
-				<input name="name" class="easyui-textbox user_edit_input" required="true" >
-			</div>
-		</div>
-		<div class="break_line"></div>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>评分考核系统</title>
+</head>
+<body>
 
-		<div class="fitem">
-			<div class="user_edit_label float_left">
-				<label>类别</label>
-			</div>
-			<div>
-				<select name="categoryCode" class="easyui-combobox user_edit_input" data-options="panelHeight:'auto',required:true">
-					<c:forEach items="${ categories}" var="item">
-						<option value="${item.code }">${item.label }</option>
-					</c:forEach>
-				</select>
-			</div>
-		</div>
-		<div class="break_line"></div>
-		<input name="id" type="hidden">
-		<input name="categoryName" type="hidden">
-	</form>
+<table id="js_mgmt_tmpl_edit_dg" class="easyui-datagrid"
+	title="权重管理" style="width: 900px; height: 600px; padding-left: 200px;"
+	data-options="
+                singleSelect:true,
+                rownumbers:true,
+                fitColumns:true,
+                url:'${ctx }/system/template/edit/${tmplId}',
+                view:groupview,
+                groupField:'categoryCode',
+                toolbar:'#js_mgmt_tmpl_edit_toolbar',
+                groupFormatter:rating.templatemgmt.editGroupRowFormat,
+                onDblClickCell:rating.templatemgmt.onSuppTmplDbClickRow
+            ">
+        
+        <thead>
+        	<tr>
+        		<th field="id"  hidden="true">ID#</th>  
+        		<th field="name" width="50">得分项</th>
+        		<th field="categoryCode" hidden="true">categoryCode</th>
+        		<th field="categoryName" hidden="true">categoryName</th>
+        		<th field="weight" width="50" editor="{type:'numberbox',options:{required:true,precision:2,min:0,max:100}}">权重</th>
+        	</tr>
+        </thead>
+</table>
+
+<div id="js_mgmt_tmpl_edit_toolbar">
+	<a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-add" plain="true"onclick="rating.templatemgmt.newOption()">添加</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-edit" plain="true"onclick="rating.templatemgmt.removeOption()">删除</a>  
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="rating.templatemgmt.acceptOption()">本地保存</a> 
+	 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="rating.templatemgmt.submitOption()">提交</a>
 </div>
-<div id="dlg-buttons">
-	<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="rating.optionmgmt.saveOption()" style="width:90px">保存</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#js_group_edit_dg').dialog('close')" style="width:90px">取消</a>
-</div>
+
+</body>
+<%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
+<script type="text/javascript" src="${ctx}/resources/js/systemMgmt/templateMgmt.js"></script>
+<script>
+	var glb_supp_tmpl_id = ${tmplId};
+</script>
+</html>

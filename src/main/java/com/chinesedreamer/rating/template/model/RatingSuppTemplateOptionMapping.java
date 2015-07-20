@@ -20,7 +20,7 @@ import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
  */
 @Entity
 @Table(name = "rating_supp_tmpl_option")
-public @Getter @Setter class RatingSuppTempalteOptionMapping extends BaseEntity<Long>{
+public @Getter @Setter class RatingSuppTemplateOptionMapping extends BaseEntity<Long>{
 	/**
 	 * 
 	 */

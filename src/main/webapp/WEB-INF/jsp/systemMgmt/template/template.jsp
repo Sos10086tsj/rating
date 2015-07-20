@@ -10,9 +10,6 @@
 <body>
 	<!-- table 维护用户 -->
 	<%@include file="templateList.jsp"%>
-
-	<!-- 编辑弹窗 -->
-	<%@include file="templateEdit.jsp"%>
 	
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
