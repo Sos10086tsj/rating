@@ -10,11 +10,14 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.chinesedreamer.rating.system.session.exception.SessionOverdueException;
@@ -28,22 +31,27 @@ import com.chinesedreamer.rating.system.user.service.UserService;
  * @version beta
  */
 public class SessionFilter implements Filter{
+	private Logger logger = LoggerFactory.getLogger(SessionFilter.class);
 	private static final String[] ignoreUri = new String[]{".css",".js",".jpg",".png",".gif",".json",".ico"};
 	@Autowired
 	private @Getter @Setter UserSessionService userSessionService;
 	@Autowired
 	private @Getter @Setter UserService userService;
+	
+	private String sessionOverduePage = "login";
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// TODO Auto-generated method stub
-		
+		//TODO
 	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {	
 		HttpServletRequest httpServletRequest = (HttpServletRequest)request;
+		HttpSession session = httpServletRequest.getSession();
+		String ctx = httpServletRequest.getContextPath();
+		session.setAttribute("ctx", (null == ctx  ? "" : ctx) );
 		String uri = httpServletRequest.getServletPath();
 		SessionContext.setContext(request);
 		if (StringUtils.isNotEmpty(uri) 
@@ -51,7 +59,14 @@ public class SessionFilter implements Filter{
 						|| uri.equals("/logout") 
 						|| uri.equals("/login")) 
 						&& !isStaticResourceRequest(uri)) {
-			this.userSessionService.validateSession();
+			try {
+				this.userSessionService.validateSession();
+			} catch (Exception e) {
+				logger.error("{}",e);
+				request.getRequestDispatcher(sessionOverduePage).forward(request, response);
+				return;
+			}
+			
 		}
 		chain.doFilter(request, response);
 	}

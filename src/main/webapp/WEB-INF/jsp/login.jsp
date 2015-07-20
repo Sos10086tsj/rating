@@ -31,7 +31,7 @@
 	</div>
 	</div>
 	<div style="margin:200px auto;text-align:center;font-size:12px;">
-		<label>Copyright © 2015 宁波光之瞳光电科技有限公司. All rights reserved.</label>
+		<label>Copyright © 2015 宁波光之瞳光电科技有限公司. All Rights Reserved.</label>
 	</div>
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
