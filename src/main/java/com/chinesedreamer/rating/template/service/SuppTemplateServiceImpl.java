@@ -1,5 +1,6 @@
 package com.chinesedreamer.rating.template.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +77,19 @@ public class SuppTemplateServiceImpl implements SuppTemplateService{
 			weight.setWeight(option.getBigDecimal("weight"));
 			this.suppTmplOptionWeightLogic.save(weight);
 		}
+	}
+	@Override
+	public void addOption2SuppTmpl(Long tmplId, Long optionId, BigDecimal weight) {
+		RatingSuppTemplateOptionMapping optionMapping = new RatingSuppTemplateOptionMapping();
+		optionMapping.setOptionId(optionId);
+		optionMapping.setSuppTmplId(tmplId);
+		optionMapping = this.suppTemplateOptionMappingLogic.save(optionMapping);
+		
+		RatingSuppTmplOptionWeight optionWeight = new RatingSuppTmplOptionWeight();
+		optionWeight.setSuppOptionId(optionId);
+		optionWeight.setSuppTmplId(tmplId);
+		optionWeight.setWeight(weight);
+		this.suppTmplOptionWeightLogic.save(optionWeight);
 	}
 
 }

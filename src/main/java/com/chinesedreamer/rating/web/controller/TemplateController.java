@@ -1,5 +1,6 @@
 package com.chinesedreamer.rating.web.controller;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinesedreamer.rating.common.vo.ResponseVo;
 import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
+import com.chinesedreamer.rating.template.service.SuppOptionService;
 import com.chinesedreamer.rating.template.service.SuppTemplateService;
 import com.chinesedreamer.rating.template.vo.OptionVo;
 
@@ -30,6 +32,8 @@ import com.chinesedreamer.rating.template.vo.OptionVo;
 public class TemplateController {
 	@Resource
 	private SuppTemplateService suppTemplateService;
+	@Resource
+	private SuppOptionService suppOptionService;
 	
 	/**
 	 * 组织列表
@@ -55,6 +59,7 @@ public class TemplateController {
 	@RequestMapping(value = "system/template/showedit/{id}", method = RequestMethod.GET)
 	public String showEditSuppTmpl(Model model, @PathVariable("id")Long id){
 		model.addAttribute("tmplId", id);
+		model.addAttribute("options", this.suppOptionService.getAll());
 		return "systemMgmt/template/templateEdit";
 	}
 	
@@ -69,16 +74,31 @@ public class TemplateController {
 	}
 	
 	/**
-	 * 创建组
+	 * 更新supp template信息
 	 * @param request
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "system/template/suppupdate/{suppTmplId}",method = RequestMethod.POST)
-	public ResponseVo createGroup(HttpServletRequest request, @PathVariable("suppTmplId")Long suppTmplId){
+	public ResponseVo updateSuppTmpl(HttpServletRequest request, @PathVariable("suppTmplId")Long suppTmplId){
 		ResponseVo vo = new ResponseVo();
 		String optionsParam = request.getParameter("options");
 		this.suppTemplateService.updateSuppTmpl(suppTmplId, optionsParam.trim());
+		return vo;
+	}
+	
+	/**
+	 * 添加得分项
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "system/template/suppadd/{suppTmplId}",method = RequestMethod.POST)
+	public ResponseVo addSuppTmpl(HttpServletRequest request, @PathVariable("suppTmplId")Long suppTmplId){
+		ResponseVo vo = new ResponseVo();
+		String optionIdParam = request.getParameter("optionId");
+		String weightParam = request.getParameter("weight");
+		this.suppTemplateService.addOption2SuppTmpl(suppTmplId, Long.parseLong(optionIdParam), new BigDecimal(weightParam));
 		return vo;
 	}
 }

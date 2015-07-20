@@ -1,5 +1,6 @@
 package com.chinesedreamer.rating.template.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.chinesedreamer.rating.template.model.RatingSuppTemplate;
@@ -21,4 +22,12 @@ public interface SuppTemplateService {
 	public List<OptionVo> getTmplOptions(Long tmplId);
 	
 	public void updateSuppTmpl(Long tmplId, String options);
+	
+	/**
+	 * supp template 添加得分项
+	 * @param tmplId
+	 * @param optionId
+	 * @param weight
+	 */
+	public void addOption2SuppTmpl(Long tmplId, Long optionId, BigDecimal weight);
 }

@@ -35,11 +35,13 @@
 </table>
 
 <div id="js_mgmt_tmpl_edit_toolbar">
-	<a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-add" plain="true"onclick="rating.templatemgmt.newOption()">添加</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-add" plain="true"onclick="rating.templatemgmt.addOption()">添加</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton"iconcls="icon-edit" plain="true"onclick="rating.templatemgmt.removeOption()">删除</a>  
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="rating.templatemgmt.acceptOption()">本地保存</a> 
 	 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="rating.templatemgmt.submitOption()">提交</a>
 </div>
+
+	<%@include file="templateAdd.jsp"%>
 
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>

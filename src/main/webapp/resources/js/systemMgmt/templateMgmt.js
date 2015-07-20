@@ -91,6 +91,33 @@ rating.templatemgmt = {
 				});
 			}
 		});
+	},
+	
+	//增加一个投票
+	addOption:function(){
+		$('#js_mgmt_supp_tmpl_add_form').form('clear');
+		$('#js_mgmt_supp_tmpl_add_dg').dialog('open').dialog('setTitle','添加得分项');
+	},
+	submitAddOption:function(){
+		var url = ctx + '/system/template/suppadd/' + glb_supp_tmpl_id;
+		 $('#js_mgmt_supp_tmpl_add_form').form('submit',{
+		 	url : url,
+		 	onSubmit: function(){
+            	return $(this).form('validate');
+            },
+            success: function(result){
+            	var result = eval('('+result+')');
+            	if (result.errorMsg){
+            		 $.messager.show({
+            		 	title: 'Error',
+            		 	msg: result.errorMsg
+            		 });
+            	}else{
+            		$('#js_mgmt_supp_tmpl_add_dg').dialog('close');
+            		$('#js_mgmt_tmpl_edit_dg').datagrid('reload');
+            	}
+            }
+		 });
 	}
 };
 
