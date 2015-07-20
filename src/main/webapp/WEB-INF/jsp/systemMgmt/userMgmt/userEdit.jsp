@@ -3,7 +3,7 @@
 <%@include file="/WEB-INF/jsp/base/baselib.jspf" %>
 <div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
 	closed="true" buttons="#dlg-buttons">
-	<div class="ftitle">创建/修改用户信息</div>
+	<div class="ftitle div_title">创建/修改用户信息</div>
 	<form id="js_user_edit" method="post">
 		<div class="break_line"></div>
 		<div class="fitem">
@@ -30,7 +30,7 @@
 				<label>组</label>
 			</div>
 			<div>
-				<select name="groupId" class="easyui-combobox user_edit_input" data-options="panelHeight:'auto',required:true">
+				<select name="groupId" class="easyui-combobox" data-options="panelHeight:'auto',required:true,width:165">
 					<c:forEach items="${ groups}" var="item">
 						<option value="${item.value }">${item.label }</option>
 					</c:forEach>
@@ -43,7 +43,7 @@
 				<label>职位</label>
 			</div>
         	<div>
-        		<select name="positionId" class="easyui-combobox user_edit_input" data-options="panelHeight:'auto',required:true">
+        		<select name="positionId" class="easyui-combobox" data-options="panelHeight:'auto',required:true,width:165">
 					<c:forEach items="${positions}" var="item">
 						<option value="${item.value }" selected="selected">${item.label }</option>
 					</c:forEach>

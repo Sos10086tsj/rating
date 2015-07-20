@@ -3,7 +3,7 @@
 <table 	id="dg" 
 		title="系统用户" 
 		class="easyui-datagrid" 
-		style="width:900px; height: 400px; padding-left: 200px;" 
+		style="padding-left: 200px;" 
 		url="${ctx }/system/user/list" 
 		toolbar="#toolbar" 
 		pagination="false"  
