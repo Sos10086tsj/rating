@@ -1,13 +1,19 @@
 package com.chinesedreamer.rating.web.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.chinesedreamer.rating.common.io.DefaultDownloadComponent;
+import com.chinesedreamer.rating.common.io.DownloadComponent;
 import com.chinesedreamer.rating.common.vo.OptionTitle;
 import com.chinesedreamer.rating.common.vo.ResponseVo;
 import com.chinesedreamer.rating.common.vo.SelectVo;
@@ -40,6 +48,7 @@ import com.chinesedreamer.rating.system.user.service.UserService;
  */
 @Controller
 public class RatingController {
+	private Logger logger = LoggerFactory.getLogger(RatingController.class);
 	@Resource
 	private RatingService ratingService;
 	@Resource
@@ -379,5 +388,24 @@ public class RatingController {
 		String optionsParam = request.getParameter("options");
 		this.ratingService.updateTmplWeight(Long.parseLong(tmplIdParam), optionsParam.trim());
 		return vo;
+	}
+	
+	/**
+	 * 导出excel
+	 * @param request
+	 * @param templateId
+	 */
+	@ResponseBody
+	@RequestMapping(value = "rating/statistics/export/{ratingId}",method = RequestMethod.GET)
+	public void exportExcel(HttpServletRequest request,HttpServletResponse response, @PathVariable("ratingId")Long ratingId){
+		File file = this.statisticsService.getRptExcel(ratingId);
+		
+		DownloadComponent downloadComponent = new DefaultDownloadComponent();
+		try {
+			downloadComponent.download(request, response, file.getPath(), file.getName());
+		} catch (IOException e) {
+			logger.error("{}",e);
+		}
+		FileUtils.deleteQuietly(file);
 	}
 }

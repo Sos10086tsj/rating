@@ -1,5 +1,8 @@
 package com.chinesedreamer.rating.rating.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,8 +13,16 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.chinesedreamer.rating.common.io.ConfigPropertiesConstant;
+import com.chinesedreamer.rating.common.io.PropertiesUtils;
 import com.chinesedreamer.rating.rating.constant.WeightConstant;
 import com.chinesedreamer.rating.rating.logic.RatingLogic;
 import com.chinesedreamer.rating.rating.logic.RatingScoreViewLogic;
@@ -44,6 +55,7 @@ import com.chinesedreamer.rating.template.util.RatingSuppTmplScoerUtil;
  */
 @Service
 public class StatisticsServiceImpl implements StatisticsService{
+	private Logger logger = LoggerFactory.getLogger(StatisticsServiceImpl.class);
 	@Resource
 	private RatingScoreViewLogic scoreViewLogic;
 	@Resource
@@ -851,5 +863,108 @@ public class StatisticsServiceImpl implements StatisticsService{
 		int percent = 5 * format / 10;
 		int index = value / percent;
 		return index == 10 ? 9 : index;
+	}
+
+	@Override
+	public File getRptExcel(Long ratingId) {
+		List<RatingTemplate> rts = this.templateLogic.findByRatingId(ratingId);
+		Map<String, RptVo> datasource = new HashMap<String, RptVo>();
+		for (RatingTemplate rt : rts) {
+			datasource.put(rt.getCode(), this.generateReport(rt.getId()));
+		}
+		//创建excel
+		HSSFWorkbook workbook = new HSSFWorkbook();
+		PropertiesUtils propertiesUtils = new PropertiesUtils("config.properties");
+		String outputPath = propertiesUtils.getProperty(ConfigPropertiesConstant.fILE_OUTPUT_PATH);
+		File folder = new File(outputPath);
+		if (!folder.exists()) {
+			folder.mkdirs();
+		}
+		Rating rating = this.ratingLogic.findOne(ratingId);
+		File outputFile = new File(folder + "/" + rating.getName() + System.currentTimeMillis() + ".xls");
+		for (String key : datasource.keySet()) {
+			//TODO 排序
+			HSSFSheet sheet = workbook.createSheet(key);
+			RptVo vo = datasource.get(key);
+			List<Map<String, String>> scores = vo.getScores();
+			if (null == scores || scores.size() == 0) {
+				continue;
+			}
+			
+			Map<String, String> titleSocre = scores.get(0);
+			List<Long> optionIds = new ArrayList<Long>();
+			for (String scoreKey : titleSocre.keySet()) {
+				if (scoreKey.startsWith("option_")) {
+					optionIds.add(Long.parseLong(scoreKey.substring("option_".length(), scoreKey.length())));
+				}
+			}
+			int rowI = 0;
+			int columnI = 0;
+			//title行
+			HSSFRow titleRow = sheet.createRow(rowI); 
+			titleRow.setHeightInPoints(20.25f);
+			//名字列
+			HSSFCell nameCell = titleRow.createCell(columnI);
+			nameCell.setCellValue("人员");
+			columnI++;
+			//总分列
+			HSSFCell totalCell = titleRow.createCell(columnI);
+			totalCell.setCellValue("总分");
+			columnI++;
+			//title得分项
+			for (Long optionId : optionIds) {
+				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionId);
+				HSSFCell titleOptionCell = titleRow.createCell(columnI);
+				titleOptionCell.setCellValue(suppOption.getName());
+				columnI++;
+			}
+			//数据行
+			rowI ++ ;
+			for (int i = 0; i < scores.size(); i++) {
+				columnI = 0;
+				HSSFRow dataRow = sheet.createRow(rowI);
+				Map<String, String> score = scores.get(i);
+				
+				//名字
+				HSSFCell dataNameCell = dataRow.createCell(columnI);
+				dataNameCell.setCellValue(score.get("name"));
+				columnI++;
+				//总分
+				HSSFCell dataTotalCell = dataRow.createCell(columnI);
+				dataTotalCell.setCellValue(score.get("total"));
+				columnI++;
+				//得分项
+				for (String scoreKey : score.keySet()) {
+					if (scoreKey.startsWith("option_")) {
+						HSSFCell dataCell = dataRow.createCell(columnI);
+						dataCell.setCellValue(score.get(scoreKey));
+						columnI++;
+					}
+				}
+				rowI ++ ;
+			}
+		}
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream(outputFile);
+			workbook.write(out);
+			out.flush();
+		} catch (Exception e) {
+			this.logger.error("{}",e);
+		}finally{
+			try {
+				workbook.close();
+			} catch (IOException e) {
+				this.logger.error("{}",e);
+			}
+			if (null != out) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					this.logger.error("{}",e);
+				}
+			}
+		}
+		return outputFile;
 	}
 }

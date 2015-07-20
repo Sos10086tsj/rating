@@ -1,5 +1,6 @@
 package com.chinesedreamer.rating.rating.service;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -34,4 +35,11 @@ public interface StatisticsService {
 	 * @return
 	 */
 	public int[] generateChart(Long ratingId);
+	
+	/**
+	 * 导出exel文件
+	 * @param ratingId
+	 * @return
+	 */
+	public File getRptExcel(Long ratingId);
 }

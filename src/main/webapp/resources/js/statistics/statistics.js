@@ -31,8 +31,11 @@ rating.statistics = {
 			+ ctx + "/rating/statistics/chart/" + rec.id + "')\">" 
 			+ '统计图' + symble + "</a>                ";
 			
+			var exportExcel = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('导出报表','"
+			+ ctx + "/rating/statistics/export/" + rec.id + "')\">" 
+			+ '导出报表' + symble + "</a>                ";
 			
-			link = abUrl + cdUrl + chart;
+			link = abUrl + cdUrl + chart + exportExcel;
 		}
 		return link;
 	},
