@@ -14,13 +14,13 @@
 			<form id="js_login_form" method="post" name="js_login_form" action="${ctx }/login" onkeydown="rating.login.keyDown(event);">
 				<div><font color="#FF0000">${errorMessage }</font></div>
 				<table cellpadding="5">			
-					<tr style="font-size:16px;">
+					<tr style="font-size:16px;width:">
                     	<td >用户名</td>
-                    	<td><input class="easyui-textbox" type="text" name="username" data-options="required:true,iconCls:'icon-man',iconWidth:38,width:200"></input></td>
+                    	<td><input class="easyui-textbox" type="text" name="username" data-options="required:true,iconCls:'icon-man',iconWidth:38,width:200,height:30"></input></td>
                 	</tr>
                 	<tr style="font-size:16px;">
                     	<td>密码</td>
-                    	<td><input class="easyui-textbox" type="password" name="password" data-options="required:true,iconCls:'icon-lock',iconWidth:38,width:200"></input></td>
+                    	<td><input class="easyui-textbox" type="password" name="password" data-options="required:true,iconCls:'icon-lock',iconWidth:38,width:200,height:30"></input></td>
                 	</tr>
 				</table>
 			</form>

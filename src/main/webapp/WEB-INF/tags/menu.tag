@@ -1,9 +1,9 @@
 <%@tag pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/jsp/base/baselib.jspf" %>
-<div>
-	<label>欢迎您，${currentUser }！</label>
+<div style="margin:10px auto;text-align:center;">
+	<label >欢迎您，<font style=" text-decoration:underline;"> ${currentUser }</font>！</label>
 </div>
-<div class="easyui-panel" style="padding:5px">
+<div class="easyui-panel" style="padding:5px;margin:10px auto;">
 	<ul class="easyui-tree" id="js_menu_tree">
 		<c:forEach items="${menus }" var="menu">
 			<li>
@@ -17,13 +17,13 @@
 		</c:forEach>
 	</ul>
 </div>
-<div>
+<div style="margin:10px auto;text-align:center;">
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true" 
 	onclick="rating.menu.showProfile()">修改个人信息</a>
 </div>
-<div>
+<div style="margin:10px auto;text-align:center;">
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true" 
-	onclick="rating.menu.logout()">退出</a>
+	onclick="rating.menu.logout()">退&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp出</a>
 </div>
 <!-- 个人信息部分 -->
 <div id="js_usr_profile_update" class="easyui-dialog" style="width:400px;height:320px;padding:10px 20px;"
