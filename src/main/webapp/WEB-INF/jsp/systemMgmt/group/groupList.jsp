@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <table 	id="js_mgmt_group_dg" 
-		title="系统用户" 
+		title="组管理" 
 		class="easyui-datagrid" 
 		style="padding-left: 200px;" 
 		url="${ctx }/system/group/list" 

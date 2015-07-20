@@ -3,7 +3,7 @@
 <%@include file="/WEB-INF/jsp/base/baselib.jspf" %>
 <div id="js_rating_mgmt_dlg" class="easyui-dialog" style="width:500px;height:280px;padding:10px 20px"
 	closed="true" buttons="#dlg-buttons">
-	<div class="ftitle">创建/修改投票主题</div>
+	<div class="ftitle div_title">创建/修改投票主题</div>
 	<form id="js_rating_mgmt_edit" method="post">
 		<div class="break_line"></div>
 		<div class="fitem">
@@ -11,7 +11,7 @@
 				<label >投票主题</label>
 			</div>
 			<div>
-				<input name="name" id="js_rating_name" class="easyui-textbox user_edit_input" required="true" >
+				<input name="name" id="js_rating_name" class="easyui-textbox" data-options="panelHeight:'auto',required:true,width:280">
 				<span id="js_pass_remind"><font color="#FF0000">(请勿重复)</font></span>
 			</div>
 		</div>
