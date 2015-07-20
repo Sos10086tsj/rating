@@ -3,7 +3,7 @@
 <table 	id="js_rating_mgmt_dg" 
 		title="投票主题管理" 
 		class="easyui-datagrid" 
-		style="padding-left: 200px;" 
+		style="padding-left: 200px;min-height:400px;" 
 		url="${ctx }/system/rating/list" 
 		toolbar="#toolbar" 
 		pagination="false"  

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <table id="js_rating_weight_mgmt_dg" class="easyui-datagrid"
-	title="投票主题权重管理"  padding-left: 200px;"
+	title="投票主题权重管理"  style="padding-left: 200px;min-height:400px;"
 	data-options="
                 singleSelect:true,
                 rownumbers:true,

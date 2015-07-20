@@ -11,7 +11,7 @@
 	<table 	id="js_statistics_detail_dg" 
 		title="得分明细" 
 		class="easyui-datagrid" 
-		style="padding-left: 200px;"
+		style="padding-left: 200px;min-height:400px;"
 		data-options="
 		url:'${ctx }/rating/statistics/detail/${ratingId}/${userId}',
 		pagination:false ,

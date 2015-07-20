@@ -3,7 +3,7 @@
 <table 	id="js_mgmt_group_dg" 
 		title="组管理" 
 		class="easyui-datagrid" 
-		style="padding-left: 200px;" 
+		style="padding-left: 200px;min-height:400px;" 
 		url="${ctx }/system/group/list" 
 		toolbar="#s_mgmt_group_toolbar" 
 		pagination="false" 

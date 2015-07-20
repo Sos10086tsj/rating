@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <table id="js_mgmt_option_dg" class="easyui-datagrid"
-	title="得分项管理" padding-left: 200px;"
+	title="得分项管理" style="padding-left: 200px;min-height:400px;"
 	data-options="
                 singleSelect:true,
                 rownumbers:true,
