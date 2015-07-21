@@ -75,9 +75,11 @@ public class IndexController {
 	@ResponseBody
 	@RequestMapping(value = "downloadhelp",method = RequestMethod.GET)
 	public void downoadHelp(HttpServletRequest request, HttpServletResponse response){
-		String path = request.getSession().getServletContext().getRealPath("");
-		File file = new File(path + "\\WEB-INF\\template\\User Manual.doc");
-		
+		String filePath = request.getSession().getServletContext().getRealPath("/") 
+				+ File.separator + "WEB-INF" 
+				+ File.separator + "template"
+				+ File.separator + "User Manual.doc";
+		File file = new File(filePath);
 		DownloadComponent downloadComponent = new DefaultDownloadComponent();
 		try {
 			downloadComponent.download(request, response, file.getPath(), file.getName());
