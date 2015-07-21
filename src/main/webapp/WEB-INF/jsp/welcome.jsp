@@ -8,7 +8,13 @@
 </head>
 <body>
 	<div>
-		欢迎您使用评分系统
+		<div>
+			欢迎您使用评分系统！
+		</div>
+		<div style="height:10px;"></div>
+		<div>
+			更多帮助请下载<a href="${ctx }/downloadhelp">投票评分系统用户手册</a>!
+		</div>
 	</div>
 </body>
 </html>

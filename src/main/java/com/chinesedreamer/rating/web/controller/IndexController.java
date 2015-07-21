@@ -1,13 +1,22 @@
 package com.chinesedreamer.rating.web.controller;
 
+import java.io.File;
+import java.io.IOException;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.chinesedreamer.rating.common.io.DefaultDownloadComponent;
+import com.chinesedreamer.rating.common.io.DownloadComponent;
 import com.chinesedreamer.rating.system.session.service.UserSessionService;
 import com.chinesedreamer.rating.system.user.exception.PasswordIncorrectException;
 import com.chinesedreamer.rating.system.user.exception.UserFrozenException;
@@ -23,6 +32,7 @@ import com.chinesedreamer.rating.system.user.service.UserService;
  */
 @Controller
 public class IndexController {
+	private Logger logger = LoggerFactory.getLogger(IndexController.class);
 	@Resource
 	private UserService userService;
 	@Resource
@@ -55,5 +65,24 @@ public class IndexController {
 	@RequestMapping(value = "welcome",method = RequestMethod.GET)
 	public String welcome(Model model,HttpServletRequest request){
 		return "welcome";
+	}
+	
+	/**
+	 * 下载帮助文档
+	 * @param request
+	 * @param response
+	 */
+	@ResponseBody
+	@RequestMapping(value = "downloadhelp",method = RequestMethod.GET)
+	public void downoadHelp(HttpServletRequest request, HttpServletResponse response){
+		String path = request.getSession().getServletContext().getRealPath("");
+		File file = new File(path + "\\WEB-INF\\template\\投票评分系统用户手册.doc");
+		
+		DownloadComponent downloadComponent = new DefaultDownloadComponent();
+		try {
+			downloadComponent.download(request, response, file.getPath(), file.getName());
+		} catch (IOException e) {
+			logger.error("{}",e);
+		}
 	}
 }
