@@ -62,6 +62,12 @@ rating.ratingmgmt = {
 			percent += parseFloat(rows[i].weight);
 		}
 		var title = rows[0].category + '（' + percent + "%" + '）';
+		if(percent > 100){
+			$.messager.alert({
+				title:'提示',
+				msg: '<font color="#FF0000">' + rows[0].category + '</font>' + '得分项总权重超过100%，请确认无误后再提交保存！'
+			});
+		}
 		return title;
 	},
 	
