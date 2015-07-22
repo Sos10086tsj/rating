@@ -6,9 +6,27 @@
 <%@include file="/WEB-INF/jsp/base/baselib.jspf" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>评分考核系统</title>
+<style type="text/css">
+.cust_title_font {
+font-family : SimSun;
+font-size:32px;
+}
+.cust_sub_title_font {
+font-family : SimSun;
+font-size:30px;
+}
+</style>
 </head>
-<body >
-	<div style="margin:0 auto;margin-top:200px;width:450px;height:200px;">
+<body style="overflow-y: hidden">
+	
+	<div style="margin:0 auto;margin-top:100px;width:450px;height:200px;">
+	<div style="text-align:center;" class="cust_title_font">
+		中国科学院上海技术物理研究所
+	</div>
+	<div style="text-align:center;" class="cust_sub_title_font">
+		评分考核系统
+	</div>
+	<div style="height:50px;"></div>
 	<div class="easyui-panel" title="用户登录" style="width:450px;height:200px;">
 		<div style="padding:10px 60px 20px 60px;">
 			<form id="js_login_form" method="post" name="js_login_form" action="${ctx }/login" onkeydown="rating.login.keyDown(event);">
@@ -30,8 +48,14 @@
 		</div>
 	</div>
 	</div>
-	<div style="margin:200px auto;text-align:center;font-size:12px;">
-		<label>Copyright © 2015 宁波光之瞳光电科技有限公司. All Rights Reserved.</label>
+	<div style="margin:400px auto;text-align:center;font-size:12px;">
+		<div>
+			<label>Copyright © 2015 宁波光之瞳光电科技有限公司. All Rights Reserved.</label>
+		</div>
+		<div style="margin:-125px 0 0 10px;text-align:left;font-size:12px;">
+			
+			<img src="${ctx }/resources/images/wechat.jpg" width="128" height="128">
+		</div>
 	</div>
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
