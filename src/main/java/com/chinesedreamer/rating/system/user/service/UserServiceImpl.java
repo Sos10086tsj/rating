@@ -294,5 +294,15 @@ public class UserServiceImpl implements UserService{
 		this.userSessionLogic.clear(userSession);
 	}
 
+	@Override
+	public void deleteUser(Long userId) {
+		User user = this.logic.findOne(userId);
+		if (null == user) {
+			return;
+		}
+		user.setStatus(UserStatus.INACTIVE);
+		this.logic.update(user);
+	}
+
 	
 }

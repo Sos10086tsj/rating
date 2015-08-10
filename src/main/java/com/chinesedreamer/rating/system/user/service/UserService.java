@@ -92,4 +92,10 @@ public interface UserService {
 	 */
 	public ResponseVo updateProfile(String username, String oldPassword, String newPassword,
 			String name,String phone);
+	
+	/**
+	 * 删除用户
+	 * @param userId
+	 */
+	public void deleteUser(Long userId);
 }

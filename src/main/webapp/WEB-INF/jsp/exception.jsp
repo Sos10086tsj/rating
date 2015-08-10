@@ -7,6 +7,6 @@
 <title>评分考核系统</title>
 </head>
 <body>
-	${errorMessage }
+	${errorMessage }<a href="${ctx }/login">重新登录</a>
 </body>
 </html>

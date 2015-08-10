@@ -20,4 +20,5 @@ public @Getter @Setter class UserVo {
 	private String positionName;
 	private String phone;
 	private String status;
+	private String operation;
 }

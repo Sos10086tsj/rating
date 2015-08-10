@@ -127,4 +127,12 @@ public class UserController {
 		String name = request.getParameter("name");
 		return this.userService.lookupUser(name);
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "system/user/delete",method = RequestMethod.POST)
+	public ResponseVo deleteUser(HttpServletRequest request, Long userId){
+		ResponseVo vo = new ResponseVo();
+		this.userService.deleteUser(userId);
+		return vo;
+	}
 }

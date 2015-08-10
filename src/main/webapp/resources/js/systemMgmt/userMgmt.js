@@ -39,6 +39,42 @@ rating.usermgmt = {
             	}
             }
 		 });
+	},
+	
+	//操作栏format
+	operationFieldFormat : function(value, rec, index){
+		var link = "<a href=\"javascript:void(0)\" onclick=\"rating.usermgmt.showDeleteUserTab("
+		+ rec.id + ")\">删除</a>";
+		return link;
+	},
+	
+	showDeleteUserTab : function(userId){
+		$.messager.confirm('提示','确认删除用户？',function(r){
+    		if (r){
+        		$.ajax({ 
+					type: 'POST',  
+					url:ctx + '/system/user/delete',
+			data: {userId : userId},
+			timeout : 600000,
+			beforeSend : rating.ajax.loading(),
+			success: function(robj){ 
+				rating.ajax.stopLoading();
+				$.messager.alert({
+						title:'提示',
+						msg:'删除成功'
+				});
+				$('#dg').datagrid('reload');
+			},
+			failure: function(error){
+				rating.ajax.stopLoading();
+				$.messager.alert({
+						title:'提示',
+						msg:'删除失败，请重试'
+				});
+			}
+		});
+    		}
+		});
 	}
 };
 

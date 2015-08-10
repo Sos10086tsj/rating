@@ -21,6 +21,7 @@
         		<th field="positionId"  hidden="true">职位Id</th>
         		<th field="positionName"  width="50">职位</th>
         		<th field="phone"  width="50">电话</th>
+        		<th field="operation" width="50" formatter="rating.usermgmt.operationFieldFormat">操作</th>
         		<%--<th field="status"  width="50">状态</th> --%>
         	</tr>
         </thead>
