@@ -13,4 +13,5 @@ import com.chinesedreamer.rating.template.vo.OptionVo;
 public interface SuppOptionService {
 	public List<OptionVo> getAll();
 	public void update(OptionVo vo);
+	public void delete(Long id);
 }

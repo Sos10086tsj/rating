@@ -44,6 +44,42 @@ rating.optionmgmt = {
 			$('#js_option_edit_form').form('load',row);
 			$('#js_option_edit_dg').dialog('open').dialog('setTitle','修改得分项');
 		}
+	},
+	
+	//操作栏format
+	operationFieldFormat : function(value, rec, index){
+		var link = "<a href=\"javascript:void(0)\" onclick=\"rating.optionmgmt.showDeleteOptionTab("
+		+ rec.id + ")\">删除</a>";
+		return link;
+	},
+	
+	showDeleteOptionTab : function(id){
+		$.messager.confirm('提示','确认删除得分项？',function(r){
+    		if (r){
+        		$.ajax({ 
+					type: 'POST',  
+					url:ctx + '/system/option/delete',
+					data: {id : id},
+					timeout : 600000,
+					beforeSend : rating.ajax.loading(),
+					success: function(robj){ 
+						rating.ajax.stopLoading();
+						$.messager.alert({
+							title:'提示',
+							msg:'删除成功'
+						});
+						$('#js_mgmt_option_dg').datagrid('reload');
+					},
+					failure: function(error){
+						rating.ajax.stopLoading();
+						$.messager.alert({
+							title:'提示',
+							msg:'删除失败，请重试'
+						});
+					}
+				});
+    		}
+		});
 	}
 };
 

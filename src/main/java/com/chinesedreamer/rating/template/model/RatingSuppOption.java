@@ -41,4 +41,7 @@ public @Getter @Setter class RatingSuppOption extends BaseVersionEntity<Long>{
 	
 	@Column
 	private Float seq;
+	
+	@Column(name = "deleted", columnDefinition="TINYINT(1)")
+	private Boolean deleted = Boolean.FALSE;
 }

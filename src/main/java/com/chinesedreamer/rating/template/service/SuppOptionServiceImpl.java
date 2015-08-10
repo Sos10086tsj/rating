@@ -53,4 +53,14 @@ public class SuppOptionServiceImpl implements SuppOptionService{
 		this.logic.save(option);
 	}
 
+	@Override
+	public void delete(Long id) {
+		RatingSuppOption option = this.logic.findOne(id);
+		if (null == option) {
+			return;
+		}
+		option.setDeleted(Boolean.TRUE);
+		this.logic.update(option);
+	}
+
 }

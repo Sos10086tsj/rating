@@ -36,3 +36,6 @@ INSERT INTO `rating`.`sys_role_auth_mapping` (`role_id`, `auth_id`)
  SELECT (select id from `rating`.`sys_role` where name ='管理员'),(SELECT id FROM `rating`.`sys_authority` WHERE code ='AU_TEMPLATE_MGMT') FROM DUAL
  WHERE NOT EXISTS (SELECT 1 FROM `rating`.`sys_role_auth_mapping` WHERE role_id =(select id from `rating`.`sys_role` where name ='管理员') 
  and auth_id = (SELECT id FROM `rating`.`sys_authority` WHERE code ='AU_TEMPLATE_MGMT'));
+
+ALTER TABLE `rating`.`rating_supp_options` 
+ADD COLUMN `deleted` TINYINT(1) NULL DEFAULT 0 COMMENT '' AFTER `code`;

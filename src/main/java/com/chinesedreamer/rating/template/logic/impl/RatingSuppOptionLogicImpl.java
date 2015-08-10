@@ -35,7 +35,7 @@ public class RatingSuppOptionLogicImpl extends BaseLogicImpl<RatingSuppOption, L
 
 	@Override
 	public List<RatingSuppOption> findAllOrderBySeqAsc() {
-		return this.repository.findAll();
+		return this.repository.findByDeletedFalse();
 	}
 
 }

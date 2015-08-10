@@ -18,4 +18,6 @@ public @Getter @Setter class OptionVo {
 	private String categoryName;
 	
 	private BigDecimal weight;//模板时才需要
+	
+	private String operation;
 }

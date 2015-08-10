@@ -19,6 +19,7 @@
         		<th field="name" width="250">得分项</th>
         		<th field="categoryCode" hidden="true">categoryCode</th>
         		<th field="categoryName" hidden="true">categoryName</th>
+        		<th field="operation" width="50" formatter="rating.optionmgmt.operationFieldFormat">操作</th>
         	</tr>
         </thead>
 </table>

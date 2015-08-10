@@ -56,4 +56,18 @@ public class OptionController {
 		this.optionService.update(optionVo);
 		return vo;
 	}
+	
+	/**
+	 * 删除得分项
+	 * @param request
+	 * @param optionVo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "system/option/delete",method = RequestMethod.POST)
+	public ResponseVo deleteOption(HttpServletRequest request, Long id){
+		ResponseVo vo = new ResponseVo();
+		this.optionService.delete(id);
+		return vo;
+	}
 }

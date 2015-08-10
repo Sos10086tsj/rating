@@ -15,4 +15,5 @@ import com.chinesedreamer.rating.template.model.RatingSuppOption;
 public interface RatingSuppOptionRepository extends BaseRepository<RatingSuppOption, Long>{
 	public List<RatingSuppOption> findByCategory(OptionCategory category);
 	public RatingSuppOption findByCode(String code);
+	public List<RatingSuppOption> findByDeletedFalse();
 }
