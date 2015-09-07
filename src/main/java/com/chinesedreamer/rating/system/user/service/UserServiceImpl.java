@@ -301,8 +301,16 @@ public class UserServiceImpl implements UserService{
 			return;
 		}
 		user.setStatus(UserStatus.INACTIVE);
+		//删除此用户，用户名修正
+		user.setUsername(this.generateIllegalUsername(user.getUsername()));
 		this.logic.update(user);
 	}
 
-	
+	private String generateIllegalUsername(String username) {
+		username = "@!&#@!*&" + username + "@!&#@!*&";
+		if (username.length() >= 45) {
+			username = username.substring(0	, 44);
+		}
+		return username;
+	}
 }

@@ -12,7 +12,7 @@
 
 	<appender name="FILE-ERROR"	class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>/data/logs/rating/error.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<fileNamePattern>e:/rating/logs/rating/error.log.%d{yyyy-MM-dd}</fileNamePattern>
 			<maxHistory>15</maxHistory>
 		</rollingPolicy>
 		<encoder>
@@ -22,7 +22,7 @@
 
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>/data/logs/rating/info.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<fileNamePattern>e:/rating/logs/rating/info.log.%d{yyyy-MM-dd}</fileNamePattern>
 			<maxHistory>15</maxHistory>
 		</rollingPolicy>
 		<encoder>
