@@ -58,4 +58,8 @@ public class EncryptionUtil {
 		}
 		return buffer.toString();
 	}
+	
+	public static void main(String[] args) {
+		System.out.println(md5L32("00-50-56-c0-00-0120151008"));
+	}
 }

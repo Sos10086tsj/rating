@@ -23,13 +23,7 @@ public class SecurityServiceImpl implements SecurityService{
 	public boolean isSystemAuthorised() {
 		Config config = this.logic.findByProperty(ConfigConstant.AUTHORISE_MAC);
 		Config salt = this.logic.findByProperty(ConfigConstant.AUTHORISE_MAC_SALT);
-		//盐值
-		if (null ==salt) {
-			salt = new Config();
-			salt.setProperty(ConfigConstant.AUTHORISE_MAC_SALT);
-			salt.setPropertyValue(EncryptionUtil.generateSalt(6));
-			this.logic.save(salt);
-		}
+		
 		if (null == config) {//生成MAC
 			config = new Config();
 			config.setProperty(ConfigConstant.AUTHORISE_MAC);
@@ -62,10 +56,13 @@ public class SecurityServiceImpl implements SecurityService{
 	public boolean authorise(String macPass) {
 		Config config = this.logic.findByProperty(ConfigConstant.AUTHORISE_MAC);
 		Config salt = this.logic.findByProperty(ConfigConstant.AUTHORISE_MAC_SALT);
+		Config passConfig = this.logic.findByProperty(ConfigConstant.AUTHORISE_MAC_PASS);
 		String mac = config.getPropertyValue();
 		if (EncryptionUtil.md5L32(mac + salt.getPropertyValue()).equals(macPass)) {
-			Config passConfig = new Config();
-			passConfig.setProperty(ConfigConstant.AUTHORISE_MAC_PASS);
+			if (null == passConfig) {
+				passConfig = new Config();
+				passConfig.setProperty(ConfigConstant.AUTHORISE_MAC_PASS);
+			}
 			passConfig.setPropertyValue(macPass);
 			this.logic.save(passConfig);
 			return true;

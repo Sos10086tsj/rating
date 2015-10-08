@@ -596,20 +596,53 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}
 			}
 			rstMap.remove(exist);
+			
+			boolean hasScore = false;
 			for (RatingScoreView scoreView : tmp) {
+				if (!hasScore) {
+					hasScore = true;
+				}
 				Long optionKey = scoreView.getOptionId();
 				if (scoreView.getVoterGroupId().equals(scoreView.getScorerGroup())) {
 					score.put("source", "本组");
 				}else {
 					score.put("source", "外组");
 				}
+				Float value = 0.0f;
 				if (duplicate) {
+					value = scoreView.getScore() + Float.parseFloat(exist.get("option_" + optionKey));
 					score.put("option_" + optionKey, 
-							String.valueOf((scoreView.getScore() + Float.parseFloat(exist.get("option_" + optionKey)))));
+							String.valueOf(value));
 				}else {
-					score.put("option_" + optionKey, scoreView.getScore().toString());
+					value = scoreView.getScore();
+					score.put("option_" + optionKey, value.toString());
 				}
 			}
+			if (hasScore) {
+				Float min = 100000.0f;
+				Float max = 0.0f;
+				Float total = 0.0f;
+				int num = 0;
+				
+				for (String scoreKey : score.keySet()) {
+					if (scoreKey.startsWith("option_")) {
+						Float tmpScore = Float.parseFloat(score.get(scoreKey));
+						total += tmpScore;
+						num ++;
+						if (tmpScore <= min) {
+							min = tmpScore;
+						}
+						if (tmpScore >= max) {
+							max = tmpScore;
+						}
+					}
+				}
+				
+				score.put("min", String.valueOf(min) );
+				score.put("max", String.valueOf(max) );
+				score.put("average", String.valueOf(total / num) );
+			}
+			
 			rstMap.add(score);
 		}
 	}
@@ -630,7 +663,14 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}
 			}
 			rstMap.remove(exist);
+			
+			boolean hasScore = false;
+			
 			for (RatingScoreView scoreView : tmp) {
+				if (!hasScore) {
+					hasScore = true;
+				}
+				
 				Long optionKey = scoreView.getOptionId();
 				UserGroup voterGroup = this.userGroupLogic.findOne(scoreView.getVoterGroupId());
 				if (scoreView.getVoterGroupId().equals(scoreView.getScorerGroup()) 
@@ -649,6 +689,31 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}else {
 					score.put("option_" + optionKey, scoreView.getScore().toString());
 				}
+			}
+			
+			if (hasScore) {
+				Float min = 100000.0f;
+				Float max = 0.0f;
+				Float total = 0.0f;
+				int num = 0;
+				
+				for (String scoreKey : score.keySet()) {
+					if (scoreKey.startsWith("option_")) {
+						Float tmpScore = Float.parseFloat(score.get(scoreKey));
+						total += tmpScore;
+						num ++;
+						if (tmpScore <= min) {
+							min = tmpScore;
+						}
+						if (tmpScore >= max) {
+							max = tmpScore;
+						}
+					}
+				}
+				
+				score.put("min", String.valueOf(min) );
+				score.put("max", String.valueOf(max) );
+				score.put("average", String.valueOf(total / num) );
 			}
 			rstMap.add(score);
 		}
@@ -670,7 +735,14 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}
 			}
 			rstMap.remove(exist);
+			
+			boolean hasScore = false;
+			
 			for (RatingScoreView scoreView : tmp) {
+				if (!hasScore) {
+					hasScore = true;
+				}
+				
 				Long optionKey = scoreView.getOptionId();
 				UserGroup voterGroup = this.userGroupLogic.findOne(scoreView.getVoterGroupId());
 				if (scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())) {//组长
@@ -684,6 +756,31 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}else {
 					score.put("option_" + optionKey, scoreView.getScore().toString());
 				}
+			}
+			
+			if (hasScore) {
+				Float min = 100000.0f;
+				Float max = 0.0f;
+				Float total = 0.0f;
+				int num = 0;
+				
+				for (String scoreKey : score.keySet()) {
+					if (scoreKey.startsWith("option_")) {
+						Float tmpScore = Float.parseFloat(score.get(scoreKey));
+						total += tmpScore;
+						num ++;
+						if (tmpScore <= min) {
+							min = tmpScore;
+						}
+						if (tmpScore >= max) {
+							max = tmpScore;
+						}
+					}
+				}
+				
+				score.put("min", String.valueOf(min) );
+				score.put("max", String.valueOf(max) );
+				score.put("average", String.valueOf(total / num) );
 			}
 			rstMap.add(score);
 		}
@@ -705,7 +802,13 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}
 			}
 			rstMap.remove(exist);
+			
+			boolean hasScore = false;
 			for (RatingScoreView scoreView : tmp) {
+				if (!hasScore) {
+					hasScore = true;
+				}
+				
 				Long optionKey = scoreView.getOptionId();
 				if (scoreView.getVoterPositionId().equals(UserPositionType.TEAM_MATE.getValue())) {//组远
 					score.put("source", "本组");
@@ -716,6 +819,31 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}else {
 					score.put("option_" + optionKey, scoreView.getScore().toString());
 				}
+			}
+			
+			if (hasScore) {
+				Float min = 100000.0f;
+				Float max = 0.0f;
+				Float total = 0.0f;
+				int num = 0;
+				
+				for (String scoreKey : score.keySet()) {
+					if (scoreKey.startsWith("option_")) {
+						Float tmpScore = Float.parseFloat(score.get(scoreKey));
+						total += tmpScore;
+						num ++;
+						if (tmpScore <= min) {
+							min = tmpScore;
+						}
+						if (tmpScore >= max) {
+							max = tmpScore;
+						}
+					}
+				}
+				
+				score.put("min", String.valueOf(min) );
+				score.put("max", String.valueOf(max) );
+				score.put("average", String.valueOf(total / num) );
 			}
 			rstMap.add(score);
 		}

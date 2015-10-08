@@ -23,6 +23,9 @@
         <thead>
         	<tr>
         		<th data-options="field:'source',width:120,hidden:true">来源</th> 
+        		<th data-options="field:'min',width:120">最低分</th> 
+        		<th data-options="field:'max',width:120">最高分</th> 
+        		<th data-options="field:'average',width:120">平均分</th> 
         		<c:forEach items="${options }" var="item">
         			<th data-options="field:'${item.value }',width:${item.width }">${item.label }</th>
         		</c:forEach>
