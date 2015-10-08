@@ -9,5 +9,6 @@ public class ConfigConstant {
 	public static String STATISTICS_FORMAT = "STATISTICS_FORMAT";
 	
 	public static String AUTHORISE_MAC = "AUTHORISE_MAC";
+	public static String AUTHORISE_MAC_SALT = "AUTHORISE_SALT";
 	public static String AUTHORISE_MAC_PASS = "AUTHORISE_MAC_PASS";
 }
