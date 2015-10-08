@@ -2,28 +2,33 @@ rating.userrating = {
 	//投票列表页href格式
 	tempalteFormat : function(value, rec, index){
 		var link = "";
-		if(value && value.length > 0){
-			for(var i = 0; i < value.length; i++){
-				var vote = value[i];
-				var symble = "";
-				if(vote.voted){//已投
-					symble = "(重投)";
-				}else{
-					symble = "(投票)";
+		if(rec.overdue == true){
+			link = "投票已到期				";
+		}else{
+			if(value && value.length > 0){
+				for(var i = 0; i < value.length; i++){
+					var vote = value[i];
+					var symble = "";
+					if(vote.voted){//已投
+						symble = "(重投)";
+					}else{
+						symble = "(投票)";
+					}
+					//var single = "<a href='" + ctx + "/rating/vote/'" + vote.id + ">" + vote.name + symble + "</a>  ";<A href="javascript:void(0)
+					var single  = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('" + vote.name + "投票','" + ctx + "/rating/vote/" + vote.id + "')\">" 
+					+ vote.name + symble + "</a>        ";
+					link += single;
 				}
-				//var single = "<a href='" + ctx + "/rating/vote/'" + vote.id + ">" + vote.name + symble + "</a>  ";<A href="javascript:void(0)
-				var single  = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('" + vote.name + "投票','" + ctx + "/rating/vote/" + vote.id + "')\">" 
-				+ vote.name + symble + "</a>        ";
-				link += single;
 			}
 		}
-		
+
 		//个人明细
-		/*
+		
 		var personUrl = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('我的得分','" 
 		 + ctx + "/rating/statistics/" + rec.id 
-		+  "/" + $("#js_vote_user_id_hidden").val()  + "')\">我的得分</a>        ";*/
-		var personUrl = "<a href=\"javascript:void(0)\">我的得分(未开启)</a>";
+		+  "/" + $("#js_vote_user_id_hidden").val()  + "')\">我的得分</a>        ";
+		/*
+		var personUrl = "<a href=\"javascript:void(0)\">我的得分(未开启)</a>";*/
 		
 		link += personUrl;
 		

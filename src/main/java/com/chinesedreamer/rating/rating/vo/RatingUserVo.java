@@ -14,6 +14,7 @@ public class RatingUserVo {
 	private String name;//投票事件
 	private Date effFrom;//起始时间
 	private Date effTo;//结束时间
+	private Boolean overdue;
 	private List<RatingTemplateVo> templates;
 	public Long getId() {
 		return id;
@@ -44,6 +45,12 @@ public class RatingUserVo {
 	}
 	public void setTemplates(List<RatingTemplateVo> templates) {
 		this.templates = templates;
+	}
+	public Boolean getOverdue() {
+		return overdue;
+	}
+	public void setOverdue(Boolean overdue) {
+		this.overdue = overdue;
 	}
 	
 	

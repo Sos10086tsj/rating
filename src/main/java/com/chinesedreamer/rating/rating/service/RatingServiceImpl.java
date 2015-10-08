@@ -123,6 +123,11 @@ public class RatingServiceImpl implements RatingService{
 		vo.setName(rating.getName());
 		vo.setEffFrom(rating.getEffFrom());
 		vo.setEffTo(rating.getEffTo());
+		if (rating.getEffTo().after(new Date())) {//未到期
+			vo.setOverdue(false);
+		}else {
+			vo.setOverdue(true);
+		}
 		List<RatingTemplate> templates = this.templateLogic.findByRatingId(rating.getId());
 		List<SelectVo> vos = new ArrayList<SelectVo>();
 		for (RatingTemplate template : templates) {
@@ -163,6 +168,11 @@ public class RatingServiceImpl implements RatingService{
 		vo.setName(rating.getName());
 		vo.setEffFrom(rating.getEffFrom());
 		vo.setEffTo(rating.getEffTo());
+		if (rating.getEffTo().after(new Date())) {
+			vo.setOverdue(false);
+		}else {
+			vo.setOverdue(true);
+		}
 		List<RatingTemplateVo> templateVos = new ArrayList<RatingTemplateVo>();
 		//获取所有模板 RatingTemplateVo
 		List<RatingTemplate> templates = this.templateLogic.findByRatingId(rating.getId());

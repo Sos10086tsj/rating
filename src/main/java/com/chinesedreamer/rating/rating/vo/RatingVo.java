@@ -17,6 +17,7 @@ public class RatingVo {
 	private String name;
 	private Date effFrom;
 	private Date effTo;
+	private Boolean overdue;
 	private List<SelectVo> templates;
 	public Long getId() {
 		return id;
@@ -47,6 +48,12 @@ public class RatingVo {
 	}
 	public void setTemplates(List<SelectVo> templates) {
 		this.templates = templates;
+	}
+	public Boolean getOverdue() {
+		return overdue;
+	}
+	public void setOverdue(Boolean overdue) {
+		this.overdue = overdue;
 	}
 	
 	
