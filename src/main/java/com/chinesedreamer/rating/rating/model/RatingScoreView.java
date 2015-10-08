@@ -4,9 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 
 /**
@@ -17,7 +14,7 @@ import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
  */
 @Entity
 @Table(name = "v_score")
-public @Getter @Setter class RatingScoreView extends BaseEntity<Long>{
+public class RatingScoreView extends BaseEntity<Long>{
 
 	/**
 	 * 
@@ -50,4 +47,78 @@ public @Getter @Setter class RatingScoreView extends BaseEntity<Long>{
 	
 	@Column
 	private Float score;//得分
+
+	public Long getTmplId() {
+		return tmplId;
+	}
+
+	public Long getVoterId() {
+		return voterId;
+	}
+
+	public Long getVoterGroupId() {
+		return voterGroupId;
+	}
+
+	public Integer getVoterPositionId() {
+		return voterPositionId;
+	}
+
+	public Long getScorer() {
+		return scorer;
+	}
+
+	public Long getScorerGroup() {
+		return scorerGroup;
+	}
+
+	public Integer getScorerPosition() {
+		return scorerPosition;
+	}
+
+	public Long getOptionId() {
+		return optionId;
+	}
+
+	public Float getScore() {
+		return score;
+	}
+
+	public void setTmplId(Long tmplId) {
+		this.tmplId = tmplId;
+	}
+
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
+
+	public void setVoterGroupId(Long voterGroupId) {
+		this.voterGroupId = voterGroupId;
+	}
+
+	public void setVoterPositionId(Integer voterPositionId) {
+		this.voterPositionId = voterPositionId;
+	}
+
+	public void setScorer(Long scorer) {
+		this.scorer = scorer;
+	}
+
+	public void setScorerGroup(Long scorerGroup) {
+		this.scorerGroup = scorerGroup;
+	}
+
+	public void setScorerPosition(Integer scorerPosition) {
+		this.scorerPosition = scorerPosition;
+	}
+
+	public void setOptionId(Long optionId) {
+		this.optionId = optionId;
+	}
+
+	public void setScore(Float score) {
+		this.score = score;
+	}
+	
+	
 }

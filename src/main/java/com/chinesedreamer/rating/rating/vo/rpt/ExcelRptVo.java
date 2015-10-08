@@ -1,15 +1,25 @@
 package com.chinesedreamer.rating.rating.vo.rpt;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * Description: 
  * @author Paris
  * @date Jul 20, 20151:42:32 PM
  * @version beta
  */
-public @Getter @Setter class ExcelRptVo {
+public class ExcelRptVo {
 	private String code;
 	private RptVo rptVo;
+	public String getCode() {
+		return code;
+	}
+	public RptVo getRptVo() {
+		return rptVo;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public void setRptVo(RptVo rptVo) {
+		this.rptVo = rptVo;
+	}
+	
 }

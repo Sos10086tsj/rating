@@ -1,7 +1,5 @@
 package com.chinesedreamer.rating.template;
 
-import lombok.Getter;
-
 /**
  * Description: 
  * @author Paris
@@ -15,11 +13,21 @@ public enum OptionCategory {
 	ZZNL("ZZNL","组织能力"),
 	ZHNL("ZHNL","综合能力");
 	
-	private @Getter final String code;
-	private @Getter final String label;
+	private final String code;
+	private final String label;
 	
 	private OptionCategory(String code,String label){
 		this.code = code;
 		this.label = label;
 	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+	
+	
 }

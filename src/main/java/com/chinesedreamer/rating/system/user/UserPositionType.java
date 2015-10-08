@@ -1,7 +1,5 @@
 package com.chinesedreamer.rating.system.user;
 
-import lombok.Getter;
-
 /** 
  * Description: 
  * @author Paris Tao
@@ -12,8 +10,8 @@ import lombok.Getter;
 public enum UserPositionType {
 	LEADER(1,"组长"),TEAM_MATE(2,"组员");
 	
-	private @Getter final Integer value;
-	private @Getter final String label;
+	private final Integer value;
+	private final String label;
 	
 	private UserPositionType(Integer value,String label){
 		this.value = value;
@@ -28,4 +26,14 @@ public enum UserPositionType {
 		}
 		return null;
 	}
+
+	public Integer getValue() {
+		return value;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+	
+	
 }

@@ -4,9 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 
 /**
@@ -17,7 +14,7 @@ import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
  */
 @Entity
 @Table(name = "rating_template_voter")
-public @Getter @Setter class RatingTemplateVoter extends BaseEntity<Long>{
+public class RatingTemplateVoter extends BaseEntity<Long>{
 	/**
 	 * 
 	 */
@@ -31,4 +28,30 @@ public @Getter @Setter class RatingTemplateVoter extends BaseEntity<Long>{
 	
 	@Column(name = "position_id")
 	private Integer positionId;
+
+	public Long getTmplId() {
+		return tmplId;
+	}
+
+	public Long getGroupId() {
+		return groupId;
+	}
+
+	public Integer getPositionId() {
+		return positionId;
+	}
+
+	public void setTmplId(Long tmplId) {
+		this.tmplId = tmplId;
+	}
+
+	public void setGroupId(Long groupId) {
+		this.groupId = groupId;
+	}
+
+	public void setPositionId(Integer positionId) {
+		this.positionId = positionId;
+	}
+	
+	
 }

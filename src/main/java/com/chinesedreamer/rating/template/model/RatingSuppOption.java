@@ -8,9 +8,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseVersionEntity;
 import com.chinesedreamer.rating.template.OptionCategory;
 
@@ -22,7 +19,7 @@ import com.chinesedreamer.rating.template.OptionCategory;
  */
 @Entity
 @Table(name = "rating_supp_options")
-public @Getter @Setter class RatingSuppOption extends BaseVersionEntity<Long>{
+public class RatingSuppOption extends BaseVersionEntity<Long>{
 
 	/**
 	 * 
@@ -44,4 +41,46 @@ public @Getter @Setter class RatingSuppOption extends BaseVersionEntity<Long>{
 	
 	@Column(name = "deleted", columnDefinition="TINYINT(1)")
 	private Boolean deleted = Boolean.FALSE;
+
+	public String getCode() {
+		return code;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public OptionCategory getCategory() {
+		return category;
+	}
+
+	public Float getSeq() {
+		return seq;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setCategory(OptionCategory category) {
+		this.category = category;
+	}
+
+	public void setSeq(Float seq) {
+		this.seq = seq;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+	
+	
 }

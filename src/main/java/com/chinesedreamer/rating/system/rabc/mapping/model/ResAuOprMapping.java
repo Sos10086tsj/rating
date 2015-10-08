@@ -7,9 +7,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 import com.chinesedreamer.rating.system.rabc.authority.model.SysAuthority;
 import com.chinesedreamer.rating.system.rabc.opr.model.SysOperation;
@@ -24,7 +21,7 @@ import com.chinesedreamer.rating.system.rabc.resource.model.SysResource;
  */
 @Entity
 @Table(name = "sys_res_au_opr_mapping")
-public @Getter @Setter class ResAuOprMapping extends BaseEntity<Long>{
+public class ResAuOprMapping extends BaseEntity<Long>{
 
 	/**
 	 * 
@@ -51,4 +48,54 @@ public @Getter @Setter class ResAuOprMapping extends BaseEntity<Long>{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "opr_code", referencedColumnName = "code", insertable = false, updatable = false)
 	private SysOperation operation;
+
+	public String getResCode() {
+		return resCode;
+	}
+
+	public SysResource getResource() {
+		return resource;
+	}
+
+	public String getAuthCode() {
+		return authCode;
+	}
+
+	public SysAuthority getAuthority() {
+		return authority;
+	}
+
+	public String getOprCode() {
+		return oprCode;
+	}
+
+	public SysOperation getOperation() {
+		return operation;
+	}
+
+	public void setResCode(String resCode) {
+		this.resCode = resCode;
+	}
+
+	public void setResource(SysResource resource) {
+		this.resource = resource;
+	}
+
+	public void setAuthCode(String authCode) {
+		this.authCode = authCode;
+	}
+
+	public void setAuthority(SysAuthority authority) {
+		this.authority = authority;
+	}
+
+	public void setOprCode(String oprCode) {
+		this.oprCode = oprCode;
+	}
+
+	public void setOperation(SysOperation operation) {
+		this.operation = operation;
+	}
+	
+	
 }

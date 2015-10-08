@@ -4,9 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 
 /** 
@@ -18,7 +15,7 @@ import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
  */
 @Entity
 @Table(name = "sys_operation")
-public @Getter @Setter class SysOperation extends BaseEntity<Long>{
+public class SysOperation extends BaseEntity<Long>{
 
 	/**
 	 * 
@@ -33,4 +30,30 @@ public @Getter @Setter class SysOperation extends BaseEntity<Long>{
 	
 	@Column(name = "show", columnDefinition = "TINYINT(1)")
 	private Boolean show;
+
+	public String getCode() {
+		return code;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Boolean getShow() {
+		return show;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setShow(Boolean show) {
+		this.show = show;
+	}
+	
+	
 }

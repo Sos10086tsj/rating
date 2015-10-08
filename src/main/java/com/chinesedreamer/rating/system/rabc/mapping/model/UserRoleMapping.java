@@ -7,9 +7,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 import com.chinesedreamer.rating.system.rabc.role.model.SysRole;
 import com.chinesedreamer.rating.system.user.model.User;
@@ -23,7 +20,7 @@ import com.chinesedreamer.rating.system.user.model.User;
  */
 @Entity
 @Table(name = "sys_user_role")
-public @Getter @Setter class UserRoleMapping extends BaseEntity<Long>{
+public class UserRoleMapping extends BaseEntity<Long>{
 
 	/**
 	 * 
@@ -43,4 +40,38 @@ public @Getter @Setter class UserRoleMapping extends BaseEntity<Long>{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
 	private SysRole role;
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public Long getRoleId() {
+		return roleId;
+	}
+
+	public SysRole getRole() {
+		return role;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
+	}
+
+	public void setRole(SysRole role) {
+		this.role = role;
+	}
+	
+	
 }

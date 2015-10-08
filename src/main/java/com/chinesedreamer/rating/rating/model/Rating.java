@@ -10,9 +10,6 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseVersionEntity;
 
 /**
@@ -23,7 +20,7 @@ import com.chinesedreamer.rating.base.jpa.model.BaseVersionEntity;
  */
 @Entity
 @Table(name = "rating")
-public @Getter @Setter class Rating extends BaseVersionEntity<Long>{
+public class Rating extends BaseVersionEntity<Long>{
 	/**
 	 * 
 	 */
@@ -43,4 +40,38 @@ public @Getter @Setter class Rating extends BaseVersionEntity<Long>{
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 	private RatingStatus status;
+
+	public String getName() {
+		return name;
+	}
+
+	public Date getEffFrom() {
+		return effFrom;
+	}
+
+	public Date getEffTo() {
+		return effTo;
+	}
+
+	public RatingStatus getStatus() {
+		return status;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setEffFrom(Date effFrom) {
+		this.effFrom = effFrom;
+	}
+
+	public void setEffTo(Date effTo) {
+		this.effTo = effTo;
+	}
+
+	public void setStatus(RatingStatus status) {
+		this.status = status;
+	}
+	
+	
 }

@@ -9,9 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.chinesedreamer.rating.base.jpa.model.BaseVersionEntity;
@@ -27,7 +24,7 @@ import com.chinesedreamer.rating.template.model.RatingTemplate;
  */
 @Entity
 @Table(name = "rating_user_vote")
-public @Getter @Setter class RatingUserVote extends BaseVersionEntity<Long>{
+public class RatingUserVote extends BaseVersionEntity<Long>{
 
 	/**
 	 * 
@@ -68,4 +65,86 @@ public @Getter @Setter class RatingUserVote extends BaseVersionEntity<Long>{
 	@Column(name = "vote_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date voteDate;
+
+	public Long getRatingId() {
+		return ratingId;
+	}
+
+	public Rating getRating() {
+		return rating;
+	}
+
+	public Long getTmplId() {
+		return tmplId;
+	}
+
+	public RatingTemplate getTemplate() {
+		return template;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public Long getGroupId() {
+		return groupId;
+	}
+
+	public UserGroup getUserGroup() {
+		return userGroup;
+	}
+
+	public Integer getPositionId() {
+		return positionId;
+	}
+
+	public Date getVoteDate() {
+		return voteDate;
+	}
+
+	public void setRatingId(Long ratingId) {
+		this.ratingId = ratingId;
+	}
+
+	public void setRating(Rating rating) {
+		this.rating = rating;
+	}
+
+	public void setTmplId(Long tmplId) {
+		this.tmplId = tmplId;
+	}
+
+	public void setTemplate(RatingTemplate template) {
+		this.template = template;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setGroupId(Long groupId) {
+		this.groupId = groupId;
+	}
+
+	public void setUserGroup(UserGroup userGroup) {
+		this.userGroup = userGroup;
+	}
+
+	public void setPositionId(Integer positionId) {
+		this.positionId = positionId;
+	}
+
+	public void setVoteDate(Date voteDate) {
+		this.voteDate = voteDate;
+	}
+	
+	
 }

@@ -6,9 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @MappedSuperclass
 public abstract  class BaseVersionEntity<ID extends Serializable> extends BaseEntity<ID>{
 
@@ -19,5 +16,15 @@ public abstract  class BaseVersionEntity<ID extends Serializable> extends BaseEn
 	
 	@Version
 	@Column(name = "version")
-	private @Getter @Setter Long version = 0l;
+	private Long version = 0l;
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+	
+	
 }

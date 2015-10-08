@@ -6,9 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseVersionEntity;
 
 /**
@@ -19,7 +16,7 @@ import com.chinesedreamer.rating.base.jpa.model.BaseVersionEntity;
  */
 @Entity
 @Table(name = "rating_supp_tmpl_option_weight")
-public @Getter @Setter class RatingSuppTmplOptionWeight extends BaseVersionEntity<Long>{
+public class RatingSuppTmplOptionWeight extends BaseVersionEntity<Long>{
 	/**
 	 * 
 	 */
@@ -33,4 +30,30 @@ public @Getter @Setter class RatingSuppTmplOptionWeight extends BaseVersionEntit
 	
 	@Column
 	private BigDecimal weight;
+
+	public Long getSuppTmplId() {
+		return suppTmplId;
+	}
+
+	public Long getSuppOptionId() {
+		return suppOptionId;
+	}
+
+	public BigDecimal getWeight() {
+		return weight;
+	}
+
+	public void setSuppTmplId(Long suppTmplId) {
+		this.suppTmplId = suppTmplId;
+	}
+
+	public void setSuppOptionId(Long suppOptionId) {
+		this.suppOptionId = suppOptionId;
+	}
+
+	public void setWeight(BigDecimal weight) {
+		this.weight = weight;
+	}
+	
+	
 }

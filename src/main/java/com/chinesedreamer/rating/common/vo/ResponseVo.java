@@ -1,8 +1,5 @@
 package com.chinesedreamer.rating.common.vo;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /** 
  * Description: 
  * @author Paris Tao
@@ -10,7 +7,7 @@ import lombok.Setter;
  * @date 2015年6月21日 上午7:19:17 
  * Copyright:   Copyright (c)2015
  */
-public @Getter @Setter class ResponseVo {
+public class ResponseVo {
 	private Boolean hasException = Boolean.FALSE;
 	private String errorMessage;//错误提示信息
 	private Object obj;//传递的对象
@@ -33,4 +30,30 @@ public @Getter @Setter class ResponseVo {
 		this.errorMessage = errorMessage;
 		this.hasException = Boolean.TRUE;
 	}
+
+	public Boolean getHasException() {
+		return hasException;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public Object getObj() {
+		return obj;
+	}
+
+	public void setHasException(Boolean hasException) {
+		this.hasException = hasException;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+
+	public void setObj(Object obj) {
+		this.obj = obj;
+	}
+	
+	
 }

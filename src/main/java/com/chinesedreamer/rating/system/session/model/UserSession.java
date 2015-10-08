@@ -10,9 +10,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * Description: 
  * @author Paris
@@ -21,7 +18,7 @@ import lombok.Setter;
  */
 @Entity
 @Table(name = "sys_user_session")
-public @Getter @Setter class UserSession extends BaseEntity<Long>{
+public class UserSession extends BaseEntity<Long>{
 	/**
 	 * 
 	 */
@@ -33,4 +30,24 @@ public @Getter @Setter class UserSession extends BaseEntity<Long>{
 	@Column(name = "create_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createDate;
+	public String getUsername() {
+		return username;
+	}
+	public String getSessionId() {
+		return sessionId;
+	}
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	
+	
 }

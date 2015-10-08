@@ -7,9 +7,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 
 /**
@@ -20,7 +17,7 @@ import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
  */
 @Entity
 @Table(name = "rating_tmpl_option")
-public @Getter @Setter class RatingTemplateOptionMapping extends BaseEntity<Long>{
+public class RatingTemplateOptionMapping extends BaseEntity<Long>{
 	/**
 	 * 
 	 */
@@ -42,4 +39,46 @@ public @Getter @Setter class RatingTemplateOptionMapping extends BaseEntity<Long
 	
 	@Column
 	private Float seq;
+
+	public Long getTmplId() {
+		return tmplId;
+	}
+
+	public RatingTemplate getTemplate() {
+		return template;
+	}
+
+	public Long getOptionId() {
+		return optionId;
+	}
+
+	public RatingSuppOption getOption() {
+		return option;
+	}
+
+	public Float getSeq() {
+		return seq;
+	}
+
+	public void setTmplId(Long tmplId) {
+		this.tmplId = tmplId;
+	}
+
+	public void setTemplate(RatingTemplate template) {
+		this.template = template;
+	}
+
+	public void setOptionId(Long optionId) {
+		this.optionId = optionId;
+	}
+
+	public void setOption(RatingSuppOption option) {
+		this.option = option;
+	}
+
+	public void setSeq(Float seq) {
+		this.seq = seq;
+	}
+	
+	
 }

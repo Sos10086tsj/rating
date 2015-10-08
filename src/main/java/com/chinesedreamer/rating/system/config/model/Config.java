@@ -4,9 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 
 /**
@@ -17,7 +14,7 @@ import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
  */
 @Entity
 @Table(name = "config")
-public @Getter @Setter class Config extends BaseEntity<Long>{
+public class Config extends BaseEntity<Long>{
 
 	/**
 	 * 
@@ -29,4 +26,22 @@ public @Getter @Setter class Config extends BaseEntity<Long>{
 	
 	@Column(name = "property_value")
 	private String propertyValue;
+
+	public String getProperty() {
+		return property;
+	}
+
+	public String getPropertyValue() {
+		return propertyValue;
+	}
+
+	public void setProperty(String property) {
+		this.property = property;
+	}
+
+	public void setPropertyValue(String propertyValue) {
+		this.propertyValue = propertyValue;
+	}
+	
+	
 }

@@ -3,8 +3,6 @@ package com.chinesedreamer.rating.system.group;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-
 
 /** 
  * Description: 
@@ -16,8 +14,8 @@ import lombok.Getter;
 public enum UserGroupLevel {
 	DEFAULT(0,"默认"),ZONGTI(1,"总体"),PUTONG(2,"普通");
 	
-	private @Getter final Integer value;
-	private @Getter final String label;
+	private final Integer value;
+	private final String label;
 	private UserGroupLevel(Integer value,String label){
 		this.value = value;
 		this.label = label;
@@ -38,4 +36,14 @@ public enum UserGroupLevel {
 		levels.add(UserGroupLevel.PUTONG);
 		return levels;
 	}
+
+	public Integer getValue() {
+		return value;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+	
+	
 }

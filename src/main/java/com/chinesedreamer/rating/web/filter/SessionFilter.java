@@ -12,9 +12,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +31,26 @@ public class SessionFilter implements Filter{
 	private Logger logger = LoggerFactory.getLogger(SessionFilter.class);
 	private static final String[] ignoreUri = new String[]{".css",".js",".jpg",".png",".gif",".json",".ico"};
 	@Autowired
-	private @Getter @Setter UserSessionService userSessionService;
+	private UserSessionService userSessionService;
 	@Autowired
-	private @Getter @Setter UserService userService;
-	
+	private UserService userService;
+
+	public UserSessionService getUserSessionService() {
+		return userSessionService;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserSessionService(UserSessionService userSessionService) {
+		this.userSessionService = userSessionService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
 	private String sessionOverduePage = "login";
 
 	@Override
@@ -57,7 +70,9 @@ public class SessionFilter implements Filter{
 		if (StringUtils.isNotEmpty(uri) 
 				&& !(uri.equals("/index") 
 						|| uri.equals("/logout") 
-						|| uri.equals("/login")) 
+						|| uri.equals("/login")
+						|| uri.equals("/authorise")
+						) 
 						&& !isStaticResourceRequest(uri)) {
 			try {
 				this.userSessionService.validateSession();

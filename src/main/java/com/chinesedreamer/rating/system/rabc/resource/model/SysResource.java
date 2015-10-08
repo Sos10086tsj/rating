@@ -6,9 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 
 /** 
@@ -20,7 +17,7 @@ import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
  */
 @Entity
 @Table(name = "sys_resource")
-public @Getter @Setter class SysResource extends BaseEntity<Long>{
+public class SysResource extends BaseEntity<Long>{
 
 	/**
 	 * 
@@ -44,4 +41,54 @@ public @Getter @Setter class SysResource extends BaseEntity<Long>{
 	
 	@Column(name = "seq")
 	private BigDecimal seq;
+
+	public String getCode() {
+		return code;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public Boolean getShow() {
+		return show;
+	}
+
+	public String getParentCode() {
+		return parentCode;
+	}
+
+	public BigDecimal getSeq() {
+		return seq;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public void setShow(Boolean show) {
+		this.show = show;
+	}
+
+	public void setParentCode(String parentCode) {
+		this.parentCode = parentCode;
+	}
+
+	public void setSeq(BigDecimal seq) {
+		this.seq = seq;
+	}
+	
+	
 }

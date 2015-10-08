@@ -6,9 +6,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseVersionEntity;
 import com.chinesedreamer.rating.system.group.UserGroupLevel;
 
@@ -21,7 +18,7 @@ import com.chinesedreamer.rating.system.group.UserGroupLevel;
  */
 @Entity
 @Table(name = "sys_group")
-public @Getter @Setter class UserGroup extends BaseVersionEntity<Long>{
+public class UserGroup extends BaseVersionEntity<Long>{
 
 	/**
 	 * 
@@ -34,4 +31,22 @@ public @Getter @Setter class UserGroup extends BaseVersionEntity<Long>{
 	
 	@Column
 	private String name;//组名
+
+	public UserGroupLevel getLevel() {
+		return level;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setLevel(UserGroupLevel level) {
+		this.level = level;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 }

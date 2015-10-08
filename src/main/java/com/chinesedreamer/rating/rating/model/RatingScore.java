@@ -4,9 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseVersionEntity;
 
 /**
@@ -17,7 +14,7 @@ import com.chinesedreamer.rating.base.jpa.model.BaseVersionEntity;
  */
 @Entity
 @Table(name = "rating_score")
-public @Getter @Setter class RatingScore extends BaseVersionEntity<Long>{
+public class RatingScore extends BaseVersionEntity<Long>{
 
 	/**
 	 * 
@@ -29,4 +26,22 @@ public @Getter @Setter class RatingScore extends BaseVersionEntity<Long>{
 	
 	@Column
 	private Integer score;
+
+	public String getName() {
+		return name;
+	}
+
+	public Integer getScore() {
+		return score;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setScore(Integer score) {
+		this.score = score;
+	}
+	
+	
 }

@@ -57,7 +57,18 @@ font-size:30px;
 			<img src="${ctx }/resources/images/wechat.jpg" width="128" height="128">
 		</div>
 	</div>
+	
+	
+	<div id="dd">
+		<div style="margin:10px 0 0 60px;font-size:16px;line-height:16px;height:16px;">您的系统<font style="color:red;">未经授权</font>，请输入激活码!</div>
+		<div style="margin:10px 0 0 15px;font-size:16px;line-height:16px;height:16px;"><input id="js_mac_pass" style="width:300px" placeholder="请输入激活码"/></div>
+	</div>
+	
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
+<script>
+	var var_js_authorised = '${authorised}';
+	var var_js_mac = '${mac}';
+</script>
 <script type="text/javascript" src="${ctx}/resources/js/login.js"></script>
 </html>

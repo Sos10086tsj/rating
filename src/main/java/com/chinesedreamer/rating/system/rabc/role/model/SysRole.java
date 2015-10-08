@@ -4,9 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.chinesedreamer.rating.base.jpa.model.BaseVersionEntity;
 
 /** 
@@ -18,7 +15,7 @@ import com.chinesedreamer.rating.base.jpa.model.BaseVersionEntity;
  */
 @Entity
 @Table(name = "sys_role")
-public @Getter @Setter class SysRole extends BaseVersionEntity<Long>{
+public class SysRole extends BaseVersionEntity<Long>{
 
 	/**
 	 * 
@@ -27,4 +24,14 @@ public @Getter @Setter class SysRole extends BaseVersionEntity<Long>{
 
 	@Column
 	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 }

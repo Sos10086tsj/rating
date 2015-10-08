@@ -1,13 +1,8 @@
 package com.chinesedreamer.rating.system.rabc.authority.model;
 
 import javax.persistence.Column;
-import javax.persistence.Table;
-
-
 import javax.persistence.Entity;
-
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.Table;
 
 import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
 
@@ -20,7 +15,7 @@ import com.chinesedreamer.rating.base.jpa.model.BaseEntity;
  */
 @Entity
 @Table(name = "sys_authority")
-public @Getter @Setter class SysAuthority extends BaseEntity<Long>{
+public class SysAuthority extends BaseEntity<Long>{
 
 	/**
 	 * 
@@ -35,4 +30,30 @@ public @Getter @Setter class SysAuthority extends BaseEntity<Long>{
 	
 	@Column(name = "show", columnDefinition="TINYINT(1)")
 	private Boolean show;
+
+	public String getCode() {
+		return code;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Boolean getShow() {
+		return show;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setShow(Boolean show) {
+		this.show = show;
+	}
+	
+	
 }
