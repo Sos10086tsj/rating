@@ -39,7 +39,7 @@ public class SecurityServiceImpl implements SecurityService{
 		if (null == passConfig) {
 			return false;
 		}
-		String mac = config.getPropertyValue();
+		String mac = config.getPropertyValue().toLowerCase();
 		String pass = passConfig.getPropertyValue();
 		if (EncryptionUtil.md5L32(mac + salt.getPropertyValue()).equals(pass)) {
 			return true;
@@ -57,7 +57,7 @@ public class SecurityServiceImpl implements SecurityService{
 		Config config = this.logic.findByProperty(ConfigConstant.AUTHORISE_MAC);
 		Config salt = this.logic.findByProperty(ConfigConstant.AUTHORISE_MAC_SALT);
 		Config passConfig = this.logic.findByProperty(ConfigConstant.AUTHORISE_MAC_PASS);
-		String mac = config.getPropertyValue();
+		String mac = config.getPropertyValue().toLowerCase();
 		if (EncryptionUtil.md5L32(mac + salt.getPropertyValue()).equals(macPass)) {
 			if (null == passConfig) {
 				passConfig = new Config();
