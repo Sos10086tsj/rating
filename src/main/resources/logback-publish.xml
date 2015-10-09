@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Reference Manual http://logback.qos.ch/manual/index.html -->
+
+<configuration debug="false">
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder charset="UTF-8">
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE-ERROR"	class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>e:/rating/logs/rating/error.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>15</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>e:/rating/logs/rating/info.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>15</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+	    
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+	
+	<logger name="error" level="ERROR">
+        <appender-ref ref="FILE-ERROR"/>
+    </logger>
+
+	<logger name="org.springframework" level="ERROR" />
+	<logger name="org.apache" level="ERROR" />
+
+</configuration>
