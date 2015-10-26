@@ -61,6 +61,7 @@ font-size:30px;
 	
 	<div id="dd">
 		<div style="margin:10px 0 0 60px;font-size:16px;line-height:16px;height:16px;">您的系统<font style="color:red;">未经授权</font>，请输入激活码!</div>
+		<div style="margin:10px 0 0 60px;font-size:16px;line-height:16px;height:16px;">MAC：<font style="color:red;">${mac}</font></div>
 		<div style="margin:10px 0 0 15px;font-size:16px;line-height:16px;height:16px;"><input id="js_mac_pass" style="width:300px" placeholder="请输入激活码"/></div>
 	</div>
 	

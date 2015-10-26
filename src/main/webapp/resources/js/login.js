@@ -18,7 +18,7 @@ $(function(){
 		$('#dd').dialog({
 			title : '授权提醒',
 			width : 350,
-			height : 150,
+			height : 180,
 			closed : false,
 			cache : false,
 			modal : true,
