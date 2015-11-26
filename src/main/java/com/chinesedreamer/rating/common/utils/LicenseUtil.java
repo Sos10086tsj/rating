@@ -7,7 +7,7 @@ public class LicenseUtil {
 	 */
 	public static String getLicensePath() {
 		String applicationPath = LicenseUtil.class.getClassLoader().getResource("application.properties").getPath();
-		int classIndex = applicationPath.lastIndexOf("classes");
+		int classIndex = applicationPath.lastIndexOf("rating");
 		return applicationPath.substring(0, classIndex) + "rating.license";
 	}
 }
