@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.chinesedreamer.rating.common.utils.DateUtil;
 import com.chinesedreamer.rating.common.vo.OptionTitle;
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.logic.RatingLogic;
@@ -52,7 +53,6 @@ import com.chinesedreamer.rating.template.model.RatingTemplateVoter;
 import com.chinesedreamer.rating.template.model.RatingTmplOptionWeight;
 import com.chinesedreamer.rating.template.util.RatingSuppTmplScoerUtil;
 import com.chinesedreamer.rating.template.util.TmplScoerVO;
-import com.chinesedreamer.rating.util.DateUtil;
 
 /**
  * Description: 
@@ -123,7 +123,7 @@ public class RatingServiceImpl implements RatingService{
 		vo.setName(rating.getName());
 		vo.setEffFrom(rating.getEffFrom());
 		vo.setEffTo(rating.getEffTo());
-		if (rating.getEffTo().after(new Date())) {//未到期
+		if (null != rating.getEffTo() && rating.getEffTo().after(new Date())) {//未到期
 			vo.setOverdue(false);
 		}else {
 			vo.setOverdue(true);

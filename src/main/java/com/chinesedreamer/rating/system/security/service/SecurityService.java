@@ -1,11 +1,13 @@
 package com.chinesedreamer.rating.system.security.service;
 
+import com.chinesedreamer.rating.system.security.vo.LisenceVo;
+
 public interface SecurityService {
 	/**
 	 * 系统是否已授权
 	 * @return
 	 */
-	public boolean isSystemAuthorised();
+	public LisenceVo isSystemAuthorised();
 	
 	/**
 	 * 加密mac地址

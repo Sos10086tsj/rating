@@ -21,7 +21,9 @@ import com.chinesedreamer.rating.common.io.DefaultDownloadComponent;
 import com.chinesedreamer.rating.common.io.DownloadComponent;
 import com.chinesedreamer.rating.common.utils.IpUtil;
 import com.chinesedreamer.rating.common.vo.ResponseVo;
+import com.chinesedreamer.rating.system.security.constant.ActivationState;
 import com.chinesedreamer.rating.system.security.service.SecurityService;
+import com.chinesedreamer.rating.system.security.vo.LisenceVo;
 import com.chinesedreamer.rating.system.session.service.UserSessionService;
 import com.chinesedreamer.rating.system.user.exception.PasswordIncorrectException;
 import com.chinesedreamer.rating.system.user.exception.UserFrozenException;
@@ -47,15 +49,19 @@ public class IndexController {
 	
 	@RequestMapping(value = "login",method = RequestMethod.GET)
 	public String login(Model model,HttpServletRequest request) throws UserFrozenException,UserNotExistException,PasswordIncorrectException{
-		if (securityService.isSystemAuthorised()) {
+		LisenceVo vo = securityService.isSystemAuthorised();
+		if (vo.getState().equals(ActivationState.ACTIVE)) {
 			model.addAttribute("authorised", "0");
-		}else {
+		}else if (vo.getState().equals(ActivationState.PROBATION)){
 			model.addAttribute("authorised", "1");
+			model.addAttribute("remaining", vo.getRemaingDay());
 			try {
 				model.addAttribute("mac", IpUtil.getLocalMac(IpUtil.getLocalhost()));
 			} catch (Exception e) {
 				logger.error("",e);
 			} 
+		}else{
+			model.addAttribute("authorised", "-1");
 		}
 		return "login";
 	}
@@ -68,15 +74,19 @@ public class IndexController {
 	
 	@RequestMapping(value = "login",method = RequestMethod.POST)
 	public String userLogin(Model model,HttpServletRequest request) throws UserFrozenException,UserNotExistException,PasswordIncorrectException{
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		this.userService.login(username, password);
-		
-		model.addAttribute("menus", this.userService.getUserMenus(username));
-		model.addAttribute("profile", this.userService.showUserProfile(username));
-		model.addAttribute("currentUser", this.userService.getUser(username).getName());
-		
-		return "index";
+		LisenceVo vo = securityService.isSystemAuthorised();
+		if (vo.getState().equals(ActivationState.ACTIVE) || vo.getState().equals(ActivationState.PROBATION)) {
+			String username = request.getParameter("username");
+			String password = request.getParameter("password");
+			this.userService.login(username, password);
+			
+			model.addAttribute("menus", this.userService.getUserMenus(username));
+			model.addAttribute("profile", this.userService.showUserProfile(username));
+			model.addAttribute("currentUser", this.userService.getUser(username).getName());
+			
+			return "index";
+		}
+		return "license/license";
 	}
 	
 	@RequestMapping(value = "welcome",method = RequestMethod.GET)

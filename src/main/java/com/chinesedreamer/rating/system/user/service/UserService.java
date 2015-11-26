@@ -98,4 +98,8 @@ public interface UserService {
 	 * @param userId
 	 */
 	public void deleteUser(Long userId);
+	
+	public User findOne(Long userId);
+	
+	public List<User> getGroupUsers(Long groupId);
 }

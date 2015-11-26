@@ -1,4 +1,4 @@
-package com.chinesedreamer.rating.util;
+package com.chinesedreamer.rating.common.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

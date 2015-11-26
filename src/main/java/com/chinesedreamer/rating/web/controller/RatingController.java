@@ -3,8 +3,10 @@ package com.chinesedreamer.rating.web.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -35,9 +37,13 @@ import com.chinesedreamer.rating.rating.vo.RatingUserVo;
 import com.chinesedreamer.rating.rating.vo.RatingVo;
 import com.chinesedreamer.rating.rating.vo.RatingWeightVo;
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
+import com.chinesedreamer.rating.system.group.model.UserGroup;
 import com.chinesedreamer.rating.system.session.service.UserSessionService;
 import com.chinesedreamer.rating.system.user.model.User;
 import com.chinesedreamer.rating.system.user.service.UserService;
+import com.chinesedreamer.rating.template.model.RatingTemplate;
+import com.chinesedreamer.rating.template.service.RatingTemplateService;
+import com.chinesedreamer.rating.template.service.RatingTemplateVoterService;
 
 /** 
  * Description: 
@@ -57,6 +63,11 @@ public class RatingController {
 	private UserService userService;
 	@Resource
 	private StatisticsService statisticsService;
+	
+	@Resource
+	private RatingTemplateService ratingTemplateService;
+	@Resource
+	private RatingTemplateVoterService ratingTemplateVoterService;
 	
 	/**
 	 * 投票管理列表页
@@ -322,6 +333,49 @@ public class RatingController {
 		}
 		model.addAttribute("options", options);
 		model.addAttribute("gridWidth", totalWidth);
+		
+		// 计算我的得分和我的组内最高、最低低分
+		List<RatingTemplate> ratingTemplates = this.ratingTemplateService.findByRatingId(ratingId);
+		Set<Long> templateIds = new HashSet<Long>();
+		UserGroup userGroup = this.userService.findOne(userId).getUserGroup();
+		for (RatingTemplate ratingTemplate : ratingTemplates) {
+			if (null != this.ratingTemplateVoterService.findByTmplIdAndGroupId(ratingTemplate.getId(),
+					userGroup.getId())) {
+				templateIds.add(ratingTemplate.getId());
+			}
+		}
+		StringBuffer tmplIds = new StringBuffer();
+		for (Long id : templateIds) {
+			tmplIds.append(id).append(",");
+		}
+
+		List<User> groupUsers = this.userService.getGroupUsers(userGroup.getId());
+		Set<Long> groupUserIds = new HashSet<Long>();
+		for (User user : groupUsers) {
+			groupUserIds.add(user.getId());
+		}
+		float min = 999;
+		float max = 0;
+		RptVo rptVo = this.statisticsService.generateReport(tmplIds.toString().substring(0, tmplIds.length() - 1));
+		for (Map<String, String> score : rptVo.getScores()) {
+			Long tmpUserId = Long.valueOf(score.get("user_id"));
+			if (!groupUserIds.contains(tmpUserId)) {
+				continue;
+			}
+			if (userId.equals(tmpUserId)) {
+				model.addAttribute("myScore", score.get("total"));
+			}
+			Float tmpTotal = Float.valueOf(score.get("total"));
+			if (tmpTotal < min) {
+				min = tmpTotal;
+			}
+			if (tmpTotal > max) {
+				max = tmpTotal;
+			}
+		}
+		model.addAttribute("min", min);
+		model.addAttribute("max", max);
+		
 		return "statistics/userDetail";
 	}
 	
@@ -334,6 +388,7 @@ public class RatingController {
 		List<Map<String, String>> vos = this.statisticsService.userDetailsByRatingId(ratingId, userId);
 		rstMap.put("total", vos.size());
 		rstMap.put("rows", vos);
+		
 		return rstMap;
 	}
 	

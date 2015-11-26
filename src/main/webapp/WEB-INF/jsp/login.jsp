@@ -57,19 +57,22 @@ font-size:30px;
 			<img src="${ctx }/resources/images/wechat.jpg" width="128" height="128">
 		</div>
 	</div>
-	
-	
+
 	<div id="dd">
-		<div style="margin:10px 0 0 60px;font-size:16px;line-height:16px;height:16px;">您的系统<font style="color:red;">未经授权</font>，请输入激活码!</div>
-		<div style="margin:10px 0 0 60px;font-size:16px;line-height:16px;height:16px;">MAC：<font style="color:red;">${mac}</font></div>
-		<div style="margin:10px 0 0 15px;font-size:16px;line-height:16px;height:16px;"><input id="js_mac_pass" style="width:300px" placeholder="请输入激活码"/></div>
+		<c:if test="${authorised == 1}">
+			<div style="margin:10px 0 0 60px;font-size:16px;line-height:16px;height:16px;">系统未激活，试用剩余 ${remaining }天</div>
+			<div style="margin:10px 0 0 60px;font-size:16px;line-height:16px;height:16px;">请联系服务商激活系统</div>
+			<div style="margin:10px 0 0 60px;font-size:16px;line-height:16px;height:16px;">授权码：<font style="color:red;">${mac}</font></div>
+		</c:if>
+		<c:if test="${authorised == -1}">
+			<div style="margin:10px 0 0 70px;font-size:16px;line-height:16px;height:16px;">未经授权，请先激活系统。</div>
+		</c:if>
 	</div>
 	
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
 <script>
 	var var_js_authorised = '${authorised}';
-	var var_js_mac = '${mac}';
 </script>
 <script type="text/javascript" src="${ctx}/resources/js/login.js"></script>
 </html>

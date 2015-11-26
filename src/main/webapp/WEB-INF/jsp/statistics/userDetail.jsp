@@ -8,6 +8,16 @@
 <title>评分考核系统</title>
 </head>
 <body>
+	<div>
+		<div style="text-align:left;font-size:16px;line-height:16px;height:16px;margin-bottom: 10px;">
+			<span >我的得分：</span>
+			<span style="color:red;">${myScore }&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			<span >组内最高分：</span>
+			<span style="color:red;">${max }&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			<span >组内最低分：</span>
+			<span style="color:red;">${min }&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		</div>
+	</div>
 	<table 	id="js_statistics_detail_dg" 
 		title="得分明细" 
 		class="easyui-datagrid" 
@@ -23,9 +33,6 @@
         <thead>
         	<tr>
         		<th data-options="field:'source',width:120,hidden:true">来源</th> 
-        		<th data-options="field:'min',width:120">最低分</th> 
-        		<th data-options="field:'max',width:120">最高分</th> 
-        		<th data-options="field:'average',width:120">平均分</th> 
         		<c:forEach items="${options }" var="item">
         			<th data-options="field:'${item.value }',width:${item.width }">${item.label }</th>
         		</c:forEach>

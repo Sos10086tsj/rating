@@ -199,6 +199,25 @@ public class StatisticsServiceImpl implements StatisticsService{
 				int innerNum = innerVoter.isEmpty() ? 1 : innerVoter.size();
 				int outerNum = outerVoter.isEmpty() ? 1 : outerVoter.size();
 				Float value = (innerValue / innerNum) * innerRate + (outerValue / outerNum) * outerRate ;
+				
+				//计算总权重
+				Float totalWeight = 0.0f;
+				totalWeight += innerRate;
+				totalWeight += outerRate;
+				if (StringUtils.isNotEmpty(score.get("totalWeight"))) {
+					totalWeight = Float.parseFloat(score.get("totalWeight"));
+				}
+				if (!innerVoter.isEmpty()) {//A表本组成员有人投票
+					totalWeight += innerRate;
+				}
+				if (!outerVoter.isEmpty()) {//A表外租成员有投票
+					totalWeight += outerRate;
+				}
+				if (totalWeight == 0.0f) {
+					totalWeight = 1.0f;
+				}
+				
+				
 				score.put("option_" + optionKey, this.formatScore(value,config));
 				
 				total += weight.getWeight().floatValue() / 100 * value * rate;
@@ -618,30 +637,6 @@ public class StatisticsServiceImpl implements StatisticsService{
 					score.put("option_" + optionKey, value.toString());
 				}
 			}
-			if (hasScore) {
-				Float min = 100000.0f;
-				Float max = 0.0f;
-				Float total = 0.0f;
-				int num = 0;
-				
-				for (String scoreKey : score.keySet()) {
-					if (scoreKey.startsWith("option_")) {
-						Float tmpScore = Float.parseFloat(score.get(scoreKey));
-						total += tmpScore;
-						num ++;
-						if (tmpScore <= min) {
-							min = tmpScore;
-						}
-						if (tmpScore >= max) {
-							max = tmpScore;
-						}
-					}
-				}
-				
-				score.put("min", String.valueOf(min) );
-				score.put("max", String.valueOf(max) );
-				score.put("average", String.valueOf(total / num) );
-			}
 			
 			rstMap.add(score);
 		}
@@ -690,31 +685,6 @@ public class StatisticsServiceImpl implements StatisticsService{
 					score.put("option_" + optionKey, scoreView.getScore().toString());
 				}
 			}
-			
-			if (hasScore) {
-				Float min = 100000.0f;
-				Float max = 0.0f;
-				Float total = 0.0f;
-				int num = 0;
-				
-				for (String scoreKey : score.keySet()) {
-					if (scoreKey.startsWith("option_")) {
-						Float tmpScore = Float.parseFloat(score.get(scoreKey));
-						total += tmpScore;
-						num ++;
-						if (tmpScore <= min) {
-							min = tmpScore;
-						}
-						if (tmpScore >= max) {
-							max = tmpScore;
-						}
-					}
-				}
-				
-				score.put("min", String.valueOf(min) );
-				score.put("max", String.valueOf(max) );
-				score.put("average", String.valueOf(total / num) );
-			}
 			rstMap.add(score);
 		}
 	}
@@ -757,31 +727,6 @@ public class StatisticsServiceImpl implements StatisticsService{
 					score.put("option_" + optionKey, scoreView.getScore().toString());
 				}
 			}
-			
-			if (hasScore) {
-				Float min = 100000.0f;
-				Float max = 0.0f;
-				Float total = 0.0f;
-				int num = 0;
-				
-				for (String scoreKey : score.keySet()) {
-					if (scoreKey.startsWith("option_")) {
-						Float tmpScore = Float.parseFloat(score.get(scoreKey));
-						total += tmpScore;
-						num ++;
-						if (tmpScore <= min) {
-							min = tmpScore;
-						}
-						if (tmpScore >= max) {
-							max = tmpScore;
-						}
-					}
-				}
-				
-				score.put("min", String.valueOf(min) );
-				score.put("max", String.valueOf(max) );
-				score.put("average", String.valueOf(total / num) );
-			}
 			rstMap.add(score);
 		}
 	}
@@ -819,31 +764,6 @@ public class StatisticsServiceImpl implements StatisticsService{
 				}else {
 					score.put("option_" + optionKey, scoreView.getScore().toString());
 				}
-			}
-			
-			if (hasScore) {
-				Float min = 100000.0f;
-				Float max = 0.0f;
-				Float total = 0.0f;
-				int num = 0;
-				
-				for (String scoreKey : score.keySet()) {
-					if (scoreKey.startsWith("option_")) {
-						Float tmpScore = Float.parseFloat(score.get(scoreKey));
-						total += tmpScore;
-						num ++;
-						if (tmpScore <= min) {
-							min = tmpScore;
-						}
-						if (tmpScore >= max) {
-							max = tmpScore;
-						}
-					}
-				}
-				
-				score.put("min", String.valueOf(min) );
-				score.put("max", String.valueOf(max) );
-				score.put("average", String.valueOf(total / num) );
 			}
 			rstMap.add(score);
 		}
@@ -948,6 +868,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 		
 		return rstMap;
 	}
+
 
 	@Override
 	public int[] generateChart(Long ratingId) {

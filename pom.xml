@@ -48,6 +48,7 @@
 		<servlet-api.vrsion>2.5</servlet-api.vrsion>
 		<ehcache-core.version>2.6.10</ehcache-core.version>
 		<ehcache.version>2.9.0</ehcache.version>
+		<commons-configuration.version>1.10</commons-configuration.version>
 	</properties>
 
 	<dependencies>
@@ -366,7 +367,45 @@
 			<artifactId>ehcache</artifactId>
 			<version>${ehcache.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>${commons-configuration.version}</version>
+		</dependency>
+		
 	</dependencies>
+	
+	<!-- profile 配置 -->
+	<profiles>
+		<!-- dev配置 -->
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<runtime.env>env/dev</runtime.env>
+				<final.name>rating</final.name>
+			</properties>
+		</profile>
+		<!-- qa配置 -->
+		<profile>
+			<id>prod</id>
+			<properties>
+				<runtime.env>env/prod</runtime.env>
+				<final.name>rating</final.name>
+			</properties>
+		</profile>
+		<!-- prod配置 -->
+		<profile>
+			<id>publish</id>
+			<properties>
+				<runtime.env>env/publish</runtime.env>
+				<final.name>rating</final.name>
+			</properties>
+		</profile>
+	</profiles>
 
 	<build>
 		<finalName>rating</finalName>
@@ -402,6 +441,22 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+			
+			<!-- war打包插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>${runtime.env}</directory>
+							<targetPath>WEB-INF/classes</targetPath>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+			
 		</plugins>
 	</build>
 </project>

@@ -313,4 +313,14 @@ public class UserServiceImpl implements UserService{
 		}
 		return username;
 	}
+
+	@Override
+	public User findOne(Long userId) {
+		return this.logic.findOne(userId);
+	}
+
+	@Override
+	public List<User> getGroupUsers(Long groupId) {
+		return this.logic.findByGroupIdAndStatus(groupId, UserStatus.ACTIVE);
+	}
 }

@@ -1,16 +1,27 @@
 package com.chinesedreamer.rating.system.security.service;
 
+import java.io.File;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.chinesedreamer.rating.common.io.PropertiesUtils;
 import com.chinesedreamer.rating.common.utils.EncryptionUtil;
 import com.chinesedreamer.rating.common.utils.IpUtil;
+import com.chinesedreamer.rating.common.utils.LicenseUtil;
+import com.chinesedreamer.rating.common.utils.ThreadUtils;
 import com.chinesedreamer.rating.system.config.ConfigConstant;
 import com.chinesedreamer.rating.system.config.logic.ConfigLogic;
 import com.chinesedreamer.rating.system.config.model.Config;
+import com.chinesedreamer.rating.system.security.constant.ActivationState;
+import com.chinesedreamer.rating.system.security.constant.License;
+import com.chinesedreamer.rating.system.security.runner.LicenseRunner;
+import com.chinesedreamer.rating.system.security.vo.LisenceVo;
 
 @Service
 public class SecurityServiceImpl implements SecurityService{
@@ -20,31 +31,60 @@ public class SecurityServiceImpl implements SecurityService{
 	private ConfigLogic logic;
 
 	@Override
-	public boolean isSystemAuthorised() {
-		Config config = this.logic.findByProperty(ConfigConstant.AUTHORISE_MAC);
-		Config salt = this.logic.findByProperty(ConfigConstant.AUTHORISE_MAC_SALT);
-		
-		if (null == config) {//生成MAC
-			config = new Config();
-			config.setProperty(ConfigConstant.AUTHORISE_MAC);
-			try {
-				config.setPropertyValue(IpUtil.getLocalMac(IpUtil.getLocalhost()));
-				this.logic.save(config);
-			} catch (Exception e) {
-				logger.error("",e);
+	public LisenceVo isSystemAuthorised() {
+		LisenceVo vo = new LisenceVo();
+		try {
+			//检查是否激活
+			String mac = IpUtil.getLocalMac(IpUtil.getLocalhost());
+			String licensePath = LicenseUtil.getLicensePath();
+			File license = new File(licensePath);
+			String activationJsonStr = EncryptionUtil.decrypt(license, 
+					EncryptionUtil.md5L32(mac).substring(0, 16)
+					+ EncryptionUtil.md5L32(mac).substring(8, 24)
+					+ EncryptionUtil.md5L32(mac).substring(16, 32)
+					);
+			if (null != activationJsonStr) {
+				JSONObject activationJson = JSON.parseObject(activationJsonStr);
+				Integer status = activationJson.getInteger("status");
+				if (status == ActivationState.ACTIVE.getValue()) {
+					vo.setState(ActivationState.ACTIVE);
+					return vo;
+				}
+			}else{//检查是否在试用期
+				PropertiesUtils propertiesUtils = new PropertiesUtils("probation.properties");
+				String probation = propertiesUtils.getProperty("probation");
+				activationJsonStr = EncryptionUtil.decrypt(license, 
+						EncryptionUtil.md5L32(probation).substring(0, 16)
+						+ EncryptionUtil.md5L32(probation).substring(8, 24)
+						+ EncryptionUtil.md5L32(probation).substring(16, 32)
+						);
+				if (null != activationJsonStr){
+					JSONObject activationJson = JSON.parseObject(activationJsonStr);
+					Integer status = activationJson.getInteger("status");
+					if (status == ActivationState.PROBATION.getValue()) {
+						int remaining = this.isProbation();
+						if (remaining > 0) {
+							if (!License.PROBATION_RUNNING) {
+								License.PROBATION_RUNNING = true;
+								LicenseRunner runner = new LicenseRunner();
+								Thread thread = new Thread(runner, "license.runner");
+								thread.start();
+							}
+							vo.setState(ActivationState.PROBATION);
+							vo.setRemaingDay(remaining / 60 / 60 / 24 + 1);
+						}else {
+							vo.setState(ActivationState.PROBATION_OVERDUE);
+						}
+						return vo;
+					}
+				}
 			}
-			return false;
+		} catch (Exception e) {
+			this.logger.error("{}",e);
 		}
-		Config passConfig = this.logic.findByProperty(ConfigConstant.AUTHORISE_MAC_PASS);
-		if (null == passConfig) {
-			return false;
-		}
-		String mac = config.getPropertyValue().toLowerCase();
-		String pass = passConfig.getPropertyValue();
-		if (EncryptionUtil.md5L32(mac + salt.getPropertyValue()).equals(pass)) {
-			return true;
-		}
-		return false;
+		
+		vo.setState(ActivationState.REJECT);
+		return vo;
 	}
 
 	@Override
@@ -71,4 +111,42 @@ public class SecurityServiceImpl implements SecurityService{
 		}
 	}
 
+	/**
+	 * 检查适用是否过期
+	 * @return
+	 */
+	private int isProbation() {
+		try {
+			PropertiesUtils propertiesUtils = new PropertiesUtils("probation.properties");
+			String probation = propertiesUtils.getProperty("probation");
+			
+			String licensePath = LicenseUtil.getLicensePath();
+			File license = new File(licensePath);
+
+			
+			String availableStr = EncryptionUtil.decrypt(license, 
+					EncryptionUtil.md5L32(probation).substring(0, 16)
+					+ EncryptionUtil.md5L32(probation).substring(8, 24)
+					+ EncryptionUtil.md5L32(probation).substring(16, 32)
+					);
+			JSONObject availableJson = JSON.parseObject(availableStr);
+			Integer available = availableJson.getInteger("remaining");
+			
+			String passStr = propertiesUtils.getProperty("probation.n");
+			
+			Integer pass = Integer.valueOf(passStr);
+			
+			if (pass < available) {
+				return available - pass;
+			}else {
+				Thread thread = ThreadUtils.getThread("license.runner");
+				if (null != thread) {
+					thread.interrupt();
+				}
+			}
+		} catch (Exception e) {
+			this.logger.error("{}",e);
+		}
+		return -1;
+	}
 }
