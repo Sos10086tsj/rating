@@ -71,7 +71,11 @@ public class SecurityServiceImpl implements SecurityService{
 								thread.start();
 							}
 							vo.setState(ActivationState.PROBATION);
-							vo.setRemaingDay(remaining / 60 / 60 / 24 + 1);
+							int days = remaining / 60 / 60 / 24;
+							if (days * 60 *60 *24 < remaining) {
+								days ++;
+							}
+							vo.setRemaingDay(days);
 						}else {
 							vo.setState(ActivationState.PROBATION_OVERDUE);
 						}
