@@ -338,13 +338,15 @@ public class RatingController {
 		List<RatingTemplate> ratingTemplates = this.ratingTemplateService.findByRatingId(ratingId);
 		Set<Long> templateIds = new HashSet<Long>();
 		UserGroup userGroup = this.userService.findOne(userId).getUserGroup();
+		//所有得分者内的最高分
 		for (RatingTemplate ratingTemplate : ratingTemplates) {
-//			if (null != this.ratingTemplateVoterService.findByTmplIdAndGroupId(ratingTemplate.getId(),userGroup.getId())) { 
-			// 所有得分者内的最高分
-			if(null != this.ratingTemplateVoterService.findByTmplId(ratingTemplate.getId())){
-				templateIds.add(ratingTemplate.getId());
-			}
+			templateIds.add(ratingTemplate.getId());
 		}
+//		for (RatingTemplate ratingTemplate : ratingTemplates) {
+//			if (null != this.ratingTemplateVoterService.findByTmplIdAndGroupId(ratingTemplate.getId(),userGroup.getId())) { 
+//				templateIds.add(ratingTemplate.getId());
+//			}
+//		}
 		StringBuffer tmplIds = new StringBuffer();
 		for (Long id : templateIds) {
 			tmplIds.append(id).append(",");
