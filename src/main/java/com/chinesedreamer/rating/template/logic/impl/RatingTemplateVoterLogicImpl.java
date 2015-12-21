@@ -33,4 +33,9 @@ public class RatingTemplateVoterLogicImpl extends BaseLogicImpl<RatingTemplateVo
 		return this.repository.findByTmplIdAndGroupId(tmplId, groupId);
 	}
 
+	@Override
+	public List<RatingTemplateVoter> findByTmplId(Long tmplId) {
+		return this.repository.findByTmplId(tmplId);
+	}
+
 }

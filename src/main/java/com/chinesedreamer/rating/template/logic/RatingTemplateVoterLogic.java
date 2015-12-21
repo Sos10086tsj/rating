@@ -28,4 +28,12 @@ public interface RatingTemplateVoterLogic extends BaseLogic<RatingTemplateVoter,
 	 * @return
 	 */
 	public List<RatingTemplateVoter> findByTmplIdAndGroupId(Long tmplId, Long groupId);
+	
+	/**
+	 * 根据模板查找参与投票的人
+	 * @param tmplId
+	 * @param groupId
+	 * @return
+	 */
+	public List<RatingTemplateVoter> findByTmplId(Long tmplId);
 }

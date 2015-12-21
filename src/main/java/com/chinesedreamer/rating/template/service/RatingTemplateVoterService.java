@@ -21,4 +21,11 @@ public interface RatingTemplateVoterService {
 	 * @return
 	 */
 	public List<RatingTemplateVoter> findByTmplIdAndGroupId(Long tmplId, Long groupId);
+	
+	/**
+	 * 根据模板查找参与投票的人
+	 * @param tmplId
+	 * @return
+	 */
+	public List<RatingTemplateVoter> findByTmplId(Long tmplId);
 }

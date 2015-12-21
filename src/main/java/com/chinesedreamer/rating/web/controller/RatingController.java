@@ -339,8 +339,9 @@ public class RatingController {
 		Set<Long> templateIds = new HashSet<Long>();
 		UserGroup userGroup = this.userService.findOne(userId).getUserGroup();
 		for (RatingTemplate ratingTemplate : ratingTemplates) {
-			if (null != this.ratingTemplateVoterService.findByTmplIdAndGroupId(ratingTemplate.getId(),
-					userGroup.getId())) {
+//			if (null != this.ratingTemplateVoterService.findByTmplIdAndGroupId(ratingTemplate.getId(),userGroup.getId())) { 
+			// 所有得分者内的最高分
+			if(null != this.ratingTemplateVoterService.findByTmplId(ratingTemplate.getId())){
 				templateIds.add(ratingTemplate.getId());
 			}
 		}

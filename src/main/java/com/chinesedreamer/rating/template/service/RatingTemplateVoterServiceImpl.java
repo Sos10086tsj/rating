@@ -26,4 +26,9 @@ public class RatingTemplateVoterServiceImpl implements RatingTemplateVoterServic
 		return this.logic.findByTmplIdAndGroupId(tmplId, groupId);
 	}
 
+	@Override
+	public List<RatingTemplateVoter> findByTmplId(Long tmplId) {
+		return this.logic.findByTmplId(tmplId);
+	}
+
 }
