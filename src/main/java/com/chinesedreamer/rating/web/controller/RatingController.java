@@ -352,19 +352,11 @@ public class RatingController {
 			tmplIds.append(id).append(",");
 		}
 
-		List<User> groupUsers = this.userService.getGroupUsers(userGroup.getId());
-		Set<Long> groupUserIds = new HashSet<Long>();
-		for (User user : groupUsers) {
-			groupUserIds.add(user.getId());
-		}
 		float min = 999;
 		float max = 0;
 		RptVo rptVo = this.statisticsService.generateReport(tmplIds.toString().substring(0, tmplIds.length() - 1));
 		for (Map<String, String> score : rptVo.getScores()) {
 			Long tmpUserId = Long.valueOf(score.get("user_id"));
-			if (!groupUserIds.contains(tmpUserId)) {
-				continue;
-			}
 			if (userId.equals(tmpUserId)) {
 				model.addAttribute("myScore", score.get("total"));
 			}
