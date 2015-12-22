@@ -12,9 +12,9 @@
 		<div style="text-align:left;font-size:16px;line-height:16px;height:16px;margin-bottom: 10px;">
 			<span >我的得分：</span>
 			<span style="color:red;">${myScore }&nbsp;&nbsp;&nbsp;&nbsp;</span>
-			<span >组内最高分：</span>
+			<span >最高分：</span>
 			<span style="color:red;">${max }&nbsp;&nbsp;&nbsp;&nbsp;</span>
-			<span >组内最低分：</span>
+			<span >最低分：</span>
 			<span style="color:red;">${min }&nbsp;&nbsp;&nbsp;&nbsp;</span>
 		</div>
 	</div>
