@@ -135,6 +135,8 @@ public class StatisticsServiceImpl implements StatisticsService{
 		}	
 		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
 		
+		Set<Long> optionKeySet = new HashSet<Long>();
+		
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
 			List<RatingScoreView> tmp = scoreViewMap.get(key);
@@ -161,6 +163,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 						value = innerMap.get(optionKey);
 					}
 					value+= scoreView.getScore() ;
+					optionKeySet.add(optionKey);
 					innerMap.put(optionKey, value);
 				}else {
 					outerVoter.add(scoreView.getVoterId());
@@ -170,13 +173,14 @@ public class StatisticsServiceImpl implements StatisticsService{
 						value = outerMap.get(optionKey);
 					}
 					value+= scoreView.getScore() ;
+					optionKeySet.add(optionKey);
 					outerMap.put(optionKey, value);
 				}
 			}
 			
 			Float total = 0.00000f;
 			
-			for (Long optionKey : innerMap.keySet()) {
+			for (Long optionKey : optionKeySet) {
 				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), optionKey);
 				
 				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionKey);
@@ -261,6 +265,8 @@ public class StatisticsServiceImpl implements StatisticsService{
 			scores = new ArrayList<Map<String, String>>();
 		}	
 		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
+		
+		Set<Long> optionKeySet = new HashSet<Long>();
 
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
@@ -295,6 +301,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					}
 					value+= scoreView.getScore() ;
 					innerMap.put(optionKey, value);
+					optionKeySet.add(optionKey);
 				}else if(!scoreView.getVoterGroupId().equals(scoreView.getScorerGroup()) && scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())){
 					outerVoter.add(scoreView.getVoterId());
 					Long optionKey = scoreView.getOptionId();
@@ -304,6 +311,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					}
 					value+= scoreView.getScore() ;
 					outerMap.put(optionKey, value);
+					optionKeySet.add(optionKey);
 				}else if (voterGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {
 					zongtiVoter.add(scoreView.getVoterId());
 					Long optionKey = scoreView.getOptionId();
@@ -313,11 +321,12 @@ public class StatisticsServiceImpl implements StatisticsService{
 					}
 					value+= scoreView.getScore() ;
 					zongtiMap.put(optionKey, value);
+					optionKeySet.add(optionKey);
 				}
 			}
 			
 			Float total = 0.00000f;
-			for (Long optionKey : innerMap.keySet()) {
+			for (Long optionKey : optionKeySet) {
 				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), optionKey);
 				
 				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionKey);
@@ -388,6 +397,9 @@ public class StatisticsServiceImpl implements StatisticsService{
 			scores = new ArrayList<Map<String, String>>();
 		}	
 		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
+		
+		Set<Long> optionKeySet = new HashSet<Long>();
+		
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
 			List<RatingScoreView> tmp = scoreViewMap.get(key);
@@ -415,6 +427,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 					}
 					value+= scoreView.getScore() ;
 					leaderMap.put(optionKey, value);
+					optionKeySet.add(optionKey);
 				}else if (voterGroup.getLevel().equals(UserGroupLevel.ZONGTI)) {
 					leaderVoter.add(scoreView.getVoterId());
 					Long optionKey = scoreView.getOptionId();
@@ -424,10 +437,11 @@ public class StatisticsServiceImpl implements StatisticsService{
 					}
 					value+= scoreView.getScore() ;
 					leaderMap.put(optionKey, value);
+					optionKeySet.add(optionKey);
 				}
 			}
 			Float total = 0.00000f;
-			for (Long optionKey : leaderMap.keySet()) {
+			for (Long optionKey : optionKeySet) {
 				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), optionKey);
 				
 				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionKey);
@@ -489,6 +503,9 @@ public class StatisticsServiceImpl implements StatisticsService{
 			scores = new ArrayList<Map<String, String>>();
 		}	
 		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
+		
+		Set<Long> optionKeySet = new HashSet<Long>();
+		
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
 			List<RatingScoreView> tmp = scoreViewMap.get(key);
@@ -515,10 +532,11 @@ public class StatisticsServiceImpl implements StatisticsService{
 					}
 					value+= scoreView.getScore() ;
 					zuyuanMap.put(optionKey, value);
+					optionKeySet.add(optionKey);
 				}
 			}
 			Float total = 0.00000f;
-			for (Long optionKey : zuyuanMap.keySet()) {
+			for (Long optionKey : optionKeySet) {
 				RatingTmplOptionWeight weight = this.ratingTmplOptionWeightLogic.findByTmplIdAndOptionId(template.getId(), optionKey);
 				
 				RatingSuppOption suppOption = this.suppOptionLogic.findOne(optionKey);
