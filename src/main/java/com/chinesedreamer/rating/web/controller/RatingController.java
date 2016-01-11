@@ -2,6 +2,7 @@ package com.chinesedreamer.rating.web.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
+import javax.print.DocFlavor.STRING;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -54,6 +56,9 @@ import com.chinesedreamer.rating.template.service.RatingTemplateVoterService;
  */
 @Controller
 public class RatingController {
+	
+	private final String DEFAULT_USER_SCORE = "4.0";
+	
 	private Logger logger = LoggerFactory.getLogger(RatingController.class);
 	@Resource
 	private RatingService ratingService;
@@ -160,6 +165,75 @@ public class RatingController {
 		model.addAttribute("optionsJson", JSON.toJSONString(options));
 		
 		return "rating/ratingVote";
+	}
+	
+	/**
+	 * 用户投票编辑页(excel)
+	 * @param model
+	 * @param tmplId
+	 * @return
+	 */
+	@RequestMapping(value = "rating/voteExcel/{tmplId}",method = RequestMethod.GET)
+	public String showRaringvoteExcel(Model model,@PathVariable("tmplId")Long tmplId){
+		model.addAttribute("votePage", this.ratingService.getRatingVotePage(tmplId));
+		model.addAttribute("tmplId", tmplId);
+		
+		return "rating/ratingVoteExcel";
+	}
+	@ResponseBody
+	@RequestMapping(value = "rating/voteExcel/{tmplId}", method = RequestMethod.POST)
+	public List<Object> userRaringVoteExce(Model model, @PathVariable("tmplId")Long tmplId){
+
+		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+		List<SelectVo> users = this.userService.lookupUser("");
+		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
+		Map<String, Object> scores = this.ratingService.getUserRatingVote(tmplId, user);
+
+		List<Object> rows = new ArrayList<Object>();
+		//1. 增加所有得分项
+		List<String> titleRowList = new ArrayList<String>();
+		titleRowList.add("");
+		for (OptionTitle option : options) {
+			titleRowList.add(option.getLabel());
+		}
+		rows.add(titleRowList.toArray());
+		//2. 增加所有得分用户以及其得分项
+		for (SelectVo userVo : users) {
+			List<String> dataRowList = new ArrayList<String>();
+			dataRowList.add(userVo.getLabel());
+			//2.1 查找该用户是否已经有得分记录
+			@SuppressWarnings("unchecked")
+			List<String> userScores = this.getUserScoreInf(userVo.getValue(), (List<Map<String, Object>>)scores.get("rows"), options);
+			dataRowList.addAll(userScores);
+			rows.add(dataRowList.toArray());
+		}
+
+		return rows;
+	}
+	
+	private List<String> getUserScoreInf(String userId, List<Map<String, Object>> scores, List<OptionTitle> options) {
+		boolean empty = true;
+		List<String> optionScores = new ArrayList<String>();
+		for (Map<String, Object> score : scores) {
+			if (score.get("scorerId").equals(Long.valueOf(userId))) {
+				empty = false;
+				for (OptionTitle option : options) {
+					String s = score.get(option.getValue()).toString();
+					if (StringUtils.isEmpty(s)) {
+						optionScores.add(DEFAULT_USER_SCORE);
+					}else {
+						optionScores.add(s);
+					}
+				}
+				break;
+			}
+		}
+		if (empty) {
+			for (int i = 0; i < options.size(); i++) {
+				optionScores.add(DEFAULT_USER_SCORE);
+			}
+		}
+		return optionScores;
 	}
 	
 	/**

@@ -10,7 +10,7 @@ public class EncryptionUtilTest {
 	@Test
 	public void test() throws Exception {
 //		String mac = "12345678123456781234567812345678";
-		String mac = IpUtil.getLocalMac(IpUtil.getLocalhost());
+		String mac = "00-21-cc-70-74-8f";
 		EncryptionUtil.encrypt(new File("C:/Users/Paris/Desktop/test/rating"), 
 				EncryptionUtil.md5L32(mac).substring(0, 16)
 				+ EncryptionUtil.md5L32(mac).substring(8, 24)
@@ -20,8 +20,7 @@ public class EncryptionUtilTest {
 
 	@Test
 	public void testDecrypt() throws Exception{
-		String mac = "12345678123456781234567812345678";
-				//IpUtil.getLocalMac(IpUtil.getLocalhost());
+		String mac = "00-50-56-c0-00-01";
 		String license = EncryptionUtil.decrypt(new File("C:/Users/Paris/Desktop/test/rating.license"), 
 				EncryptionUtil.md5L32(mac).substring(0, 16)
 				+ EncryptionUtil.md5L32(mac).substring(8, 24)

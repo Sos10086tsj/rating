@@ -39,6 +39,8 @@
 	</context:component-scan>
 	<context:annotation-config />
 	
+	
+	
 	<!-- data source 
 	<bean class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" id="dataSource">
