@@ -22,9 +22,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
+import com.chinesedreamer.rating.attachment.model.Attachment;
+import com.chinesedreamer.rating.attachment.service.AttachmentService;
 import com.chinesedreamer.rating.common.io.DefaultDownloadComponent;
 import com.chinesedreamer.rating.common.io.DownloadComponent;
 import com.chinesedreamer.rating.common.vo.OptionTitle;
@@ -38,7 +42,6 @@ import com.chinesedreamer.rating.rating.vo.RatingUserVo;
 import com.chinesedreamer.rating.rating.vo.RatingVo;
 import com.chinesedreamer.rating.rating.vo.RatingWeightVo;
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
-import com.chinesedreamer.rating.system.group.model.UserGroup;
 import com.chinesedreamer.rating.system.session.service.UserSessionService;
 import com.chinesedreamer.rating.system.user.model.User;
 import com.chinesedreamer.rating.system.user.service.UserService;
@@ -72,6 +75,8 @@ public class RatingController {
 	private RatingTemplateService ratingTemplateService;
 	@Resource
 	private RatingTemplateVoterService ratingTemplateVoterService;
+	@Resource
+	private AttachmentService attachmentService;
 	
 	/**
 	 * 投票管理列表页
@@ -236,6 +241,21 @@ public class RatingController {
 			logger.error("{}",e);
 		}
 		FileUtils.deleteQuietly(file);
+	}
+	
+	/**
+	 * 上传投票excel
+	 * @param model
+	 * @param request
+	 * @param pdf
+	 */
+	@RequestMapping(value = "rating/uploadVoteExcel/{tmplId}",method = RequestMethod.POST)
+	@ResponseBody
+	public void uploadVoteExcel(Model model,HttpServletRequest request,@RequestParam(value = "voteExcel", required = true)MultipartFile voteExcel, @PathVariable("tmplId")Long tmplId){
+		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
+		Attachment excel = this.attachmentService.saveFile(voteExcel, user.getId());
+		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+		this.ratingService.saveVoteExcel(options, user, tmplId, excel);
 	}
 	
 	@ResponseBody
@@ -469,7 +489,7 @@ public class RatingController {
 		// 计算我的得分和我的组内最高、最低低分
 		List<RatingTemplate> ratingTemplates = this.ratingTemplateService.findByRatingId(ratingId);
 		Set<Long> templateIds = new HashSet<Long>();
-		UserGroup userGroup = this.userService.findOne(userId).getUserGroup();
+//		UserGroup userGroup = this.userService.findOne(userId).getUserGroup();
 		//所有得分者内的最高分
 		for (RatingTemplate ratingTemplate : ratingTemplates) {
 			templateIds.add(ratingTemplate.getId());

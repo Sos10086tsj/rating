@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import com.chinesedreamer.rating.attachment.model.Attachment;
 import com.chinesedreamer.rating.common.vo.OptionTitle;
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.model.Rating;
@@ -123,4 +124,11 @@ public interface RatingService {
 	 * @return
 	 */
 	public File generateVoteExcel(List<List<String>> rows, Long tmplId);
+	
+	/**
+	 * 保存excel
+	 * @param options
+	 * @param user
+	 */
+	public void saveVoteExcel(List<OptionTitle> options, User user, Long tmplId, Attachment voteExcel);
 }

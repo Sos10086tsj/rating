@@ -31,7 +31,7 @@ public class DefaultDownloadComponent implements DownloadComponent {
 
 	public DefaultDownloadComponent() {
 		PropertiesUtils propertiesUtils = new PropertiesUtils("config.properties");
-		this.attachmentDir = propertiesUtils.getProperty(ConfigPropertiesConstant.fILE_OUTPUT_PATH);
+		this.attachmentDir = propertiesUtils.getProperty(ConfigPropertiesConstant.FILE_OUTPUT_PATH);
 	}
 
 	public DefaultDownloadComponent(String attachmentDir) {

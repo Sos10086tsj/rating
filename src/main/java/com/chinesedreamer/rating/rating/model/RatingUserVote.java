@@ -65,6 +65,19 @@ public class RatingUserVote extends BaseVersionEntity<Long>{
 	@Column(name = "vote_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date voteDate;
+	
+	@Column(name = "excel_id")
+	private Long excelId;
+	
+	
+
+	public Long getExcelId() {
+		return excelId;
+	}
+
+	public void setExcelId(Long excelId) {
+		this.excelId = excelId;
+	}
 
 	public Long getRatingId() {
 		return ratingId;

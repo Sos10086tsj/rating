@@ -23,6 +23,12 @@ public interface UserLogic extends BaseLogic<User, Long>{
 	 */
 	public User findByUsername(String username);
 	/**
+	 * 根据姓名查找用户
+	 * @param name
+	 * @return
+	 */
+	public User findByName(String name);
+	/**
 	 * 根据用户名查找用�
 	 * @param username
 	 * @return

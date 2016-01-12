@@ -960,7 +960,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 		//创建excel
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		PropertiesUtils propertiesUtils = new PropertiesUtils("config.properties");
-		String outputPath = propertiesUtils.getProperty(ConfigPropertiesConstant.fILE_OUTPUT_PATH);
+		String outputPath = propertiesUtils.getProperty(ConfigPropertiesConstant.FILE_OUTPUT_PATH);
 		File folder = new File(outputPath);
 		if (!folder.exists()) {
 			folder.mkdirs();

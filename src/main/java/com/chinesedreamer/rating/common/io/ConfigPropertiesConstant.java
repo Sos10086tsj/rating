@@ -6,5 +6,6 @@ package com.chinesedreamer.rating.common.io;
  * @version beta
  */
 public class ConfigPropertiesConstant {
-	public static String fILE_OUTPUT_PATH = "file.output.path";
+	public static String FILE_OUTPUT_PATH = "file.output.path";
+	public static String FILE_UPLOAD_PREFIX = "file.upload.prefix";
 }

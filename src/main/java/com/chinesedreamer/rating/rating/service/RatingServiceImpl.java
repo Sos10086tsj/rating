@@ -1,7 +1,9 @@
 package com.chinesedreamer.rating.rating.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,13 +23,20 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.chinesedreamer.rating.attachment.model.Attachment;
 import com.chinesedreamer.rating.common.io.ConfigPropertiesConstant;
 import com.chinesedreamer.rating.common.io.PropertiesUtils;
 import com.chinesedreamer.rating.common.utils.DateUtil;
+import com.chinesedreamer.rating.common.utils.ExcelUtil;
 import com.chinesedreamer.rating.common.vo.OptionTitle;
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.logic.RatingLogic;
@@ -74,6 +83,8 @@ import com.chinesedreamer.rating.template.util.TmplScoerVO;
  */
 @Service
 public class RatingServiceImpl implements RatingService{
+	private Logger logger = LoggerFactory.getLogger(RatingServiceImpl.class);
+	
 	@Resource
 	private RatingLogic logic;
 	@Resource
@@ -530,7 +541,7 @@ public class RatingServiceImpl implements RatingService{
 		//1. 创建excel
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		PropertiesUtils propertiesUtils = new PropertiesUtils("config.properties");
-		String outputPath = propertiesUtils.getProperty(ConfigPropertiesConstant.fILE_OUTPUT_PATH);
+		String outputPath = propertiesUtils.getProperty(ConfigPropertiesConstant.FILE_OUTPUT_PATH);
 		File folder = new File(outputPath);
 		if (!folder.exists()) {
 			folder.mkdirs();
@@ -606,6 +617,105 @@ public class RatingServiceImpl implements RatingService{
 			}
 		}
 		return outputFile;
+	}
+	@Override
+	public void saveVoteExcel(List<OptionTitle> options, User user, Long tmplId, Attachment voteExcel) {
+		//1. 保存user vote
+		RatingTemplate template = this.templateLogic.findOne(tmplId);
+		RatingUserVote vote = this.ratingUserVoteLogic.findByRatingIdAndTmplIdAndUserId(template.getRatingId(), tmplId, user.getId());
+		if (null == vote) {
+			vote = new RatingUserVote();
+		}	
+		vote.setGroupId(user.getGroupId());
+		vote.setPositionId(user.getPositionId());
+		vote.setRatingId(template.getRatingId());
+		vote.setTmplId(tmplId);
+		vote.setUserId(user.getId());
+		vote.setVoteDate(new Date());
+		vote.setExcelId(voteExcel.getId());
+		this.ratingUserVoteLogic.save(vote);
+		//2. 根据excel保存user vote item
+		this.logger.info("********** readExcel:" + voteExcel.getFileName() + " start ********");
+		FileInputStream is = null;
+		Workbook workbook = null;
+		String filePath = voteExcel.getFilePath();
+		try {
+			is = new FileInputStream(filePath);
+			if (filePath.endsWith(".xls")) {
+				workbook = new HSSFWorkbook(is);
+			}else if (filePath.endsWith(".xlsx")) {
+				//TODO 07
+			}else {
+				logger.info("not support file:{}", filePath);
+				return;
+			}
+			
+			//读取excel
+			Sheet sheet = workbook.getSheetAt(0);
+			if (null != sheet){
+				int rows = sheet.getLastRowNum();
+				rows ++;
+				if (rows < 1) {
+					this.logger.info("sheet:{} is empty.",sheet.getSheetName());
+				}
+				
+				//从第二行开始解析
+				Set<RatingUserVoteItem> voteItems = new HashSet<RatingUserVoteItem>();
+				for (int i = 1; i < rows; i++) {
+					Row row = sheet.getRow(i);
+					if (null == row) {
+						this.logger.info("row:{} is empty, continue", i);
+						continue;
+					}
+					String scorerNameWitGroup = row.getCell(0).getStringCellValue();
+					int index = scorerNameWitGroup.indexOf("(");
+					String scorerName = scorerNameWitGroup.substring(0, index - 1);
+					User scorer = this.userLogic.findByName(scorerName);
+					for (int j = 0; j < options.size(); j++) {
+						OptionTitle ot = options.get(j);
+						Long optionId = Long.valueOf(ot.getValue().substring("option_".length()));
+						Float score = ExcelUtil.getCellFloatValue(row.getCell(j+1));
+								//Float.valueOf(row.getCell(j+1).getStringCellValue());
+						
+						RatingUserVoteItem vi = this.ratingUserVoteItemLogic.findByUserVoteIdAndOptionIdAndScorer(vote.getId(), optionId, scorer.getId());
+						if (null == vi) {
+							vi = new RatingUserVoteItem();
+						}
+						vi.setUserVoteId(vote.getId());
+						vi.setOptionId(optionId);
+						vi.setScore(score);
+						vi.setScorer(scorer.getId());
+						vi.setScorerGroup(scorer.getGroupId());
+						vi.setScorerPosition(scorer.getPositionId());
+						voteItems.add(vi);
+					}
+				}
+				for (RatingUserVoteItem voteItem : voteItems) {
+					this.ratingUserVoteItemLogic.save(voteItem);
+				}
+			}else {
+				this.logger.info("No sheet exist, break;");
+			}
+			
+		} catch (Exception e) {
+			this.logger.error("{}",e);
+		}finally{
+			if (null != workbook) {
+				try {
+					workbook.close();
+				} catch (IOException e) {
+					this.logger.error("{}",e);
+				}
+			}
+			if (null != is) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					this.logger.error("{}",e);
+				}
+			}
+		}
+		this.logger.info("********** readExcel:" + voteExcel.getFileName() + " end ********");
 	}
 
 }

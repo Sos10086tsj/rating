@@ -66,4 +66,9 @@ public class UserLogicImpl extends BaseLogicImpl<User, Long> implements UserLogi
 		return this.repository.findByGroupLevelAndPosition(level, positionId);
 	}
 
+	@Override
+	public User findByName(String name) {
+		return this.repository.findByName(name);
+	}
+
 }
