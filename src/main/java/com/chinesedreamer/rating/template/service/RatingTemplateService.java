@@ -6,4 +6,6 @@ import com.chinesedreamer.rating.template.model.RatingTemplate;
 
 public interface RatingTemplateService {
 	public List<RatingTemplate> findByRatingId(Long ratingId);
+	
+	public RatingTemplate findOne(Long templateId);
 }

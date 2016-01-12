@@ -20,4 +20,9 @@ public class RatingTemplateServiceImpl implements RatingTemplateService{
 		return this.logic.findByRatingId(ratingId);
 	}
 
+	@Override
+	public RatingTemplate findOne(Long templateId) {
+		return this.logic.findOne(templateId);
+	}
+
 }

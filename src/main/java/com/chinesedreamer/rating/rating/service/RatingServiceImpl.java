@@ -1,5 +1,7 @@
 package com.chinesedreamer.rating.rating.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,10 +13,20 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.chinesedreamer.rating.common.io.ConfigPropertiesConstant;
+import com.chinesedreamer.rating.common.io.PropertiesUtils;
 import com.chinesedreamer.rating.common.utils.DateUtil;
 import com.chinesedreamer.rating.common.vo.OptionTitle;
 import com.chinesedreamer.rating.common.vo.SelectVo;
@@ -496,6 +508,104 @@ public class RatingServiceImpl implements RatingService{
 			weight.setWeight(option.getBigDecimal("weight"));
 			this.optionWeightLogic.update(weight);
 		}
+	}
+	
+	private HSSFCellStyle commonStyle;
+	private void initCommonStyle(HSSFWorkbook workbook){
+		commonStyle = workbook.createCellStyle();
+		commonStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		commonStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		commonStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		commonStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		commonStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		commonStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		HSSFFont font = workbook.createFont();
+		font.setFontName("Arial");
+		font.setFontHeightInPoints((short)10);
+		commonStyle.setFont(font);
+	}
+	
+	@Override
+	public File generateVoteExcel(List<List<String>> rows, Long tmplId) {
+		//1. 创建excel
+		HSSFWorkbook workbook = new HSSFWorkbook();
+		PropertiesUtils propertiesUtils = new PropertiesUtils("config.properties");
+		String outputPath = propertiesUtils.getProperty(ConfigPropertiesConstant.fILE_OUTPUT_PATH);
+		File folder = new File(outputPath);
+		if (!folder.exists()) {
+			folder.mkdirs();
+		}
+		RatingTemplate rt = this.templateLogic.findOne(tmplId);
+		Rating rating = this.logic.findOne(rt.getRatingId());
+		File outputFile = new File(folder + "/" +  rating.getName() + "-" + rt.getName() + "卷" + System.currentTimeMillis() + ".xls");
+		HSSFSheet sheet = workbook.createSheet();
+		
+		//2. 第一行title
+		HSSFRow titleRow = sheet.createRow(0);
+		titleRow.setHeightInPoints(20.25f);
+		List<String> titleRowData = rows.get(0);
+		
+		int columnNum = titleRowData.size();
+		
+		for (int i = 0; i < columnNum; i++) {
+			String data = titleRowData.get(i);
+			HSSFCell titleCell = titleRow.createCell(i);
+			HSSFCellStyle titleCellStyle = workbook.createCellStyle();
+			titleCellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			titleCellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			titleCellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			titleCellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			titleCellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			titleCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND); 
+			//titleCellStyle.setFillBackgroundColor(HSSFColor.LIGHT_GREEN.index);
+			titleCellStyle.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+			HSSFFont titleFont = workbook.createFont();
+			titleFont.setFontName("Times New Roman");
+			titleFont.setFontHeightInPoints((short)16);
+			titleFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+			titleCellStyle.setFont(titleFont);
+			titleCell.setCellStyle(titleCellStyle);
+			titleCell.setCellType(Cell.CELL_TYPE_STRING);
+			titleCell.setCellValue(data);
+		}
+		
+		//3. 第二行开始逐行打印数据
+		int rowNum = rows.size();
+		this.initCommonStyle(workbook);
+		for (int i = 1; i < rowNum; i++) {
+			List<String> userRowData = rows.get(i);
+			HSSFRow userRow = sheet.createRow(i);
+			
+			for (int j = 0; j < columnNum; j++) {
+				HSSFCell userCell = userRow.createCell(j);
+				userCell.setCellStyle(this.commonStyle);
+				userCell.setCellType(Cell.CELL_TYPE_STRING);
+				userCell.setCellValue(userRowData.get(j));
+			}
+		}
+		//自适应
+		sheet.autoSizeColumn(0, true);
+		for (int i = 1; i < columnNum; i++) {
+//			sheet.autoSizeColumn(i, true);
+			HSSFCell cell = sheet.getRow(0).getCell(i);
+			sheet.setColumnWidth(i, (int)(cell.getStringCellValue().getBytes().length * 1.2 * 256) );
+		}
+
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(outputFile);
+			workbook.write(fos);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				fos.close();
+				workbook.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return outputFile;
 	}
 
 }

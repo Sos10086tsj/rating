@@ -21,9 +21,6 @@
 	</div>
 	
 	<div id="js_handsontable"></div>
-	
-<label id="js_option_json_hidden" style="display:none;">${optionsJson }</label>	
-<label id="js_tmpl_id_hidden" style="display:none;">${votePage.tmplId}</label>	
 
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>

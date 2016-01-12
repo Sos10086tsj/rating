@@ -1,0 +1,7 @@
+var userRatingByExcel = {
+	
+}
+
+$(function(){
+
+})

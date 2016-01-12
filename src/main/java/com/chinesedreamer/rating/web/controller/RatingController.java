@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
-import javax.print.DocFlavor.STRING;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -180,6 +179,65 @@ public class RatingController {
 		
 		return "rating/ratingVoteExcel";
 	}
+	
+	/**
+	 * 通过下载excel的方式投票
+	 * @param model
+	 * @param tmplId
+	 * @return
+	 */
+	@RequestMapping(value = "rating/voteByExcel/{tmplId}",method = RequestMethod.GET)
+	public String showRaringvoteByExcel(Model model,@PathVariable("tmplId")Long tmplId){
+		model.addAttribute("tmplId", tmplId);
+		RatingTemplate rt = this.ratingTemplateService.findOne(tmplId);
+		Rating rating = this.ratingService.findOne(rt.getRatingId());
+		model.addAttribute("fileName", rating.getName() + "-" + rt.getName() + "卷");
+		return "rating/ratingVoteByExcel";
+	}
+	
+	/**
+	 * 下载投票excel
+	 * @param tmplId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "rating/downloadVoteExcel/{tmplId}",method = RequestMethod.GET)
+	public void downloadVoteExcel(HttpServletRequest request, HttpServletResponse response,@PathVariable("tmplId")Long tmplId){
+		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+		List<SelectVo> users = this.userService.lookupUser("");
+		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
+		Map<String, Object> scores = this.ratingService.getUserRatingVote(tmplId, user);
+
+		List<List<String>> rows = new ArrayList<List<String>>();
+		//1. 增加所有得分项
+		List<String> titleRowList = new ArrayList<String>();
+		titleRowList.add("");
+		for (OptionTitle option : options) {
+			titleRowList.add(option.getLabel());
+		}
+		rows.add(titleRowList);
+		//2. 增加所有得分用户以及其得分项
+		for (SelectVo userVo : users) {
+			List<String> dataRowList = new ArrayList<String>();
+			dataRowList.add(userVo.getLabel());
+			//2.1 查找该用户是否已经有得分记录
+			@SuppressWarnings("unchecked")
+			List<String> userScores = this.getUserScoreInf(userVo.getValue(), (List<Map<String, Object>>)scores.get("rows"), options);
+			dataRowList.addAll(userScores);
+			rows.add(dataRowList);
+		}
+		
+		File file = this.ratingService.generateVoteExcel(rows, tmplId);
+		
+		DownloadComponent downloadComponent = new DefaultDownloadComponent();
+		try {
+			downloadComponent.download(request, response, file.getPath(), file.getName());
+		} catch (IOException e) {
+			logger.error("{}",e);
+		}
+		FileUtils.deleteQuietly(file);
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "rating/voteExcel/{tmplId}", method = RequestMethod.POST)
 	public List<Object> userRaringVoteExce(Model model, @PathVariable("tmplId")Long tmplId){

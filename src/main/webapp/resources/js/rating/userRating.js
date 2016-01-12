@@ -15,7 +15,7 @@ rating.userrating = {
 						symble = "(投票)";
 					}
 					//var single = "<a href='" + ctx + "/rating/vote/'" + vote.id + ">" + vote.name + symble + "</a>  ";<A href="javascript:void(0)
-					var single  = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('" + vote.name + "投票','" + ctx + "/rating/voteExcel/" + vote.id + "')\">" 
+					var single  = "<a href=\"javascript:void(0)\" onclick=\"rating.addTab('" + vote.name + "投票','" + ctx + "/rating/voteByExcel/" + vote.id + "')\">" 
 					+ vote.name + symble + "</a>        ";
 					link += single;
 				}

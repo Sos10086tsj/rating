@@ -1,5 +1,6 @@
 package com.chinesedreamer.rating.rating.service;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -114,4 +115,12 @@ public interface RatingService {
 	 * @param options
 	 */
 	public void updateTmplWeight(Long templateId, String options);
+	
+	/**
+	 * 生成投票excel
+	 * @param rows
+	 * @param tmplId
+	 * @return
+	 */
+	public File generateVoteExcel(List<List<String>> rows, Long tmplId);
 }
