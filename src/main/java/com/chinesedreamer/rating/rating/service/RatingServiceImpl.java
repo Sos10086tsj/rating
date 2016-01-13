@@ -669,7 +669,7 @@ public class RatingServiceImpl implements RatingService{
 					}
 					String scorerNameWitGroup = row.getCell(0).getStringCellValue();
 					int index = scorerNameWitGroup.indexOf("(");
-					String scorerName = scorerNameWitGroup.substring(0, index - 1);
+					String scorerName = scorerNameWitGroup.substring(0, index );
 					User scorer = this.userLogic.findByName(scorerName);
 					for (int j = 0; j < options.size(); j++) {
 						OptionTitle ot = options.get(j);
