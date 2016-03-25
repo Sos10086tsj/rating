@@ -36,8 +36,8 @@ public class EncryptionUtil {
 					buffer.append(0);
 				}
 				buffer.append(Integer.toHexString(bt));
-				ciphertext = buffer.toString();
 			}
+			ciphertext = buffer.toString();
 			LOGGER.info("encrypt string {} to {};",unencryptedText,ciphertext);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
