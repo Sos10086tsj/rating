@@ -52,6 +52,7 @@ import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingPageVo;
 import com.chinesedreamer.rating.rating.vo.RatingTemplateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
+import com.chinesedreamer.rating.rating.vo.RatingUserVoteResult;
 import com.chinesedreamer.rating.rating.vo.RatingUserVoteVo;
 import com.chinesedreamer.rating.rating.vo.RatingVo;
 import com.chinesedreamer.rating.rating.vo.RatingWeightVo;
@@ -619,7 +620,10 @@ public class RatingServiceImpl implements RatingService{
 		return outputFile;
 	}
 	@Override
-	public void saveVoteExcel(List<OptionTitle> options, User user, Long tmplId, Attachment voteExcel) {
+	public List<RatingUserVoteResult> saveVoteExcel(List<OptionTitle> options, User user, Long tmplId, Attachment voteExcel) {
+		
+		List<RatingUserVoteResult> results = new ArrayList<RatingUserVoteResult>();
+		
 		//1. 保存user vote
 		RatingTemplate template = this.templateLogic.findOne(tmplId);
 		RatingUserVote vote = this.ratingUserVoteLogic.findByRatingIdAndTmplIdAndUserId(template.getRatingId(), tmplId, user.getId());
@@ -647,7 +651,7 @@ public class RatingServiceImpl implements RatingService{
 				//TODO 07
 			}else {
 				logger.info("not support file:{}", filePath);
-				return;
+				return results;
 			}
 			
 			//读取excel
@@ -669,8 +673,15 @@ public class RatingServiceImpl implements RatingService{
 					}
 					String scorerNameWitGroup = row.getCell(0).getStringCellValue();
 					int index = scorerNameWitGroup.indexOf("(");
-					String scorerName = scorerNameWitGroup.substring(0, index );
+					String scorerName = scorerNameWitGroup;
+					if (index != -1) {
+						scorerName = scorerNameWitGroup.substring(0, index );
+					}
 					User scorer = this.userLogic.findByName(scorerName);
+					
+					RatingUserVoteResult result = new RatingUserVoteResult();
+					result.setName(scorerName);
+					
 					for (int j = 0; j < options.size(); j++) {
 						OptionTitle ot = options.get(j);
 						Long optionId = Long.valueOf(ot.getValue().substring("option_".length()));
@@ -688,7 +699,11 @@ public class RatingServiceImpl implements RatingService{
 						vi.setScorerGroup(scorer.getGroupId());
 						vi.setScorerPosition(scorer.getPositionId());
 						voteItems.add(vi);
+						
+						result.getScores().add(score);
 					}
+					
+					results.add(result);
 				}
 				for (RatingUserVoteItem voteItem : voteItems) {
 					this.ratingUserVoteItemLogic.save(voteItem);
@@ -716,6 +731,7 @@ public class RatingServiceImpl implements RatingService{
 			}
 		}
 		this.logger.info("********** readExcel:" + voteExcel.getFileName() + " end ********");
+		return results;
 	}
 
 }

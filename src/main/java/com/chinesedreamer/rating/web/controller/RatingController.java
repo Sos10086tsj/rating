@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.chinesedreamer.rating.attachment.model.Attachment;
 import com.chinesedreamer.rating.attachment.service.AttachmentService;
 import com.chinesedreamer.rating.common.io.DefaultDownloadComponent;
@@ -39,6 +40,7 @@ import com.chinesedreamer.rating.rating.service.RatingService;
 import com.chinesedreamer.rating.rating.service.StatisticsService;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
+import com.chinesedreamer.rating.rating.vo.RatingUserVoteResult;
 import com.chinesedreamer.rating.rating.vo.RatingVo;
 import com.chinesedreamer.rating.rating.vo.RatingWeightVo;
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
@@ -251,11 +253,18 @@ public class RatingController {
 	 */
 	@RequestMapping(value = "rating/uploadVoteExcel/{tmplId}",method = RequestMethod.POST)
 	@ResponseBody
-	public void uploadVoteExcel(Model model,HttpServletRequest request,@RequestParam(value = "voteExcel", required = true)MultipartFile voteExcel, @PathVariable("tmplId")Long tmplId){
+	public JSONObject uploadVoteExcel(Model model,HttpServletRequest request,@RequestParam(value = "voteExcel", required = true)MultipartFile voteExcel, @PathVariable("tmplId")Long tmplId){
 		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
 		Attachment excel = this.attachmentService.saveFile(voteExcel, user.getId());
 		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
-		this.ratingService.saveVoteExcel(options, user, tmplId, excel);
+		List<RatingUserVoteResult> results = this.ratingService.saveVoteExcel(options, user, tmplId, excel);
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("options", options);
+		jsonObject.put("results", results);
+		jsonObject.put("success", Boolean.TRUE);
+		
+		return jsonObject;
 	}
 	
 	@ResponseBody

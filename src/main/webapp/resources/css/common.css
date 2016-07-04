@@ -6,3 +6,32 @@
 
 .div_title{text-align:center;font-size:14px;color:red;}
 .position_center{margin:0 auto;text-align:center;}
+
+.excel{
+	border:1px solid #cad9ea;
+    color:#666;
+	border-width:1px 0px 0px 1px;
+	font-size:12px;
+	empty-cells:show; 
+    border-collapse: collapse;
+    margin:0 auto;
+}
+
+.excel thead th{
+	border:1px solid #cad9ea;
+    padding:0 1em 0;
+	border-width:0px 1px 1px 0px;
+	padding-left:10px;
+	white-space: nowrap;
+}
+
+.excel tbody tr{
+	background-color:#f5fafe;
+}
+
+.excel td{
+	border:solid #add9c0;
+	border-width:0px 1px 1px 0px;
+	padding-left:10px;
+	white-space: nowrap;
+}

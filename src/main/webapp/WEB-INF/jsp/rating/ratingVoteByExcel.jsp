@@ -31,7 +31,18 @@
 		</div>
 	</div>
 	
-	
+	<!-- 结果展示 -->
+	<div id="js_rating_excel_id" style="display:none;">
+		<div style="font-size:14px;color:#666;">
+			投票结果
+		</div>
+		<table id="js_rating_excel_result_table_id" class="excel">
+			<thead>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
 <script>
