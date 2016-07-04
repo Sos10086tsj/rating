@@ -44,6 +44,7 @@ import com.chinesedreamer.rating.system.user.logic.UserLogic;
 import com.chinesedreamer.rating.system.user.model.User;
 import com.chinesedreamer.rating.system.user.vo.Menu;
 import com.chinesedreamer.rating.system.user.vo.UserVo;
+import com.chinesedreamer.rating.template.util.RatingSuppTmplScoerUtil;
 import com.chinesedreamer.rating.web.filter.SessionFilter;
 
 /** 
@@ -261,6 +262,27 @@ public class UserServiceImpl implements UserService{
 		}
 		return vos;
 	}
+	
+	@Override
+	public List<SelectVo> getScorers(User currentUser, String tmplCode) {
+		List<SelectVo> vos = new ArrayList<SelectVo>();
+		
+		List<User> users = this.logic.findUsers(UserStatus.ACTIVE);
+		
+		for (User user : users) {
+			if (user.getId().equals(currentUser.getId())) {
+				continue;
+			}
+			List<String> codes = RatingSuppTmplScoerUtil.getTmplCodeByUser(user);//获取用户被投票试卷
+			if (codes.contains(tmplCode)) {
+				vos.add(new SelectVo(user.getId().toString(), 
+						user.getName() + "(" + this.userGroupLogic.findOne(user.getGroupId()).getName() + ")"
+						));
+			}
+			
+		}
+		return vos;
+	}
 
 	@Override
 	public User showUserProfile(String username) {
@@ -323,4 +345,6 @@ public class UserServiceImpl implements UserService{
 	public List<User> getGroupUsers(Long groupId) {
 		return this.logic.findByGroupIdAndStatus(groupId, UserStatus.ACTIVE);
 	}
+
+	
 }

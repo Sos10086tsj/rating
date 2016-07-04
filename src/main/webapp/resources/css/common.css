@@ -14,7 +14,6 @@
 	font-size:12px;
 	empty-cells:show; 
     border-collapse: collapse;
-    margin:0 auto;
 }
 
 .excel thead th{

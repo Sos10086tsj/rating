@@ -16,5 +16,5 @@
 	
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
-<script type="text/javascript" src="${ctx}/resources/js/systemMgmt/groupMgmt.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/systemMgmt/groupMgmt.js?${version}"></script>
 </html>

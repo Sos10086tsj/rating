@@ -5,7 +5,7 @@
 <head>
 <%@include file="/WEB-INF/jsp/base/baselib.jspf" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet"  href="${ctx }/resources/components/handsontable/handsontable.full.css">
+<link rel="stylesheet"  href="${ctx }/resources/components/handsontable/handsontable.full.css?${version}">
 <title>评分考核系统</title>
 </head>
 <body>
@@ -24,9 +24,9 @@
 
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
-<script src="${ctx }/resources/components/handsontable/handsontable.full.js"></script>
+<script src="${ctx }/resources/components/handsontable/handsontable.full.js?${version}"></script>
 <script>
 	var glb_tmplId = '${tmplId}';
 </script>
-<script type="text/javascript" src="${ctx}/resources/js/rating/userRatingExcel.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/rating/userRatingExcel.js?${version}"></script>
 </html>

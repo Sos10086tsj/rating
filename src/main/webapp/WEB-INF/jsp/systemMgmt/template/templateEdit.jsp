@@ -45,7 +45,7 @@
 
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
-<script type="text/javascript" src="${ctx}/resources/js/systemMgmt/templateMgmt.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/systemMgmt/templateMgmt.js?${version}"></script>
 <script>
 	var glb_supp_tmpl_id = ${tmplId};
 </script>

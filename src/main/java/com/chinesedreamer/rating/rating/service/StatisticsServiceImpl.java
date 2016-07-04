@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,12 +25,11 @@ import org.springframework.stereotype.Service;
 
 import com.chinesedreamer.rating.common.io.ConfigPropertiesConstant;
 import com.chinesedreamer.rating.common.io.PropertiesUtils;
-import com.chinesedreamer.rating.rating.comparator.ExcelRptVoComparator;
 import com.chinesedreamer.rating.rating.constant.WeightConstant;
 import com.chinesedreamer.rating.rating.logic.RatingLogic;
-import com.chinesedreamer.rating.rating.logic.RatingScoreViewLogic;
+import com.chinesedreamer.rating.rating.logic.RatingResultLogic;
 import com.chinesedreamer.rating.rating.model.Rating;
-import com.chinesedreamer.rating.rating.model.RatingScoreView;
+import com.chinesedreamer.rating.rating.model.RatingResult;
 import com.chinesedreamer.rating.rating.vo.rpt.ExcelRptVo;
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
 import com.chinesedreamer.rating.system.config.ConfigConstant;
@@ -42,6 +40,7 @@ import com.chinesedreamer.rating.system.group.logic.UserGroupLogic;
 import com.chinesedreamer.rating.system.group.model.UserGroup;
 import com.chinesedreamer.rating.system.user.UserPositionType;
 import com.chinesedreamer.rating.system.user.logic.UserLogic;
+import com.chinesedreamer.rating.system.user.model.User;
 import com.chinesedreamer.rating.template.OptionCategory;
 import com.chinesedreamer.rating.template.logic.RatingSuppOptionLogic;
 import com.chinesedreamer.rating.template.logic.RatingTemplateLogic;
@@ -62,7 +61,7 @@ import com.chinesedreamer.rating.template.util.RatingSuppTmplScoerUtil;
 public class StatisticsServiceImpl implements StatisticsService{
 	private Logger logger = LoggerFactory.getLogger(StatisticsServiceImpl.class);
 	@Resource
-	private RatingScoreViewLogic scoreViewLogic;
+	private RatingResultLogic scoreViewLogic;
 	@Resource
 	private RatingTemplateLogic templateLogic;
 	@Resource
@@ -92,17 +91,17 @@ public class StatisticsServiceImpl implements StatisticsService{
 	}
 
 	private void getRptScores(RptVo vo,RatingTemplate template){
-		List<RatingScoreView> scoreViews = this.scoreViewLogic.findByTmplId(template.getId());
+		List<RatingResult> scoreViews = this.scoreViewLogic.findByTmplId(template.getId());
 		String code = template.getCode();
 		
-		Map<Long, List<RatingScoreView>> scoreViewMap = new HashMap<Long, List<RatingScoreView>>();
+		Map<Long, List<RatingResult>> scoreViewMap = new HashMap<Long, List<RatingResult>>();
 		//1. 分离得分用户
-		for (RatingScoreView scoreView : scoreViews) {
-			List<RatingScoreView> tmp = null;
+		for (RatingResult scoreView : scoreViews) {
+			List<RatingResult> tmp = null;
 			if (scoreViewMap.containsKey(scoreView.getScorer())) {
 				tmp = scoreViewMap.get(scoreView.getScorer());
 			}else {
-				tmp = new ArrayList<RatingScoreView>();
+				tmp = new ArrayList<RatingResult>();
 			}
 			tmp.add(scoreView);
 			scoreViewMap.put(scoreView.getScorer(), tmp);
@@ -123,9 +122,9 @@ public class StatisticsServiceImpl implements StatisticsService{
 	 * 统计A卷得分。A卷组内20%，组外10%，占总比例70%
 	 * @param vo
 	 * @param scoreViews
-	 * @param template
+	 * @param templates
 	 */
-	private void statisticsA(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
+	private void statisticsA(RptVo vo,Map<Long, List<RatingResult>> scoreViewMap,RatingTemplate template) {
 		
 		List<Map<String, String>> scores = null;
 		if (null != vo && null != vo.getScores() && !vo.getScores().isEmpty()) {
@@ -139,7 +138,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 		
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
-			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			List<RatingResult> tmp = scoreViewMap.get(key);
 			Map<String, String> score = new HashMap<String, String>();
 			//score.setName(this.userLogic.findOne(key).getName());
 			//score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
@@ -154,7 +153,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 			Map<Long, Float> outerMap = new HashMap<Long, Float>();
 			
 			//获取总分与投票人数
-			for (RatingScoreView scoreView : tmp) {
+			for (RatingResult scoreView : tmp) {
 				if (scoreView.getVoterGroupId().equals(scoreView.getScorerGroup())) {
 					innerVoter.add(scoreView.getVoterId());
 					Long optionKey = scoreView.getOptionId();
@@ -257,7 +256,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 	 * @param scoreViews
 	 * @param template
 	 */
-	private void statisticsB(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
+	private void statisticsB(RptVo vo,Map<Long, List<RatingResult>> scoreViewMap,RatingTemplate template) {
 		List<Map<String, String>> scores = null;
 		if (null != vo && null != vo.getScores() && !vo.getScores().isEmpty()) {
 			scores = vo.getScores();
@@ -270,7 +269,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
-			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			List<RatingResult> tmp = scoreViewMap.get(key);
 			Map<String, String> score = new HashMap<String, String>();
 //			score.setName(this.userLogic.findOne(key).getName());
 //			score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
@@ -287,7 +286,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 			Map<Long, Float> zongtiMap = new HashMap<Long, Float>();
 			
 			//获取总分与投票人数
-			for (RatingScoreView scoreView : tmp) {
+			for (RatingResult scoreView : tmp) {
 				
 				UserGroup voterGroup = this.userGroupLogic.findOne(scoreView.getVoterGroupId());
 				if (scoreView.getVoterGroupId().equals(scoreView.getScorerGroup()) 
@@ -389,7 +388,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 	 * @param scoreViews
 	 * @param template
 	 */
-	private void statisticsC(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
+	private void statisticsC(RptVo vo,Map<Long, List<RatingResult>> scoreViewMap,RatingTemplate template) {
 		List<Map<String, String>> scores = null;
 		if (null != vo && null != vo.getScores() && !vo.getScores().isEmpty()) {
 			scores = vo.getScores();
@@ -402,7 +401,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 		
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
-			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			List<RatingResult> tmp = scoreViewMap.get(key);
 			Map<String, String> score = new HashMap<String, String>();
 //			score.setName(this.userLogic.findOne(key).getName());
 //			score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
@@ -415,7 +414,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 			Map<Long, Float> leaderMap = new HashMap<Long, Float>();//总体组、组长投票一起统计
 			
 			//获取总分与投票人数
-			for (RatingScoreView scoreView : tmp) {
+			for (RatingResult scoreView : tmp) {
 				
 				UserGroup voterGroup = this.userGroupLogic.findOne(scoreView.getVoterGroupId());
 				if (scoreView.getVoterPositionId().equals(UserPositionType.LEADER.getValue())) {//组长
@@ -495,7 +494,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 	 * @param scoreViews
 	 * @param template
 	 */
-	private void statisticsD(RptVo vo,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template) {
+	private void statisticsD(RptVo vo,Map<Long, List<RatingResult>> scoreViewMap,RatingTemplate template) {
 		List<Map<String, String>> scores = null;
 		if (null != vo && null != vo.getScores() && !vo.getScores().isEmpty()) {
 			scores = vo.getScores();
@@ -508,7 +507,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 		
 		//2. 根据每个用户计算得分
 		for (Long key : scoreViewMap.keySet()) {
-			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			List<RatingResult> tmp = scoreViewMap.get(key);
 			Map<String, String> score = new HashMap<String, String>();
 //			score.setName(this.userLogic.findOne(key).getName());
 //			score.setGroup(this.userGroupLogic.findOne(tmp.get(0).getScorerGroup()).getName());
@@ -521,7 +520,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 			Map<Long, Float> zuyuanMap = new HashMap<Long, Float>();
 			
 			//获取总分与投票人数
-			for (RatingScoreView scoreView : tmp) {
+			for (RatingResult scoreView : tmp) {
 				
 				if (scoreView.getVoterPositionId().equals(UserPositionType.TEAM_MATE.getValue())) {//组远
 					zuyuanVoter.add(scoreView.getVoterId());
@@ -589,16 +588,16 @@ public class StatisticsServiceImpl implements StatisticsService{
 		List<Map<String, String>> rstMap = new ArrayList<Map<String,String>>();
 		
 		RatingTemplate template = this.templateLogic.findOne(tmplId);
-		List<RatingScoreView> scoreViews = this.scoreViewLogic.findByTmplIdAndScorer(tmplId, user);
+		List<RatingResult> scoreViews = this.scoreViewLogic.findByTmplIdAndScorer(tmplId, user);
 		String code = template.getCode();
-		Map<Long, List<RatingScoreView>> scoreViewMap = new HashMap<Long, List<RatingScoreView>>();
+		Map<Long, List<RatingResult>> scoreViewMap = new HashMap<Long, List<RatingResult>>();
 		//1. 根据投票用户分离
-		for (RatingScoreView scoreView : scoreViews) {
-			List<RatingScoreView> tmp = null;
+		for (RatingResult scoreView : scoreViews) {
+			List<RatingResult> tmp = null;
 			if (scoreViewMap.containsKey(scoreView.getVoterId())) {
 				tmp = scoreViewMap.get(scoreView.getVoterId());
 			}else {
-				tmp = new ArrayList<RatingScoreView>();
+				tmp = new ArrayList<RatingResult>();
 			}
 			tmp.add(scoreView);
 			scoreViewMap.put(scoreView.getVoterId(), tmp);
@@ -617,9 +616,9 @@ public class StatisticsServiceImpl implements StatisticsService{
 		return rstMap;
 	}
 	
-	private void userDetailA(List<Map<String, String>> rstMap,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template){
+	private void userDetailA(List<Map<String, String>> rstMap,Map<Long, List<RatingResult>> scoreViewMap,RatingTemplate template){
 		for (Long key : scoreViewMap.keySet()) {
-			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			List<RatingResult> tmp = scoreViewMap.get(key);
 			Map<String, String> score = new HashMap<String, String>();
 			score.put("name", this.userLogic.findOne(key).getName());
 			score.put("user_id", key.toString());
@@ -635,7 +634,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 			rstMap.remove(exist);
 			
 			boolean hasScore = false;
-			for (RatingScoreView scoreView : tmp) {
+			for (RatingResult scoreView : tmp) {
 				if (!hasScore) {
 					hasScore = true;
 				}
@@ -660,9 +659,9 @@ public class StatisticsServiceImpl implements StatisticsService{
 		}
 	}
 	
-	private void userDetailB(List<Map<String, String>> rstMap,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template){
+	private void userDetailB(List<Map<String, String>> rstMap,Map<Long, List<RatingResult>> scoreViewMap,RatingTemplate template){
 		for (Long key : scoreViewMap.keySet()) {
-			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			List<RatingResult> tmp = scoreViewMap.get(key);
 			Map<String, String> score = new HashMap<String, String>();
 			score.put("name", this.userLogic.findOne(key).getName());
 			score.put("user_id", key.toString());
@@ -679,7 +678,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 			
 			boolean hasScore = false;
 			
-			for (RatingScoreView scoreView : tmp) {
+			for (RatingResult scoreView : tmp) {
 				if (!hasScore) {
 					hasScore = true;
 				}
@@ -707,9 +706,9 @@ public class StatisticsServiceImpl implements StatisticsService{
 		}
 	}
 	
-	private void userDetailC(List<Map<String, String>> rstMap,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template){
+	private void userDetailC(List<Map<String, String>> rstMap,Map<Long, List<RatingResult>> scoreViewMap,RatingTemplate template){
 		for (Long key : scoreViewMap.keySet()) {
-			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			List<RatingResult> tmp = scoreViewMap.get(key);
 			Map<String, String> score = new HashMap<String, String>();
 			score.put("name", this.userLogic.findOne(key).getName());
 			score.put("user_id", key.toString());
@@ -726,7 +725,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 			
 			boolean hasScore = false;
 			
-			for (RatingScoreView scoreView : tmp) {
+			for (RatingResult scoreView : tmp) {
 				if (!hasScore) {
 					hasScore = true;
 				}
@@ -749,9 +748,9 @@ public class StatisticsServiceImpl implements StatisticsService{
 		}
 	}
 	
-	private void userDetailD(List<Map<String, String>> rstMap,Map<Long, List<RatingScoreView>> scoreViewMap,RatingTemplate template){
+	private void userDetailD(List<Map<String, String>> rstMap,Map<Long, List<RatingResult>> scoreViewMap,RatingTemplate template){
 		for (Long key : scoreViewMap.keySet()) {
-			List<RatingScoreView> tmp = scoreViewMap.get(key);
+			List<RatingResult> tmp = scoreViewMap.get(key);
 			Map<String, String> score = new HashMap<String, String>();
 			score.put("name", this.userLogic.findOne(key).getName());
 			score.put("user_id", key.toString());
@@ -767,7 +766,7 @@ public class StatisticsServiceImpl implements StatisticsService{
 			rstMap.remove(exist);
 			
 			boolean hasScore = false;
-			for (RatingScoreView scoreView : tmp) {
+			for (RatingResult scoreView : tmp) {
 				if (!hasScore) {
 					hasScore = true;
 				}
@@ -818,17 +817,17 @@ public class StatisticsServiceImpl implements StatisticsService{
 	
 	private void getRptScores(RptVo vo,List<RatingTemplate> templates){
 		for (RatingTemplate template : templates) {
-			List<RatingScoreView> scoreViews = this.scoreViewLogic.findByTmplId(template.getId());
+			List<RatingResult> scoreViews = this.scoreViewLogic.findByTmplId(template.getId());
 			String code = template.getCode();
 			
-			Map<Long, List<RatingScoreView>> scoreViewMap = new HashMap<Long, List<RatingScoreView>>();
+			Map<Long, List<RatingResult>> scoreViewMap = new HashMap<Long, List<RatingResult>>();
 			//1. 分离得分用户
-			for (RatingScoreView scoreView : scoreViews) {
-				List<RatingScoreView> tmp = null;
+			for (RatingResult scoreView : scoreViews) {
+				List<RatingResult> tmp = null;
 				if (scoreViewMap.containsKey(scoreView.getScorer())) {
 					tmp = scoreViewMap.get(scoreView.getScorer());
 				}else {
-					tmp = new ArrayList<RatingScoreView>();
+					tmp = new ArrayList<RatingResult>();
 				}
 				tmp.add(scoreView);
 				scoreViewMap.put(scoreView.getScorer(), tmp);
@@ -857,16 +856,16 @@ public class StatisticsServiceImpl implements StatisticsService{
 		for (RatingTemplate tmpl : tmpls) {
 			Long tmplId = tmpl.getId();
 			RatingTemplate template = this.templateLogic.findOne(tmplId);
-			List<RatingScoreView> scoreViews = this.scoreViewLogic.findByTmplIdAndScorer(tmplId, user);
+			List<RatingResult> scoreViews = this.scoreViewLogic.findByTmplIdAndScorer(tmplId, user);
 			String code = template.getCode();
-			Map<Long, List<RatingScoreView>> scoreViewMap = new HashMap<Long, List<RatingScoreView>>();
+			Map<Long, List<RatingResult>> scoreViewMap = new HashMap<Long, List<RatingResult>>();
 			//1. 根据投票用户分离
-			for (RatingScoreView scoreView : scoreViews) {
-				List<RatingScoreView> tmp = null;
+			for (RatingResult scoreView : scoreViews) {
+				List<RatingResult> tmp = null;
 				if (scoreViewMap.containsKey(scoreView.getVoterId())) {
 					tmp = scoreViewMap.get(scoreView.getVoterId());
 				}else {
-					tmp = new ArrayList<RatingScoreView>();
+					tmp = new ArrayList<RatingResult>();
 				}
 				tmp.add(scoreView);
 				scoreViewMap.put(scoreView.getVoterId(), tmp);
@@ -1068,11 +1067,11 @@ public class StatisticsServiceImpl implements StatisticsService{
 		return outputFile;
 	}
 	
-	private List<ExcelRptVo> reorderDatasource(List<ExcelRptVo> ds){
-		//根据A、B、C、D的顺序排序
-		Collections.sort(ds, new ExcelRptVoComparator());
-		return ds;
-	}
+//	private List<ExcelRptVo> reorderDatasource(List<ExcelRptVo> ds){
+//		//根据A、B、C、D的顺序排序
+//		Collections.sort(ds, new ExcelRptVoComparator());
+//		return ds;
+//	}
 	
 	private void addExcelRptVo(StringBuffer buffer, String name,List<ExcelRptVo> datasource){
 		String ids = buffer.toString();
@@ -1083,5 +1082,54 @@ public class StatisticsServiceImpl implements StatisticsService{
 		excelRptVo.setCode(name);
 		excelRptVo.setRptVo(this.generateReport(ids));
 		datasource.add(excelRptVo);
+	}
+
+	@Override
+	public RptVo generateReportForUser(String tmplIds, User user) {
+		
+		List<RatingTemplate> tmpls = new ArrayList<RatingTemplate>();
+		String[] ids = tmplIds.split(",");
+		for (String id : ids) {
+			if (StringUtils.isNotEmpty(id)) {
+				tmpls.add(this.templateLogic.findOne(Long.parseLong(id)));
+			}
+		}
+		RptVo vo = new RptVo();
+		Rating rating  = this.ratingLogic.findOne(tmpls.get(0).getRatingId());
+		vo.setName(rating.getName());
+		vo.setFrom(rating.getEffFrom());
+		vo.setTo(rating.getEffTo());
+		vo.setStatus(rating.getStatus().toString());
+		
+		
+		for (RatingTemplate template : tmpls) {
+			List<RatingResult> scoreViews = this.scoreViewLogic.findByTmplIdAndScorer(template.getId(), user.getId());
+			String code = template.getCode();
+			
+			Map<Long, List<RatingResult>> scoreViewMap = new HashMap<Long, List<RatingResult>>();
+			//1. 分离得分用户
+			for (RatingResult scoreView : scoreViews) {
+				List<RatingResult> tmp = null;
+				if (scoreViewMap.containsKey(scoreView.getScorer())) {
+					tmp = scoreViewMap.get(scoreView.getScorer());
+				}else {
+					tmp = new ArrayList<RatingResult>();
+				}
+				tmp.add(scoreView);
+				scoreViewMap.put(scoreView.getScorer(), tmp);
+			}
+			
+			if (code.equals("A")) {//A卷
+				this.statisticsA(vo, scoreViewMap, template);
+			}else if (code.equals("B")) {//B卷
+				this.statisticsB(vo, scoreViewMap, template);
+			}else if (code.equals("C")) {//C卷
+				this.statisticsC(vo, scoreViewMap, template);
+			}else if (code.equals("D")) {//D卷
+				this.statisticsD(vo, scoreViewMap, template);
+			}
+		}
+
+		return vo;
 	}
 }

@@ -80,6 +80,14 @@ public interface UserService {
 	 */
 	public List<SelectVo> lookupUser(String name);
 	
+	/**
+	 * 获取需要投票的客户列表
+	 * @param currentUser
+	 * @param tmplCode
+	 * @return 
+	 */
+	public List<SelectVo> getScorers(User currentUser, String tmplCode);
+	
 	public User showUserProfile(String username);
 	/**
 	 * 修改用户信息

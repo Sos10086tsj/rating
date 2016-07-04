@@ -31,5 +31,5 @@
 <input id="js_vote_user_id_hidden" type="hidden" value="${currentUser}">
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
-<script type="text/javascript" src="${ctx}/resources/js/rating/userRating.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/rating/userRating.js?${version}"></script>
 </html>

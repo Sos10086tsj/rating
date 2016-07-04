@@ -1,10 +1,10 @@
 <%@include file="/WEB-INF/jsp/base/taglibs.jsp" %>
 <link rel="icon" type="image/gif" href="${ctx }/resources/images/logo.ico">
-<link rel="stylesheet" type="text/css" href="${ctx }/resources/css/common.css">
+<link rel="stylesheet" type="text/css" href="${ctx }/resources/css/common.css?${version}">
 <!-- jQuery -->
-<script type="text/javascript" src="${ctx}/resources/components/jQuery/jquery.min.js"></script>
-<script type="text/javascript" src="${ctx}/resources/components/json2.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/rating.js"></script>
+<script type="text/javascript" src="${ctx}/resources/components/jQuery/jquery.min.js?${version}"></script>
+<script type="text/javascript" src="${ctx}/resources/components/json2.js?${version}"></script>
+<script type="text/javascript" src="${ctx}/resources/js/rating.js?${version}"></script>
 <script>
 	var ctx = '${ctx}';
 </script>

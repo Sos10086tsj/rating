@@ -10,17 +10,17 @@ import java.util.List;
 **/
 public class RatingUserVoteResult {
 	private String name;//得分用户
-	private List<Float> scores = new ArrayList<Float>();//得分
+	private List<String> scores = new ArrayList<String>();//得分
 	public String getName() {
 		return name;
 	}
-	public List<Float> getScores() {
+	public List<String> getScores() {
 		return scores;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setScores(List<Float> scores) {
+	public void setScores(List<String> scores) {
 		this.scores = scores;
 	}
 	

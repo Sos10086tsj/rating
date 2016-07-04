@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
+import com.chinesedreamer.rating.system.user.model.User;
 
 
 /** 
@@ -18,6 +19,8 @@ public interface StatisticsService {
 	public RptVo generateReport(Long tmplId);
 	
 	public RptVo generateReport(String tmplIds);
+	
+	public RptVo generateReportForUser(String tmplIds, User user);
 	
 	/**
 	 * 用户得分明细

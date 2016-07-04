@@ -11,8 +11,8 @@
 <div id="js_chart"></div>
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
-<script type="text/javascript" src="${ctx}/resources/components/highcharts/highcharts.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/statistics/chart.js"></script>
+<script type="text/javascript" src="${ctx}/resources/components/highcharts/highcharts.js?${version}"></script>
+<script type="text/javascript" src="${ctx}/resources/js/statistics/chart.js?${version}"></script>
 <script>
 	var js_chart_title = '${title}';
 	var js_chart_data = '${data}';

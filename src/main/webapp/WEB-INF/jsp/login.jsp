@@ -74,5 +74,5 @@ font-size:30px;
 <script>
 	var var_js_authorised = '${authorised}';
 </script>
-<script type="text/javascript" src="${ctx}/resources/js/login.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/login.js?${version}"></script>
 </html>

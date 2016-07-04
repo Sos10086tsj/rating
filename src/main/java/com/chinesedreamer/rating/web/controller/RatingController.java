@@ -210,9 +210,13 @@ public class RatingController {
 	@ResponseBody
 	@RequestMapping(value = "rating/downloadVoteExcel/{tmplId}",method = RequestMethod.GET)
 	public void downloadVoteExcel(HttpServletRequest request, HttpServletResponse response,@PathVariable("tmplId")Long tmplId){
-		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
-		List<SelectVo> users = this.userService.lookupUser("");
+		
 		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
+		
+		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+		List<SelectVo> users = this.userService.getScorers(
+				user,
+				this.ratingTemplateService.findOne(tmplId).getCode());
 		Map<String, Object> scores = this.ratingService.getUserRatingVote(tmplId, user);
 
 		List<List<String>> rows = new ArrayList<List<String>>();
@@ -515,7 +519,8 @@ public class RatingController {
 
 		float min = 999;
 		float max = 0;
-		RptVo rptVo = this.statisticsService.generateReport(tmplIds.toString().substring(0, tmplIds.length() - 1));
+		RptVo rptVo = this.statisticsService.generateReportForUser(tmplIds.toString().substring(0, tmplIds.length() - 1), 
+				this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername()));
 		for (Map<String, String> score : rptVo.getScores()) {
 			Long tmpUserId = Long.valueOf(score.get("user_id"));
 			if (userId.equals(tmpUserId)) {
@@ -529,7 +534,7 @@ public class RatingController {
 				max = tmpTotal;
 			}
 		}
-		model.addAttribute("min", min);
+		model.addAttribute("min", min == 999 ? 0 : min);
 		model.addAttribute("max", max);
 		
 		return "statistics/userDetail";

@@ -37,13 +37,16 @@ import com.chinesedreamer.rating.common.io.ConfigPropertiesConstant;
 import com.chinesedreamer.rating.common.io.PropertiesUtils;
 import com.chinesedreamer.rating.common.utils.DateUtil;
 import com.chinesedreamer.rating.common.utils.ExcelUtil;
+import com.chinesedreamer.rating.common.utils.StringUtil;
 import com.chinesedreamer.rating.common.vo.OptionTitle;
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.logic.RatingLogic;
+import com.chinesedreamer.rating.rating.logic.RatingResultLogic;
 import com.chinesedreamer.rating.rating.logic.RatingScoreLogic;
 import com.chinesedreamer.rating.rating.logic.RatingUserVoteItemLogic;
 import com.chinesedreamer.rating.rating.logic.RatingUserVoteLogic;
 import com.chinesedreamer.rating.rating.model.Rating;
+import com.chinesedreamer.rating.rating.model.RatingResult;
 import com.chinesedreamer.rating.rating.model.RatingScore;
 import com.chinesedreamer.rating.rating.model.RatingStatus;
 import com.chinesedreamer.rating.rating.model.RatingUserVote;
@@ -56,6 +59,9 @@ import com.chinesedreamer.rating.rating.vo.RatingUserVoteResult;
 import com.chinesedreamer.rating.rating.vo.RatingUserVoteVo;
 import com.chinesedreamer.rating.rating.vo.RatingVo;
 import com.chinesedreamer.rating.rating.vo.RatingWeightVo;
+import com.chinesedreamer.rating.system.config.ConfigConstant;
+import com.chinesedreamer.rating.system.config.logic.ConfigLogic;
+import com.chinesedreamer.rating.system.config.model.Config;
 import com.chinesedreamer.rating.system.group.UserGroupLevel;
 import com.chinesedreamer.rating.system.group.logic.UserGroupLogic;
 import com.chinesedreamer.rating.system.group.model.UserGroup;
@@ -110,6 +116,10 @@ public class RatingServiceImpl implements RatingService{
 	private RatingTmplOptionWeightLogic optionWeightLogic;
 	@Resource
 	private RatingSuppOptionLogic suppOptionLogic;
+	@Resource
+	private ConfigLogic configLogic;
+	@Resource
+	private RatingResultLogic ratingResultLogic;
 	
 	@Override
 	public void saveRating(RatingCreateVo vo) {
@@ -664,7 +674,9 @@ public class RatingServiceImpl implements RatingService{
 				}
 				
 				//从第二行开始解析
-				Set<RatingUserVoteItem> voteItems = new HashSet<RatingUserVoteItem>();
+				
+				Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
+				
 				for (int i = 1; i < rows; i++) {
 					Row row = sheet.getRow(i);
 					if (null == row) {
@@ -682,6 +694,11 @@ public class RatingServiceImpl implements RatingService{
 					RatingUserVoteResult result = new RatingUserVoteResult();
 					result.setName(scorerName);
 					
+					List<RatingResult> exists = this.ratingResultLogic.findVote(tmplId, user.getId(), scorer.getId());
+					if (null != exists && !exists.isEmpty()) {
+						this.ratingResultLogic.deletes(exists);
+					}
+					
 					for (int j = 0; j < options.size(); j++) {
 						OptionTitle ot = options.get(j);
 						Long optionId = Long.valueOf(ot.getValue().substring("option_".length()));
@@ -698,15 +715,26 @@ public class RatingServiceImpl implements RatingService{
 						vi.setScorer(scorer.getId());
 						vi.setScorerGroup(scorer.getGroupId());
 						vi.setScorerPosition(scorer.getPositionId());
-						voteItems.add(vi);
+						this.ratingUserVoteItemLogic.save(vi);
+
+						RatingResult rr = new RatingResult();
+						rr.setTmplId(tmplId);
+						rr.setVoterId(user.getId());
+						rr.setVoterGroupId(user.getGroupId());
+						rr.setVoterPositionId(user.getPositionId());
+						rr.setScorer(scorer.getId());
+						rr.setScorerGroup(scorer.getGroupId());
+						rr.setScorerPosition(scorer.getPositionId());
+						rr.setScore(score);
+						rr.setOptionId(optionId);
+						this.ratingResultLogic.save(rr);
 						
-						result.getScores().add(score);
+						
+						//插入取代视图的 rating result
+						result.getScores().add(StringUtil.formatScore(score, config));
 					}
 					
 					results.add(result);
-				}
-				for (RatingUserVoteItem voteItem : voteItems) {
-					this.ratingUserVoteItemLogic.save(voteItem);
 				}
 			}else {
 				this.logger.info("No sheet exist, break;");

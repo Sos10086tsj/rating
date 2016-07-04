@@ -21,5 +21,5 @@
 	
 </body>
 <%@include file="/WEB-INF/jsp/base/gridlib.jspf" %>
-<script type="text/javascript" src="${ctx}/resources/js/menu.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/menu.js?${version}"></script>
 </html>

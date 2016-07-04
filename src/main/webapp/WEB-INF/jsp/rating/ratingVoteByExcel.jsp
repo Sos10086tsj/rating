@@ -48,7 +48,7 @@
 <script>
 	var glb_tmplId = '${tmplId}';
 </script>
-<script type="text/javascript" src="${ctx}/resources/js/uploadFile.js"></script>
-<script type="text/javascript" src="${ctx}/resources/components/jQuery/jquery.form.min.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/rating/userRatingByExcel.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/uploadFile.js?${version}"></script>
+<script type="text/javascript" src="${ctx}/resources/components/jQuery/jquery.form.min.js?${version}"></script>
+<script type="text/javascript" src="${ctx}/resources/js/rating/userRatingByExcel.js?${version}"></script>
 </html>
