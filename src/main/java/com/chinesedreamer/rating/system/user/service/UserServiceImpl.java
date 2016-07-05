@@ -270,9 +270,6 @@ public class UserServiceImpl implements UserService{
 		List<User> users = this.logic.findUsers(UserStatus.ACTIVE);
 		
 		for (User user : users) {
-			if (user.getId().equals(currentUser.getId())) {
-				continue;
-			}
 			List<String> codes = RatingSuppTmplScoerUtil.getTmplCodeByUser(user);//获取用户被投票试卷
 			if (codes.contains(tmplCode)) {
 				vos.add(new SelectVo(user.getId().toString(), 
