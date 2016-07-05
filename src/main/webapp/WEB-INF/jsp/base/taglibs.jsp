@@ -4,4 +4,4 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="rating" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="form" uri="/WEB-INF/tld/spring-form.tld" %>
-<c:set var="version" value="2.0.1"/>
+<c:set var="version" value="2.0.2"/>
