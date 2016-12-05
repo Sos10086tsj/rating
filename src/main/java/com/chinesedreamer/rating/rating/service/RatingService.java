@@ -11,7 +11,6 @@ import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingPageVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
-import com.chinesedreamer.rating.rating.vo.RatingUserVoteResult;
 import com.chinesedreamer.rating.rating.vo.RatingVo;
 import com.chinesedreamer.rating.rating.vo.RatingWeightVo;
 import com.chinesedreamer.rating.system.user.model.User;
@@ -131,5 +130,5 @@ public interface RatingService {
 	 * @param options
 	 * @param user
 	 */
-	public List<RatingUserVoteResult> saveVoteExcel(List<OptionTitle> options, User user, Long tmplId, Attachment voteExcel);
+	public Map<String, Object> saveVoteExcel(List<OptionTitle> options, User user, Long tmplId, Attachment voteExcel);
 }

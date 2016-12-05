@@ -31,7 +31,7 @@ var userRatingByExcel = {
 		            			var tableBody = $('#js_rating_excel_result_table_id tbody');
 		            			tableBody.empty();
 
-		            			var results = data.results;
+		            			var results = data.results.success;
 		            			for(var i in results){
 		            				var rowTr = $("<tr></tr>");
 			            			rowTr.appendTo(tableBody);
@@ -47,6 +47,21 @@ var userRatingByExcel = {
 		            					scoreTd.appendTo(rowTr);
 		            				}
 		            			}
+		            			
+		            			var ignores = data.results.ignore;
+		            			var ignoresHtml = '';
+		            			if(typeof ignores != undefined && null != ignores && ignores.length > 0){
+		            				for(var i in ignores){
+		            					ignoresHtml += ignores[i] 
+		            							+ '<br/>';
+		            				}
+		            				$('#js_rating_excel_result_detail_id').html(ignoresHtml);
+		            				$('#js_rating_excel_result_id').show();
+		            			}else{
+		            				$('#js_rating_excel_result_detail_id').html(ignoresHtml);
+		            				$('#js_rating_excel_result_id').hide();
+		            			}
+		            			
 		            			$('#js_rating_excel_id').show();
 		            			rating.ajax.stopLoading();
 		            			$.messager.alert({

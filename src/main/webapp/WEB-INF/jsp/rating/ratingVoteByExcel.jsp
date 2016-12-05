@@ -36,6 +36,11 @@
 		<div style="font-size:14px;color:#666;">
 			投票结果
 		</div>
+		<div style="font-size:14px;color:red;padding: 10px 0 10px 0;" id="js_rating_excel_result_id">
+			由于组别或者职位与投票卷不符，以下用户的投票结果已被忽略。
+			<div id="js_rating_excel_result_detail_id">
+			</div>
+		</div>
 		<table id="js_rating_excel_result_table_id" class="excel">
 			<thead>
 			</thead>

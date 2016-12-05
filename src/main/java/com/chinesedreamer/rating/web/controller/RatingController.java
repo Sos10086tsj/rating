@@ -40,7 +40,6 @@ import com.chinesedreamer.rating.rating.service.RatingService;
 import com.chinesedreamer.rating.rating.service.StatisticsService;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
-import com.chinesedreamer.rating.rating.vo.RatingUserVoteResult;
 import com.chinesedreamer.rating.rating.vo.RatingVo;
 import com.chinesedreamer.rating.rating.vo.RatingWeightVo;
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
@@ -261,7 +260,7 @@ public class RatingController {
 		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
 		Attachment excel = this.attachmentService.saveFile(voteExcel, user.getId());
 		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
-		List<RatingUserVoteResult> results = this.ratingService.saveVoteExcel(options, user, tmplId, excel);
+		Map<String, Object> results = this.ratingService.saveVoteExcel(options, user, tmplId, excel);
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("options", options);

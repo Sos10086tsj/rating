@@ -630,9 +630,10 @@ public class RatingServiceImpl implements RatingService{
 		return outputFile;
 	}
 	@Override
-	public List<RatingUserVoteResult> saveVoteExcel(List<OptionTitle> options, User user, Long tmplId, Attachment voteExcel) {
+	public Map<String, Object> saveVoteExcel(List<OptionTitle> options, User user, Long tmplId, Attachment voteExcel) {
 		
 		List<RatingUserVoteResult> results = new ArrayList<RatingUserVoteResult>();
+		List<String> ignoreUsers = new ArrayList<String>();
 		
 		//1. 保存user vote
 		RatingTemplate template = this.templateLogic.findOne(tmplId);
@@ -661,7 +662,7 @@ public class RatingServiceImpl implements RatingService{
 				//TODO 07
 			}else {
 				logger.info("not support file:{}", filePath);
-				return results;
+				return new HashMap<String, Object>();
 			}
 			
 			//读取excel
@@ -690,6 +691,11 @@ public class RatingServiceImpl implements RatingService{
 						scorerName = scorerNameWitGroup.substring(0, index );
 					}
 					User scorer = this.userLogic.findByName(scorerName);
+					// 判断此用户是否为有效得分用户
+					if (!this.isValidVote(scorer, tmplId)) {
+						ignoreUsers.add(scorerNameWitGroup);
+						continue;
+					}
 					
 					RatingUserVoteResult result = new RatingUserVoteResult();
 					result.setName(scorerName);
@@ -759,7 +765,29 @@ public class RatingServiceImpl implements RatingService{
 			}
 		}
 		this.logger.info("********** readExcel:" + voteExcel.getFileName() + " end ********");
-		return results;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("success", results);
+		map.put("ignore", ignoreUsers);
+		
+		return map;
 	}
 
+	private boolean isValidVote(User scorer,Long tmplId) {
+		boolean valid = false;
+		List<RatingTemplateVoter> templateVoters = this.templateVoterLogic.findByTmplId(tmplId);
+		for (RatingTemplateVoter templateVoter : templateVoters) {
+			if (templateVoter.getGroupId().equals(scorer.getGroupId())) {
+				if (null == templateVoter.getPositionId()) {
+					valid = true;
+					break;
+				}else {
+					if (templateVoter.getPositionId().equals(scorer.getPositionId())) {
+						valid = true;
+						break;
+					}
+				}
+			}
+		}
+		return valid;
+	}
 }
