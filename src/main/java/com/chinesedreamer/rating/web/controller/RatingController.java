@@ -40,6 +40,7 @@ import com.chinesedreamer.rating.rating.service.RatingService;
 import com.chinesedreamer.rating.rating.service.StatisticsService;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
+import com.chinesedreamer.rating.rating.vo.RatingUserVoteResult;
 import com.chinesedreamer.rating.rating.vo.RatingVo;
 import com.chinesedreamer.rating.rating.vo.RatingWeightVo;
 import com.chinesedreamer.rating.rating.vo.rpt.RptVo;
@@ -199,6 +200,20 @@ public class RatingController {
 		Rating rating = this.ratingService.findOne(rt.getRatingId());
 		model.addAttribute("fileName", rating.getName() + "-" + rt.getName() + "卷");
 		return "rating/ratingVoteByExcel";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "rating/voteByExcel/{tmplId}",method = RequestMethod.POST)
+	public JSONObject getUserRating(@PathVariable("tmplId")Long tmplId){
+		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
+		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
+		List<RatingUserVoteResult> results = this.ratingService.getUserRating(options, user, tmplId);
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("options", options);
+		jsonObject.put("results", results);
+		
+		return jsonObject;
 	}
 	
 	/**

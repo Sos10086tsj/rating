@@ -61,5 +61,9 @@ public class RatingResultLogicImpl extends BaseLogicImpl<RatingResult, Long> imp
 	public void deletes(Collection<RatingResult> results) {
 		this.repository.deleteInBatch(results);
 	}
+	@Override
+	public List<RatingResult> findByTmplIdAndVoterId(Long tmplId, Long voterId) {
+		return this.repository.findByTmplIdAndVoterId(tmplId, voterId);
+	}
 
 }

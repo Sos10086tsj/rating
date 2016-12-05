@@ -30,4 +30,6 @@ public interface RatingResultLogic extends BaseLogic<RatingResult, Long>{
 	public List<RatingResult> findVote(Long tmplId, Long voter, Long scorer);
 	
 	public void deletes(Collection<RatingResult> results);
+	
+	public List<RatingResult> findByTmplIdAndVoterId(Long tmplId,Long voterId);
 }

@@ -99,9 +99,67 @@ var userRatingByExcel = {
 			return true;
 		}
 		return false;
+	},
+	
+	initLoad : function(){
+		$.ajax({
+			type: 'post',
+            url: ctx + '/rating/voteByExcel/' + glb_tmplId,
+            beforeSend:rating.ajax.loading(),
+            success: function(data) {
+            	$('#js_rating_excel_id').hide();
+            	$('#js_rating_excel_result_id').hide();
+            	if(typeof data != 'undefined'){
+            		data = $.parseJSON(data);
+            		//头部
+        			var tableThead = $('#js_rating_excel_result_table_id thead');
+        			tableThead.empty();
+        			var nameTr = $("<tr></tr>");
+        			nameTr.appendTo(tableThead);
+        			var scorerTd=$("<th>得分人</th>");
+        			scorerTd.appendTo(nameTr);
+        			
+        			var options = data.options;
+        			for(var i in options){
+        				var option = options[i];
+        				var titleTd=$("<th>" + option.label + "</th>");
+        				titleTd.appendTo(nameTr);
+        			}
+        			//得分情况
+        			var tableBody = $('#js_rating_excel_result_table_id tbody');
+        			tableBody.empty();
+
+        			var results = data.results;
+        			for(var i in results){
+        				var rowTr = $("<tr></tr>");
+            			rowTr.appendTo(tableBody);
+        				
+        				var result = results[i];
+        				var nameTd = $("<td>" + result.name +"</td>");
+        				nameTd.appendTo(rowTr);
+        				
+        				var scores = result.scores;
+        				for(var j in scores){
+        					var score = scores[j];
+        					var scoreTd = $("<td>" + score +"</td>");
+        					scoreTd.appendTo(rowTr);
+        				}
+        			}
+        			$('#js_rating_excel_id').show();
+        			rating.ajax.stopLoading();
+        			return false;
+            	}
+            },
+            failure : function(){
+            	$.messager.alert({
+    				title:'提示',
+    				msg:'数据加载失败，请刷新'
+    			});
+            }
+		});
 	}
 }
 
 $(function(){
-	
+	userRatingByExcel.initLoad();
 })

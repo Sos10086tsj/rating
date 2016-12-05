@@ -17,4 +17,5 @@ public interface RatingResultRepository extends BaseRepository<RatingResult, Lon
 	public List<RatingResult> findByTmplIdIn(List<Long> tmplIds);
 	
 	public List<RatingResult> findByTmplIdAndVoterIdAndScorer(Long tmplId,Long voterId, Long scorer);
+	public List<RatingResult> findByTmplIdAndVoterId(Long tmplId, Long voterId);
 }

@@ -11,6 +11,7 @@ import com.chinesedreamer.rating.rating.model.Rating;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingPageVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
+import com.chinesedreamer.rating.rating.vo.RatingUserVoteResult;
 import com.chinesedreamer.rating.rating.vo.RatingVo;
 import com.chinesedreamer.rating.rating.vo.RatingWeightVo;
 import com.chinesedreamer.rating.system.user.model.User;
@@ -131,4 +132,12 @@ public interface RatingService {
 	 * @param user
 	 */
 	public Map<String, Object> saveVoteExcel(List<OptionTitle> options, User user, Long tmplId, Attachment voteExcel);
+	
+	/**
+	 * 获取用户某个卷的投票结果
+	 * @param user
+	 * @param tmplId
+	 * @return
+	 */
+	public List<RatingUserVoteResult> getUserRating(List<OptionTitle> options,User user, Long tmplId);
 }

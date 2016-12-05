@@ -790,4 +790,37 @@ public class RatingServiceImpl implements RatingService{
 		}
 		return valid;
 	}
+	@Override
+	public List<RatingUserVoteResult> getUserRating(List<OptionTitle> options,User user, Long tmplId) {
+		List<RatingUserVoteResult> results = new ArrayList<RatingUserVoteResult>();
+		List<RatingResult> ratingResults = this.ratingResultLogic.findByTmplIdAndVoterId(tmplId, user.getId());
+		Map<Long, Map<String,Float>> map = new HashMap<Long, Map<String,Float>>();
+		for (RatingResult ratingResult : ratingResults) {
+			Long key = ratingResult.getScorer();
+			Map<String,Float> item = null;
+			if (map.containsKey(key)) {
+				item = map.get(key);
+			}else {
+				item = new HashMap<String,Float>();
+			}
+			item.put("option_" + ratingResult.getOptionId(),ratingResult.getScore());
+			map.put(key, item);
+		}
+		Config config = this.configLogic.findByProperty(ConfigConstant.STATISTICS_FORMAT);
+		for (Long key : map.keySet()) {
+			RatingUserVoteResult result = new RatingUserVoteResult();
+			User scoer = this.userLogic.findOne(key);
+			if (null != scoer) {
+				result.setName(scoer.getName());
+			}
+			Map<String,Float> item = map.get(key);
+			List<String> scores = new ArrayList<String>();
+			for (OptionTitle option : options) {
+				scores.add(StringUtil.formatScore(item.get(option.getValue()), config));
+			}
+			result.setScores(scores);
+			results.add(result);
+		}
+		return results;
+	}
 }
