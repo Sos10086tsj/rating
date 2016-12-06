@@ -823,4 +823,8 @@ public class RatingServiceImpl implements RatingService{
 		}
 		return results;
 	}
+	@Override
+	public List<Rating> findByCreateDateGt(Date createDate) {
+		return this.logic.findByCreateDateGt(createDate);
+	}
 }

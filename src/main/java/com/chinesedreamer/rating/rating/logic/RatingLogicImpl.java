@@ -1,5 +1,6 @@
 package com.chinesedreamer.rating.rating.logic;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -24,6 +25,11 @@ public class RatingLogicImpl extends BaseLogicImpl<Rating, Long> implements Rati
 	@Override
 	public List<Rating> findAll() {
 		return this.repository.findAll();
+	}
+
+	@Override
+	public List<Rating> findByCreateDateGt(Date createDate) {
+		return this.repository.findByCreateDateGreaterThan(createDate);
 	}
 
 }

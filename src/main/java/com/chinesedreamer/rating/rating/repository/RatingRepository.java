@@ -1,5 +1,8 @@
 package com.chinesedreamer.rating.rating.repository;
 
+import java.util.Date;
+import java.util.List;
+
 import com.chinesedreamer.rating.base.jpa.repository.BaseRepository;
 import com.chinesedreamer.rating.rating.model.Rating;
 
@@ -10,5 +13,5 @@ import com.chinesedreamer.rating.rating.model.Rating;
  * @version beta
  */
 public interface RatingRepository extends BaseRepository<Rating, Long>{
-
+	public List<Rating> findByCreateDateGreaterThan(Date createDate);
 }

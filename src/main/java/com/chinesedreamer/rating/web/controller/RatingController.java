@@ -32,11 +32,14 @@ import com.chinesedreamer.rating.attachment.model.Attachment;
 import com.chinesedreamer.rating.attachment.service.AttachmentService;
 import com.chinesedreamer.rating.common.io.DefaultDownloadComponent;
 import com.chinesedreamer.rating.common.io.DownloadComponent;
+import com.chinesedreamer.rating.common.io.PropertiesUtils;
 import com.chinesedreamer.rating.common.vo.OptionTitle;
 import com.chinesedreamer.rating.common.vo.ResponseVo;
 import com.chinesedreamer.rating.common.vo.SelectVo;
 import com.chinesedreamer.rating.rating.model.Rating;
+import com.chinesedreamer.rating.rating.model.RatingStatisticsFile;
 import com.chinesedreamer.rating.rating.service.RatingService;
+import com.chinesedreamer.rating.rating.service.RatingStatisticsFileService;
 import com.chinesedreamer.rating.rating.service.StatisticsService;
 import com.chinesedreamer.rating.rating.vo.RatingCreateVo;
 import com.chinesedreamer.rating.rating.vo.RatingUserVo;
@@ -50,6 +53,7 @@ import com.chinesedreamer.rating.system.user.service.UserService;
 import com.chinesedreamer.rating.template.model.RatingTemplate;
 import com.chinesedreamer.rating.template.service.RatingTemplateService;
 import com.chinesedreamer.rating.template.service.RatingTemplateVoterService;
+import com.chinesedreamer.rating.template.util.FileUtil;
 
 /** 
  * Description: 
@@ -79,6 +83,8 @@ public class RatingController {
 	private RatingTemplateVoterService ratingTemplateVoterService;
 	@Resource
 	private AttachmentService attachmentService;
+	@Resource
+	private RatingStatisticsFileService ratingStatisticsFileService;
 	
 	/**
 	 * 投票管理列表页
@@ -434,7 +440,7 @@ public class RatingController {
 //		return rstMap;
 //	}
 	@RequestMapping(value = "rating/statistics/detail/{tmplIds}",method = RequestMethod.GET)
-	public String showStatisticsDetail(Model model,@PathVariable("tmplIds")String tmplIds){
+	public String showStatisticsDetail(Model model,@PathVariable("tmplIds")String tmplIds, Integer realTime){
 		model.addAttribute("tmplIds", tmplIds);
 		String[] ids = tmplIds.split(",");
 		List<OptionTitle> options_1 = this.ratingService.getTmplOptions(Long.parseLong(ids[0]));//A卷字段比B卷少
@@ -447,13 +453,30 @@ public class RatingController {
 		model.addAttribute("options", options);
 		model.addAttribute("gridWidth", totalWidth);
 		model.addAttribute("ratingId", this.ratingService.getByTmplId(Long.parseLong(ids[0])).getId());
+		RatingStatisticsFile statisticsFile = this.ratingStatisticsFileService.findByTmplIds(tmplIds);
+		if (null != statisticsFile) {
+			model.addAttribute("statisticsTime", statisticsFile.getStatisticsDate());
+		}
+		model.addAttribute("realTime", realTime);
 		return "statistics/detail";
 	}
 	@ResponseBody
 	@RequestMapping(value = "rating/statistics/{tmplIds}",method = {RequestMethod.GET,RequestMethod.POST})
-	public Map<String, Object> getStatisticsDetail(Model model,@PathVariable("tmplIds")String tmplIds){
+	public Map<String, Object> getStatisticsDetail(Model model,@PathVariable("tmplIds")String tmplIds, Integer realTime){
 		Map<String, Object> rstMap = new HashMap<String, Object>();
-		RptVo rptVo = this.statisticsService.generateReport(tmplIds);
+		RptVo rptVo = null;
+		if (null == realTime) {
+			RatingStatisticsFile statisticsFile = this.ratingStatisticsFileService.findByTmplIds(tmplIds);
+			if (null == statisticsFile) {
+				rptVo = this.statisticsService.generateReport(tmplIds);
+			}else {
+				PropertiesUtils pu = new PropertiesUtils("config.properties");
+				String fileRootFolder = pu.getProperty("file.upload.prefix");
+				rptVo = JSONObject.toJavaObject(JSON.parseObject(FileUtil.readFile2Json(fileRootFolder + statisticsFile.getAttachment().getFilePath())), RptVo.class);
+			}
+		}else {
+			rptVo = this.statisticsService.generateReport(tmplIds);
+		}
 		model.addAttribute("rptVo", rptVo);
 		rstMap.put("total", rptVo.getScores().size());
 		rstMap.put("rows", rptVo.getScores());

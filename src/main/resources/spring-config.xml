@@ -38,6 +38,7 @@
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 	<context:annotation-config />
+	<task:annotation-driven />
 	
 	
 	
@@ -153,7 +154,6 @@
     </bean>
 	
 	<import resource="ehcache-config.xml" />
-	
 	
 	<!--
 	<import resource="spring-datasource.xml" />

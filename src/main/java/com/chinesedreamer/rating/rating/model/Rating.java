@@ -41,6 +41,18 @@ public class Rating extends BaseVersionEntity<Long>{
 	@Enumerated(EnumType.STRING)
 	private RatingStatus status;
 
+	@Column(name = "create_date")
+	private Date createDate;
+	
+	
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
 	public String getName() {
 		return name;
 	}

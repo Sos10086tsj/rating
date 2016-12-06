@@ -9,11 +9,12 @@
 </head>
 <body>
 	<table 	id="js_statistics_detail_dg" 
-		title="投票：${rptVo.name}" 
+		title="${rptVo.name}    <c:if test="${not empty statisticsTime }"><font color='red'>统计计算时间：<fmt:formatDate value="${statisticsTime }" pattern="yyyy-MM-dd HH:mm:ss"/></font></c:if>
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href='${ctx }/rating/statistics/detail/${tmplIds}?realTime=0'>实时计算</a>" 
 		class="easyui-datagrid" 
 		style="padding-left: 200px;min-height:400px;"
 		data-options="
-		url:'${ctx }/rating/statistics/${tmplIds}',
+		url:'${ctx }/rating/statistics/${tmplIds}?realTime=${realTime }',
 		pagination:false ,
         rownumbers:true,
         fitcolumns:true,

@@ -1,5 +1,6 @@
 package com.chinesedreamer.rating.rating.logic;
 
+import java.util.Date;
 import java.util.List;
 
 import com.chinesedreamer.rating.base.jpa.logic.BaseLogic;
@@ -13,4 +14,5 @@ import com.chinesedreamer.rating.rating.model.Rating;
  */
 public interface RatingLogic extends BaseLogic<Rating, Long>{
 	public List<Rating> findAll();
+	public List<Rating> findByCreateDateGt(Date createDate);
 }

@@ -1,6 +1,7 @@
 package com.chinesedreamer.rating.rating.service;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -140,4 +141,6 @@ public interface RatingService {
 	 * @return
 	 */
 	public List<RatingUserVoteResult> getUserRating(List<OptionTitle> options,User user, Long tmplId);
+	
+	public List<Rating> findByCreateDateGt(Date createDate);
 }
