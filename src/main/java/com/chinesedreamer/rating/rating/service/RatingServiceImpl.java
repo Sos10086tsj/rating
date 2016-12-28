@@ -664,7 +664,11 @@ public class RatingServiceImpl implements RatingService{
 				logger.info("not support file:{}", filePath);
 				return new HashMap<String, Object>();
 			}
-			
+			Map<String, List<TmplScoerVO>> scoreMap = new HashMap<String, List<TmplScoerVO>>();
+			scoreMap.put("A", RatingSuppTmplScoerUtil.getTemplateScores("A"));
+			scoreMap.put("B", RatingSuppTmplScoerUtil.getTemplateScores("B"));
+			scoreMap.put("C", RatingSuppTmplScoerUtil.getTemplateScores("C"));
+			scoreMap.put("D", RatingSuppTmplScoerUtil.getTemplateScores("D"));
 			//读取excel
 			Sheet sheet = workbook.getSheetAt(0);
 			if (null != sheet){
@@ -692,7 +696,7 @@ public class RatingServiceImpl implements RatingService{
 					}
 					User scorer = this.userLogic.findByName(scorerName);
 					// 判断此用户是否为有效得分用户
-					if (!this.isValidVote(scorer, tmplId)) {
+					if (!this.isValidVote(scorer, scoreMap.get(template.getCode()))) {
 						ignoreUsers.add(scorerNameWitGroup);
 						continue;
 					}
@@ -772,19 +776,16 @@ public class RatingServiceImpl implements RatingService{
 		return map;
 	}
 
-	private boolean isValidVote(User scorer,Long tmplId) {
+	private boolean isValidVote(User scorer,List<TmplScoerVO> scores) {
 		boolean valid = false;
-		List<RatingTemplateVoter> templateVoters = this.templateVoterLogic.findByTmplId(tmplId);
-		for (RatingTemplateVoter templateVoter : templateVoters) {
-			if (templateVoter.getGroupId().equals(scorer.getGroupId())) {
-				if (null == templateVoter.getPositionId()) {
+		for (TmplScoerVO tmplScoerVO : scores) {
+			if (tmplScoerVO.getGroup().getValue().equals(scorer.getUserGroup().getLevel().getValue())) {
+				if (null == tmplScoerVO.getPosition()) {
 					valid = true;
 					break;
-				}else {
-					if (templateVoter.getPositionId().equals(scorer.getPositionId())) {
-						valid = true;
-						break;
-					}
+				}else if(tmplScoerVO.getPosition().getValue().equals(scorer.getPositionId())){
+					valid = true;
+					break;
 				}
 			}
 		}
