@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Reference Manual http://logback.qos.ch/manual/index.html -->
+<configuration debug="true">
 
-<configuration debug="false">
+	<property resource="application.properties" />
 
-	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder charset="UTF-8">
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
 		</encoder>
 	</appender>
-
-	<appender name="FILE-ERROR"	class="ch.qos.logback.core.rolling.RollingFileAppender" additivity="false">
+	
+	<appender name="FILE-DEBUG"	class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>f:/logs/rating/error.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<fileNamePattern>${log.root.folder}/debug.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>15</maxHistory>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level> 
+    		<onMatch>ACCEPT</onMatch>
+    		<onMismatch>DENY</onMismatch>
+	    </filter>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="FILE-ERROR"	class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.root.folder}/error.log.%d{yyyy-MM-dd}</fileNamePattern>
 			<maxHistory>15</maxHistory>
 		</rollingPolicy>
 		<filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -25,9 +40,9 @@
 		</encoder>
 	</appender>
 
-	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender" additivity="false">
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>f:/logs/rating/info.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<fileNamePattern>${log.root.folder}/info.log.%d{yyyy-MM-dd}</fileNamePattern>
 			<maxHistory>15</maxHistory>
 		</rollingPolicy>
 		<filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -39,22 +54,12 @@
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
 		</encoder>
 	</appender>
-	    
+	
 	<root level="INFO">
-		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 		<appender-ref ref="FILE-ERROR" />
-	</root>
-	
-	<logger name="FILE" level="FILE">
-        <appender-ref ref="FILE-ERROR"/>
-    </logger>
-	
-	<logger name="error" level="ERROR">
-        <appender-ref ref="FILE-ERROR"/>
-    </logger>
-
-	<logger name="org.springframework" level="ERROR" />
-	<logger name="org.apache" level="ERROR" />
+		<appender-ref ref="FILE-DEBUG"/>
+    </root>
 
 </configuration>
