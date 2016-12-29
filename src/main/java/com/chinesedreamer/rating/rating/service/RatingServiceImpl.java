@@ -817,7 +817,10 @@ public class RatingServiceImpl implements RatingService{
 			Map<String,Float> item = map.get(key);
 			List<String> scores = new ArrayList<String>();
 			for (OptionTitle option : options) {
-				scores.add(StringUtil.formatScore(item.get(option.getValue()), config));
+				Float score = item.get(option.getValue());
+				if (null != score) {
+					scores.add(StringUtil.formatScore(score, config));
+				}
 			}
 			result.setScores(scores);
 			results.add(result);
