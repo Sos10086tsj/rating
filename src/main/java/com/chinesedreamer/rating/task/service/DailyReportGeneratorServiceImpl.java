@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.chinesedreamer.rating.attachment.logic.AttachmentLogic;
@@ -34,6 +35,7 @@ import com.chinesedreamer.rating.template.service.RatingTemplateService;
  * Date:Dec 5, 2016
 **/
 @Service
+@Transactional(readOnly=false)
 public class DailyReportGeneratorServiceImpl implements DailyReportGeneratorService{
 	private Logger logger = LoggerFactory.getLogger(DailyReportGeneratorServiceImpl.class);
 	

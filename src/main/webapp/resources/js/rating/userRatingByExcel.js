@@ -11,6 +11,7 @@ var userRatingByExcel = {
 		            success: function(data) {
 		            	$('#js_rating_excel_id').hide();
 		            	if(typeof data != 'undefined'){
+		            		
 		            		data = $.parseJSON(data);
 		            		if(data.success){
 		            			//头部
@@ -70,12 +71,14 @@ var userRatingByExcel = {
 				    			});
 		            			return false;
 		            		}
+		            	}else{
+		            		rating.ajax.stopLoading();
+		            		$.messager.alert({
+			    				title:'提示',
+			    				msg:'保存失败，请重试'
+			    			});
+			            	return false;
 		            	}
-		            	$.messager.alert({
-		    				title:'提示',
-		    				msg:'保存失败，请重试'
-		    			});
-		            	return false;
 		            },
 		            failure : function(){
 		            	$.messager.alert({
@@ -104,7 +107,7 @@ var userRatingByExcel = {
 	initLoad : function(){
 		$.ajax({
 			type: 'post',
-            url: ctx + '/rating/voteByExcel/' + glb_tmplId,
+            url: ctx + '/rating/voteByExcel/json/' + glb_tmplId,
             beforeSend:rating.ajax.loading(),
             success: function(data) {
             	$('#js_rating_excel_id').hide();

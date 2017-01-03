@@ -209,8 +209,9 @@ public class RatingController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "rating/voteByExcel/{tmplId}",method = RequestMethod.POST)
+	@RequestMapping(value = "rating/voteByExcel/json/{tmplId}",method = RequestMethod.POST)
 	public JSONObject getUserRating(@PathVariable("tmplId")Long tmplId){
+		this.logger.info(">>>> get rating result.");
 		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
 		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
 		List<RatingUserVoteResult> results = this.ratingService.getUserRating(options, user, tmplId);
@@ -218,7 +219,7 @@ public class RatingController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("options", options);
 		jsonObject.put("results", results);
-		
+		this.logger.info(">>>> jsonObject:{}",jsonObject.toJSONString());
 		return jsonObject;
 	}
 	
@@ -278,6 +279,7 @@ public class RatingController {
 	@RequestMapping(value = "rating/uploadVoteExcel/{tmplId}",method = RequestMethod.POST)
 	@ResponseBody
 	public JSONObject uploadVoteExcel(Model model,HttpServletRequest request,@RequestParam(value = "voteExcel", required = true)MultipartFile voteExcel, @PathVariable("tmplId")Long tmplId){
+		this.logger.info(">>>>>>>>>>>>>>> 接收到excel ");
 		User user = this.userService.getUser(this.userSessionService.getCurrentUserSession().getUsername());
 		Attachment excel = this.attachmentService.saveFile(voteExcel, user.getId());
 		List<OptionTitle> options = this.ratingService.getTmplOptions(tmplId);
@@ -288,6 +290,7 @@ public class RatingController {
 		jsonObject.put("results", results);
 		jsonObject.put("success", Boolean.TRUE);
 		
+		this.logger.info(">>>>> 返回:{}" , jsonObject.toJSONString());
 		return jsonObject;
 	}
 	
