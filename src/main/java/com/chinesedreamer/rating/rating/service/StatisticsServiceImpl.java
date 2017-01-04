@@ -39,6 +39,7 @@ import com.chinesedreamer.rating.system.group.UserGroupLevel;
 import com.chinesedreamer.rating.system.group.logic.UserGroupLogic;
 import com.chinesedreamer.rating.system.group.model.UserGroup;
 import com.chinesedreamer.rating.system.user.UserPositionType;
+import com.chinesedreamer.rating.system.user.UserStatus;
 import com.chinesedreamer.rating.system.user.logic.UserLogic;
 import com.chinesedreamer.rating.system.user.model.User;
 import com.chinesedreamer.rating.template.OptionCategory;
@@ -823,14 +824,17 @@ public class StatisticsServiceImpl implements StatisticsService{
 			Map<Long, List<RatingResult>> scoreViewMap = new HashMap<Long, List<RatingResult>>();
 			//1. 分离得分用户
 			for (RatingResult scoreView : scoreViews) {
-				List<RatingResult> tmp = null;
-				if (scoreViewMap.containsKey(scoreView.getScorer())) {
-					tmp = scoreViewMap.get(scoreView.getScorer());
-				}else {
-					tmp = new ArrayList<RatingResult>();
+				//投票人或者得分人无效，则不再统计
+				if (this.checkRatingValid(scoreView)) {
+					List<RatingResult> tmp = null;
+					if (scoreViewMap.containsKey(scoreView.getScorer())) {
+						tmp = scoreViewMap.get(scoreView.getScorer());
+					}else {
+						tmp = new ArrayList<RatingResult>();
+					}
+					tmp.add(scoreView);
+					scoreViewMap.put(scoreView.getScorer(), tmp);
 				}
-				tmp.add(scoreView);
-				scoreViewMap.put(scoreView.getScorer(), tmp);
 			}
 			
 			if (code.equals("A")) {//A卷
@@ -843,6 +847,22 @@ public class StatisticsServiceImpl implements StatisticsService{
 				this.statisticsD(vo, scoreViewMap, template);
 			}
 		}
+	}
+	
+	private boolean checkRatingValid(RatingResult scoreView) {
+		if (null == scoreView.getVoterId() || null == scoreView.getScorer() || null == scoreView.getScore()) {
+			this.logger.info("rating result invalid data. VoterId:{}, Scorer:{},Score:{}.",scoreView.getVoterId(),scoreView.getScorer(),scoreView.getScore());
+			return false;
+		}
+		User voter = this.userLogic.findOne(scoreView.getVoterId());
+		if (null == voter || null == voter.getStatus() || !voter.getStatus().equals(UserStatus.ACTIVE)) {
+			return false;
+		}
+		User scorer = this.userLogic.findOne(scoreView.getScorer());
+		if (null == scorer || null == scorer.getStatus() || !scorer.getStatus().equals(UserStatus.ACTIVE)) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
